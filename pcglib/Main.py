@@ -1,13 +1,13 @@
 from mcpi.minecraft import Minecraft
 import numpy as np
 
-from Primitives import Sphere
-from VectorOperations import get_length
 from ServerOperations import BasicOperation
+from Primitives import Cuboid
+import GlobalVariables
 
-mc = Minecraft.create()
+mc = GlobalVariables.mc
 
-basicOperations = BasicOperation(mc)
+basicOperations = BasicOperation()
 
 # class GeometricPrimitiveFunction():
 
@@ -30,14 +30,13 @@ basicOperations = BasicOperation(mc)
     
 
 x,y,z = mc.player.getPos()
-# O = np.array([0.5,100.5,0.5])
 O = [x + 10, y, z + 10]
 
+X = [10, 0, 0]
+Y = [0, 10, 0]
+Z = [0, 0, 10]
 
 basicOperations.set_block(O, 1)
 
-# cuboid = Sphere(O, 10)
-# cuboid.set(1)
-
-#obj1 = Sphere(O, 15)
-#obj1.set(0)
+# cbd = Cuboid(0, X, Y, Z)
+# cbd.set(1)

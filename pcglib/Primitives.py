@@ -7,14 +7,6 @@ class Primitive():
     def __init__(self, O):
         self.O = O
 
-    #rotates the primitive shape by the specified number of degrees in each direction
-    def rotate(self, deg_x, deg_y, deg_z):
-        print("Not implemented Yet")
-
-    #shifts the primitive in the direction and distance of the vector V
-    #def shift(self, V):
-    #    self.O = self.O+V
-
     #adding a vector to a primitive shape will shift the primitive in that direction
     #TODO: DECIDE WHETHER IT SHOULD CHANGE THE VARAIBLE IN THE OBJECT OR RETURN AN ENTIRELY NEW OBJECT
     def __add__(self, v:np.ndarray):
