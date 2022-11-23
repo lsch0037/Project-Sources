@@ -1,4 +1,3 @@
-
 from GlobalVariables import mc
 
 def set_block(pos, id, verbose=False):

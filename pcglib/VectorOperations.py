@@ -4,6 +4,6 @@ import numpy as np
 def get_length(V):
     return np.linalg.norm(V)
 
-def transfor(V, transform):
+def transform(V, transform):
     # TODO: IMPLEMENT 
     return -1

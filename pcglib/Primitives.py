@@ -51,8 +51,7 @@ class Cuboid(Primitive):
         for a in range(0, int(len_X*2)):
             for b in range(0, int(len_Y*2)):
                 for c in range(0, int(len_Z*2)):
-                    # BasicOperation.set_block(self.O + a*dir_X + b*dir_Y + c*dir_Z, material)
-                    ServerOperations.set_block(self.O + a*dir_X + b*dir_Y + c*dir_Z, material, verbose=True)
+                    ServerOperations.set_block(self.O + a*dir_X + b*dir_Y + c*dir_Z, material)
 
 
 class Sphere(Primitive):
@@ -65,7 +64,6 @@ class Sphere(Primitive):
         return []
     
     def set(self,material):
-        # pos1 = self.O - [self.radius, self.radius, self.radius]
         pos1 = np.subtract(self.O, [self.radius, self.radius, self.radius])
 
         for x in range(0,2*self.radius):
@@ -74,7 +72,6 @@ class Sphere(Primitive):
                     current_pos = pos1 + [x,y,z]
 
                     if(get_length(self.O - current_pos) <= self.radius):
-                        # BasicOperation.set_block(current_pos, material)
                         ServerOperations.set_block(current_pos, material)
     
 
