@@ -1,13 +1,9 @@
-from mcpi.minecraft import Minecraft
 import numpy as np
 
-from ServerOperations import BasicOperation
 from Primitives import Cuboid
-import GlobalVariables
+from GlobalVariables import mc
 
-mc = GlobalVariables.mc
-
-basicOperations = BasicOperation()
+# mc = GlobalVariables.mc
 
 # class GeometricPrimitiveFunction():
 
@@ -28,15 +24,14 @@ basicOperations = BasicOperation()
 #     def set_cylinder():
 #         print("Set cylinder not programmed yet")
     
-
-x,y,z = mc.player.getPos()
-O = [x + 10, y, z + 10]
+Zero = [-143, 19, -223]
+O = np.add(Zero,[10, 10, 10])
 
 X = [10, 0, 0]
 Y = [0, 10, 0]
 Z = [0, 0, 10]
 
-basicOperations.set_block(O, 1)
+# basicOperations.set_block(O, 1)
 
-# cbd = Cuboid(0, X, Y, Z)
-# cbd.set(1)
+cbd = Cuboid(Zero, X, Y, Z)
+cbd.set(1)

@@ -1,6 +1,8 @@
 import numpy as np
-from ServerOperations import BasicOperation
+
+import ServerOperations
 from VectorOperations import get_length
+from GlobalVariables import mc
 
 class Primitive():
 
@@ -34,6 +36,7 @@ class Cuboid(Primitive):
         or np.dot(self.X,self.Z) != 0
         or np.dot(self.Y,self.Z) != 0):
             print("Could not set cuboid because vectors are not orthogonal")
+            mc.postToChat("Could not set cuboid because vectors are not orthogonal")
             return 0
 
         #Size of the vector in each direction
@@ -48,7 +51,8 @@ class Cuboid(Primitive):
         for a in range(0, int(len_X*2)):
             for b in range(0, int(len_Y*2)):
                 for c in range(0, int(len_Z*2)):
-                    BasicOperation.set_block(self.O + a*dir_X + b*dir_Y + c*dir_Z, material)
+                    # BasicOperation.set_block(self.O + a*dir_X + b*dir_Y + c*dir_Z, material)
+                    ServerOperations.set_block(self.O + a*dir_X + b*dir_Y + c*dir_Z, material, verbose=True)
 
 
 class Sphere(Primitive):
@@ -70,7 +74,8 @@ class Sphere(Primitive):
                     current_pos = pos1 + [x,y,z]
 
                     if(get_length(self.O - current_pos) <= self.radius):
-                        BasicOperation.set_block(current_pos, material)
+                        # BasicOperation.set_block(current_pos, material)
+                        ServerOperations.set_block(current_pos, material)
     
 
 class Cylinder(Primitive):
