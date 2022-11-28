@@ -4,7 +4,6 @@ import ServerOperations
 from GlobalVariables import Zero
 from VectorOperations import Vector
 
-# TODO: TRANSFORM THIS TO UNIT TESTS
 import unittest
 
 class testPcglib(unittest.TestCase):
@@ -126,7 +125,7 @@ class testPcglib(unittest.TestCase):
         shape2 = PrimitiveNode(O_2, 10, 5)
         shape3 = shape1 + shape2
 
-        shape3.set_traverse()
+        shape3.set()
 
         I = np.add(O, [10,10,10])
         blocksShape1 = ServerOperations.query_blocks(O,I)

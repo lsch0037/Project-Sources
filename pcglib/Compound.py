@@ -22,23 +22,23 @@ class Compound:
         return addNode
 
     # Adds subtraction node as parent and node as sibling
-    def __sub__(self):
-        pass
-
+    def __sub__(self, node):
+        subNode = subtractionNode()
+        subNode.addChild(self)
+        subNode.addChild(node)
+        
+        return subNode
 
 class additionNode(Compound):
-    def set_traverse(self):
+    def set(self):
         for child in self.children:
-            child.set_traverse()
-
-    def execute(self):
-        for child in self.children:
-            child.execute()
+            child.set()
 
 class subtractionNode(Compound):
 
     def set(self):
-        self.carve()
+        self.children[0].set()
+        self.children[1].carve()
 
 #THIS WILL EVENTUALLY BE REPLACED BY THE PRIMITIVE DATA TYPE ITSELF
 class PrimitiveNode(Compound):
@@ -49,7 +49,7 @@ class PrimitiveNode(Compound):
         self.material = material
 
     # Sets the shape in the world
-    def set_traverse(self):
+    def set(self):
         pos1 = self.O + [self.dim, self.dim, self.dim]
         ServerOperations.fill(self.O, pos1, self.material)
 

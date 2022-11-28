@@ -1,15 +1,16 @@
 import numpy as np
 
-from Primitives import Cuboid
 from GlobalVariables import mc
 from GlobalVariables import Zero
-import ServerOperations
+from Compound import PrimitiveNode
+from VectorOperations import Vector
 
-O = np.add(Zero,[0, 101, 0])
-I = np.add(O, [10,10,10])
+O = Zero + [0,70, 0]
+O_2 = O + [1,1,1]
 
-X = [10, 0, 0]
-Y = [0, 10, 0]
-Z = [0, 0, 10]
+shape1 = PrimitiveNode(O, 10, 1)
+shape2 = PrimitiveNode(O_2, 8, 1)
 
-ServerOperations.fill(O,I,0, replacing=1)
+shape3 = shape1 - shape2
+
+shape3.set()

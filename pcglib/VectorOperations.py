@@ -4,20 +4,41 @@ class Vector():
     def __init__(self, arr):
         self._arr = np.array(arr)
 
-    def get(self, index):
+    def __getitem__(self, index):
         return self._arr[index]
 
     def toList(self):
         return self._arr.tolist()
 
-    def __add__(self, vec2):
-        return Vector(np.add(self._arr, vec2._arr))
+    def __str__(self):
+        return "["+ str(self._arr[0]) +", "+ str(self._arr[1]) +", "+ str(self._arr[2])+ "]"
 
-    def __sub__(self, vec2):
-        return Vector(np.subtract(self._arr, vec2._arr))
+    def __eq__(self, other):
+        if isinstance(other, Vector):
+            return self._arr == other.__arr
 
-    def __mul__(self, vec2):
-        return Vector(np.cross(self._arr, vec2._arr))
+        elif isinstance(other, list):
+            return self._arr == other
+        
+        else:
+            raise TypeError("unsupported operand type(s) for +: '{}' and '{}'").format(self.__class__, type(other))
+
+
+    def __add__(self, other):
+        if isinstance(other, Vector):
+            return Vector(np.add(self._arr, other._arr))
+
+        elif isinstance(other, list):
+            return Vector(np.add(self._arr, other))
+
+        else:
+            raise TypeError("unsupported operand type(s) for +: '{}' and '{}'").format(self.__class__, type(other))
+
+    def __sub__(self, other):
+        return Vector(np.subtract(self._arr, other._arr))
+
+    def __mul__(self, other):
+        return Vector(np.cross(self._arr, other._arr))
 
     def __truediv__(self, scalar:int):
         return Vector(np.divide(self._arr, scalar))
