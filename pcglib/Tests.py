@@ -2,21 +2,58 @@ from Compound import *
 import numpy as np
 import ServerOperations
 from GlobalVariables import Zero
+from VectorOperations import Vector
 
 # TODO: TRANSFORM THIS TO UNIT TESTS
 import unittest
 
-# def testAll():
-#     print("Running All Tests")
-#     testReplaceBlock()
-#     testReplaceWrongBlock()
-#     testReplaceBlocks()
-#     testReplaceWrongBlocks()
-#     testAddNode()
-#     testSetAdd()
-#     print("Passed All Tests")
-
 class testPcglib(unittest.TestCase):
+    def testVectorAdd(self):
+        vec1 = Vector([3,5,7])
+        vec2 = Vector([4,3,2])
+
+        vec3 = vec1 + vec2
+
+        self.assertEqual(vec3.toList(), [7,8,9])
+
+    def testVectorSub(self):
+        vec1 = Vector([3,5,7])
+        vec2 = Vector([4,3,2])
+
+        vec3 = vec1 - vec2
+
+        self.assertEqual(vec3.toList(), [-1,2,5])
+
+    def testVectorMul(self):
+        vec1 = Vector([1,0,0])
+        vec2 = Vector([0,1,0])
+
+        vec3 = vec1 * vec2
+
+        self.assertEqual(vec3.toList(), [0,0,1])
+
+    def testVectorDiv(self):
+        vec1 = Vector([3,6,9])
+
+        vec3 = vec1 / 3
+
+        self.assertEqual(vec3.toList(), [1,2,3])
+
+
+    def testVectorLenght(self):
+        vec1 = Vector([6,3,6])
+
+        len = vec1.getLenght()
+
+        self.assertEqual(len, 9)
+
+    def testVectorDirection(self):
+        vec1 = Vector([6,3,6])
+
+        direction = vec1.getDirection()
+
+        self.assertEqual(direction.toList(), [2/3, 1/3, 2/3])
+
     def testReplaceBlock(self):
         print("Testing replacing single block")
         O = np.add(Zero, [0,100,0])
@@ -24,7 +61,7 @@ class testPcglib(unittest.TestCase):
         
         ServerOperations.set_block(O, 0, replacing=1)
         
-        assert ServerOperations.query_block(O) == 0
+        self.assertEqual(ServerOperations.query_block(O), 0)
         print("Passed Test")
 
     def testReplaceWrongBlock(self):
@@ -34,7 +71,7 @@ class testPcglib(unittest.TestCase):
         
         ServerOperations.set_block(O, 0, replacing=10)
         
-        assert ServerOperations.query_block(O) == 1
+        self.assertEqual(ServerOperations.query_block(O), 1)
 
         ServerOperations.set_block(O, 0)
         print("Passed Test")
@@ -47,7 +84,7 @@ class testPcglib(unittest.TestCase):
         
         ServerOperations.set_block(O, 0, replacing=1)
         
-        assert ServerOperations.query_block(O) == 0
+        self.assertEqual(ServerOperations.query_block(O),0)
         print("Passed Test")
 
     def testReplaceWrongBlocks(self):
@@ -58,7 +95,7 @@ class testPcglib(unittest.TestCase):
         
         ServerOperations.set_block(O, 0, replacing=10)
         
-        assert ServerOperations.query_block(O) == 1
+        self.assertEqual(ServerOperations.query_block(O), 1)
 
         ServerOperations.set_block(O, 0)
         print("Passed Test")
@@ -75,9 +112,9 @@ class testPcglib(unittest.TestCase):
 
         shape3 = shape1 + shape2
 
-        assert len(shape3.children) == 2
-        assert shape3.getChild(0) == shape1
-        assert shape3.getChild(1) == shape2
+        self.assertEqual(len(shape3.children),2)
+        self.assertEqual(shape3.getChild(0), shape1)
+        self.assertEqual(shape3.getChild(1), shape2)
 
         print("Passed Test")
 
@@ -96,8 +133,8 @@ class testPcglib(unittest.TestCase):
         I_2 = np.add(O_2, [10,10,10])
         blocksShape2 = ServerOperations.query_blocks(O_2,I_2)
 
-        assert set(blocksShape1) == {17}
-        assert set(blocksShape2) == {5}
+        self.assertEqual(set(blocksShape1), {17})
+        self.assertEqual(set(blocksShape2), {5})
 
         ServerOperations.fill(O, I, 0)
         ServerOperations.fill(O_2, I_2, 0)
