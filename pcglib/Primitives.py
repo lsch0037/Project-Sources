@@ -10,7 +10,6 @@ class Primitive():
         self.O = O
 
     #adding a vector to a primitive shape will shift the primitive in that direction
-    #TODO: DECIDE WHETHER IT SHOULD CHANGE THE VARAIBLE IN THE OBJECT OR RETURN AN ENTIRELY NEW OBJECT
     def __add__(self, v:np.ndarray):
         self.O = self.O+v
 

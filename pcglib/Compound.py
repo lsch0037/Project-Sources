@@ -22,7 +22,7 @@ class Compound:
         return addNode
 
     # Adds subtraction node as parent and node as sibling
-    def sub(self):
+    def __sub__(self):
         pass
 
 
