@@ -5,9 +5,33 @@ from GlobalVariables import Zero
 
 def testAll():
     print("Running All Tests")
+    testReplaceBlock()
+    testReplaceWrongBlock()
     testAddNode()
     testSetAdd()
     print("Passed All Tests")
+
+def testReplaceBlock():
+    print("Testing replacing single block")
+    O = np.add(Zero, [0,100,0])
+    ServerOperations.set_block(O, 1)
+    
+    ServerOperations.set_block(O, 0, replacing=1)
+    
+    assert ServerOperations.query_block(O) == 0
+    print("Passed Test")
+
+def testReplaceWrongBlock():
+    print("Testing replacing wrong single block")
+    O = np.add(Zero, [0,100,0])
+    ServerOperations.set_block(O, 1)
+    
+    ServerOperations.set_block(O, 0, replacing=10)
+    
+    assert ServerOperations.query_block(O) == 1
+
+    ServerOperations.set_block(O, 0)
+    print("Passed Test")
 
 def testAddNode():
     print("Testing Adding Functionality")
@@ -26,7 +50,6 @@ def testAddNode():
     assert shape3.getChild(1) == shape2
 
     print("Passed Test")
-
 
 def testSetAdd():
     print("Testing Setting Tree of Additions")
