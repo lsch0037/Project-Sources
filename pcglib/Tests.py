@@ -7,6 +7,8 @@ def testAll():
     print("Running All Tests")
     testReplaceBlock()
     testReplaceWrongBlock()
+    testReplaceBlocks()
+    testReplaceWrongBlocks()
     testAddNode()
     testSetAdd()
     print("Passed All Tests")
@@ -23,6 +25,30 @@ def testReplaceBlock():
 
 def testReplaceWrongBlock():
     print("Testing replacing wrong single block")
+    O = np.add(Zero, [0,100,0])
+    ServerOperations.set_block(O, 1)
+    
+    ServerOperations.set_block(O, 0, replacing=10)
+    
+    assert ServerOperations.query_block(O) == 1
+
+    ServerOperations.set_block(O, 0)
+    print("Passed Test")
+
+def testReplaceBlocks():
+    # TODO: CHANGE TO MULTIPLE BLOCKS
+    print("Testing multiple single block")
+    O = np.add(Zero, [0,100,0])
+    ServerOperations.set_block(O, 1)
+    
+    ServerOperations.set_block(O, 0, replacing=1)
+    
+    assert ServerOperations.query_block(O) == 0
+    print("Passed Test")
+
+def testReplaceWrongBlocks():
+    # TODO: CHANGE TO MULTIPLE BLOCKS
+    print("Testing replacing multiple wrong blocks")
     O = np.add(Zero, [0,100,0])
     ServerOperations.set_block(O, 1)
     

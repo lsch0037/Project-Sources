@@ -1,6 +1,6 @@
 from GlobalVariables import mc
+import numpy as np
 
-# TODO: ALLOW THE FUNCTION TO REPLACE THINGS
 def set_block(pos, id, replacing=-1):
     if replacing != -1 and query_block(pos) != replacing:
         return
@@ -8,14 +8,16 @@ def set_block(pos, id, replacing=-1):
     mc.setBlock(pos[0], pos[1], pos[2], id)
 
 #Sets a rectangle between corners pos1 and pos2 to block with given id
-# TODO: ALLOW THE FUNCTION TO REPLACE THINGS
 def fill(pos1, pos2, id, replacing=-1):
     if replacing != -1:
-        for i in range(pos1[0],pos2[0]):
-            for j in range(pos1[1],pos2[1]):
-                for k in range(pos1[2],pos2[2]):
+        for i in range(pos1[0],pos2[0]+1):
+            for j in range(pos1[1],pos2[1]+1):
+                for k in range(pos1[2],pos2[2]+1):
                     current_pos = [i,j,k]
+                    print(current_pos)
                     set_block(current_pos, id, replacing)
+
+        return
 
     mc.setBlocks(pos1[0], pos1[1], pos1[2], pos2[0], pos2[1], pos2[2], id)
 

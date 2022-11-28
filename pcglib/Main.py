@@ -6,10 +6,10 @@ from GlobalVariables import Zero
 import ServerOperations
 
 O = np.add(Zero,[0, 101, 0])
-# I = np.add(O, [10,10,10])
+I = np.add(O, [10,10,10])
 
 X = [10, 0, 0]
 Y = [0, 10, 0]
 Z = [0, 0, 10]
 
-ServerOperations.set_block(O,0, replacing=1)
+ServerOperations.fill(O,I,0, replacing=1)
