@@ -5,25 +5,6 @@ from GlobalVariables import mc
 
 # mc = GlobalVariables.mc
 
-# class GeometricPrimitiveFunction():
-
-#     def set_line(pos1, pos2, id):
-
-#         direction = np.subtract(pos2,pos1)
-
-#         length = get_length(direction)
-
-#         direction = direction / length
-
-#         current_pos = pos1
-
-#         for a in range(0, int(length)):
-#             current_pos = current_pos + direction
-#             basicOperations.set_block(mc, current_pos, id)
-
-#     def set_cylinder():
-#         print("Set cylinder not programmed yet")
-    
 Zero = [-143, 19, -223]
 O = np.add(Zero,[10, 10, 10])
 
