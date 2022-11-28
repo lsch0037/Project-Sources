@@ -55,7 +55,7 @@ class testPcglib(unittest.TestCase):
 
     def testReplaceBlock(self):
         print("Testing replacing single block")
-        O = np.add(Zero, [0,100,0])
+        O = Zero + [0,100,0]
         ServerOperations.set_block(O, 1)
         
         ServerOperations.set_block(O, 0, replacing=1)
@@ -65,7 +65,7 @@ class testPcglib(unittest.TestCase):
 
     def testReplaceWrongBlock(self):
         print("Testing replacing wrong single block")
-        O = np.add(Zero, [0,100,0])
+        O = Zero + [0,100,0]
         ServerOperations.set_block(O, 1)
         
         ServerOperations.set_block(O, 0, replacing=10)
@@ -78,7 +78,8 @@ class testPcglib(unittest.TestCase):
     def testReplaceBlocks(self):
         # TODO: CHANGE TO MULTIPLE BLOCKS
         print("Testing multiple single block")
-        O = np.add(Zero, [0,100,0])
+        O = Zero + [0,100,0]
+
         ServerOperations.set_block(O, 1)
         
         ServerOperations.set_block(O, 0, replacing=1)
@@ -89,7 +90,7 @@ class testPcglib(unittest.TestCase):
     def testReplaceWrongBlocks(self):
         # TODO: CHANGE TO MULTIPLE BLOCKS
         print("Testing replacing multiple wrong blocks")
-        O = np.add(Zero, [0,100,0])
+        O = Zero + [0,100,0]
         ServerOperations.set_block(O, 1)
         
         ServerOperations.set_block(O, 0, replacing=10)
@@ -101,11 +102,11 @@ class testPcglib(unittest.TestCase):
 
     def testAddNode(self):
         print("Testing Adding Functionality")
-        O = np.add(Zero, [10,110,10])
+        O = Zero + [10,110,10]
 
         shape1 = PrimitiveNode(O, 10, 1)
 
-        O_2 = np.add(O, [1,1,1])
+        O_2 = O + [1,1,1]
 
         shape2 = PrimitiveNode(O_2, 8, 0)
 
@@ -119,17 +120,17 @@ class testPcglib(unittest.TestCase):
 
     def testSetAdd(self):
         print("Testing Setting Tree of Additions")
-        O = np.add(Zero, [10,100,10])
+        O = Zero + [10,100,10]
         shape1 = PrimitiveNode(O, 10, 17)
-        O_2 = np.add(Zero, [-10,100,-10])
+        O_2 = Zero + [-10,100,-10]
         shape2 = PrimitiveNode(O_2, 10, 5)
         shape3 = shape1 + shape2
 
         shape3.set()
 
-        I = np.add(O, [10,10,10])
+        I = O + [10,10,10]
         blocksShape1 = ServerOperations.query_blocks(O,I)
-        I_2 = np.add(O_2, [10,10,10])
+        I_2 = O_2 + [10,10,10]
         blocksShape2 = ServerOperations.query_blocks(O_2,I_2)
 
         self.assertEqual(set(blocksShape1), {17})

@@ -42,21 +42,22 @@ class subtractionNode(Compound):
 
 #THIS WILL EVENTUALLY BE REPLACED BY THE PRIMITIVE DATA TYPE ITSELF
 class PrimitiveNode(Compound):
-    def __init__(self, O, dim, material):
+    def __init__(self, O, dim, material, replacing=-1):
         self.children = []
         self.O = O
         self.dim = dim
         self.material = material
+        self.replacing = replacing
 
     # Sets the shape in the world
     def set(self):
         pos1 = self.O + [self.dim, self.dim, self.dim]
-        ServerOperations.fill(self.O, pos1, self.material)
+        ServerOperations.fill(self.O, pos1, self.material, self.replacing)
 
     # Sets the shape as air in the world
     def carve(self):
         pos1 = self.O + [self.dim, self.dim, self.dim]
-        ServerOperations.fill(self.O, pos1, 0)
+        ServerOperations.fill(self.O, pos1, 0, self.replacing)
         
     def transform(T):
         pass
