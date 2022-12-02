@@ -18,7 +18,6 @@ def fill(pos1, pos2, id, replacing=-1):
                     set_block(current_pos, id, replacing)
 
         return
-    print("set blocks from ", pos1, " to ", pos2, " to ", id)
 
     mc.setBlocks(pos1[0], pos1[1], pos1[2], pos2[0], pos2[1], pos2[2], id)
 

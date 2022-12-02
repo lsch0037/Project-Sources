@@ -34,11 +34,19 @@ class additionNode(Compound):
         for child in self.children:
             child.set()
 
+    def carve(self):
+        for child in self.children:
+            child.carve()
+
 class subtractionNode(Compound):
 
     def set(self):
         self.children[0].set()
         self.children[1].carve()
+
+    def carve(self):
+        self.children[0].carve()
+        self.children[1].set()
 
 #THIS WILL EVENTUALLY BE REPLACED BY THE PRIMITIVE DATA TYPE ITSELF
 class PrimitiveNode(Compound):

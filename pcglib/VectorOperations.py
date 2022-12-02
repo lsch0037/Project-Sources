@@ -15,7 +15,7 @@ class Vector():
 
     def __eq__(self, other):
         if isinstance(other, Vector):
-            return self._arr == other.__arr
+            return np.array_equal(self._arr, other._arr)
 
         elif isinstance(other, list):
             return self._arr == other
@@ -34,23 +34,40 @@ class Vector():
         else:
             raise TypeError("unsupported operand type(s) for +: '{}' and '{}'").format(self.__class__, type(other))
 
+
     def __sub__(self, other):
-        return Vector(np.subtract(self._arr, other._arr))
+        if isinstance(other, Vector):
+            return Vector(np.subtract(self._arr, other._arr))
+
+        elif isinstance(other, list):
+            return Vector(np.subtract(self._arr, other))
+
+        else:
+            raise TypeError("unsupported operand type(s) for +: '{}' and '{}'").format(self.__class__, type(other))
+        
 
     def __mul__(self, other):
-        return Vector(np.cross(self._arr, other._arr))
+        if isinstance(other, Vector):
+            return Vector(np.cross(self._arr, other._arr))
 
-    def __truediv__(self, scalar:int):
+        elif isinstance(other, int):
+            return Vector(self._arr*other)
+
+        else:
+            raise TypeError("unsupported operand type(s) for +: '{}' and '{}'").format(self.__class__, type(other))
+
+
+    def __truediv__(self, scalar):
+        # TODO: HANDLE ZEROS
         return Vector(np.divide(self._arr, scalar))
         
     #Returns the absolute distance of the vector
-    def getLenght(self):
+    def getLength(self):
         return np.linalg.norm(self._arr)
 
     def getDirection(self):
-        len = self.getLenght()
+        len = self.getLength()
         return Vector(self._arr / len)
 
-    def transform(self, transform):
-        # TODO: IMPLEMENT 
-        return -1
+    def rotate(self, deg_x, deg_y, deg_z):
+        pass

@@ -1,56 +1,59 @@
 import numpy as np
 
 import ServerOperations
-from VectorOperations import get_length
 from GlobalVariables import mc
+from Compound import Compound
 
-class Primitive():
+class Primitive(Compound):
 
-    def __init__(self, O):
+    def __init__(self, O, material, replacing=-1):
+        self.children = []
         self.O = O
+        self.material = material
+        self.replacing = replacing
 
-    #adding a vector to a primitive shape will shift the primitive in that direction
-    def __add__(self, v:np.ndarray):
-        self.O = self.O+v
-
-    #adding two primitives to each other results in a compound shape that is made out of the two primitive shapes
-    def __add__(self):
-        return False
-        #TODO:IMPLEMENT THIS SHIT
 
 class Cuboid(Primitive):
     
-    def __init__(self, O, X, Y, Z):
-        super().__init__(O)
+    def __init__(self, O, X, Y, Z ,material, replacing=-1):
+        self.children = []
+        self.O = O
+        self.material = material
+        self.replacing = replacing
+
         self.X = X
         self.Y = Y
         self.Z = Z
 
-    def set(self, material):
+    def set(self):
+        self._set(self.material)
+
+    def carve(self):
+        self._set(0)
+
+    def _set(self, material):
 
         #If all vectors are orthogonal to each other
-        #TODO: FIND OUT IF ORTHOGONAL BY CROSS MULTIPLICATION OF TWO VECTORS
-        # SHOULD RETURN THE THIRD VECTOR
-        if(np.dot(self.X,self.Y) != 0
-        or np.dot(self.X,self.Z) != 0
-        or np.dot(self.Y,self.Z) != 0):
-            print("Could not set cuboid because vectors are not orthogonal")
-            mc.postToChat("Could not set cuboid because vectors are not orthogonal")
-            return 0
+        # TODO: MAKE THIS WORK FOR ALL CASES
+        prod = self.X * self.Y
+        if(prod.getDirection() != self.Z.getDirection()):
+            print("Vectors are not orthogonal")
+            return
 
         #Size of the vector in each direction
-        len_X = get_length(self.X)
-        len_Y = get_length(self.Y)
-        len_Z = get_length(self.Z)
+        len_X = self.X.getLength()
+        len_Y = self.Y.getLength()
+        len_Z = self.Z.getLength()
+        
+        dir_X = self.X.getDirection()
+        dir_Y = self.Y.getDirection()
+        dir_Z = self.Z.getDirection()
 
-        dir_X = self.X/(len_X*2)
-        dir_Y = self.Y/(len_Y*2)
-        dir_Z = self.Z/(len_Z*2)
-
-        for a in range(0, int(len_X*2)):
-            for b in range(0, int(len_Y*2)):
-                for c in range(0, int(len_Z*2)):
-                    ServerOperations.set_block(self.O + a*dir_X + b*dir_Y + c*dir_Z, material)
+        for i in range(0, int(len_X)):
+            for j in range(0, int(len_Y)):
+                for k in range(0, int(len_Z)):
+                    current_pos = self.O + dir_X*i + dir_Y*j + dir_Z*k
+                    ServerOperations.set_block(current_pos, material, self.replacing)
 
 
 class Sphere(Primitive):

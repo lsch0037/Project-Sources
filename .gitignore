@@ -1,2 +1,5 @@
 env/
-pcglib/__pycache__/
+pcglib/__pycache__
+pcglib/__pycache__/*
+*.pyc
+*.pyo
