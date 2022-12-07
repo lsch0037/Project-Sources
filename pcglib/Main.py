@@ -9,13 +9,22 @@ from Buffer import GameBuffer
 
 game = GameBuffer(mc, Zero)
 
+buf1 = Buffer(10,10,10, 10,10,10)
 
-buf1 = Buffer(0,60,0, 10,70,10)
+print(buf1.getShape())
 
-len_x, len_y, len_z = buf1.getShape()
+for i in range(0,10):
+    buf1.set(i, i, i, 1)
 
-buf1.set(0, 69, 0, 1)
+buf2 = buf1.resize(0,0,0, 20,20,20)
 
-print(buf1.get(0, 69, 0))
+print(buf2.getShape())
 
-buf1.write(game)
+print(buf2._arr)
+
+# buf1.write(game)
+# game.set(0, 100,0, 1)
+
+# buf1.set(0, 69, 0, 1)
+
+# print(buf1.get(0, 69, 0))
