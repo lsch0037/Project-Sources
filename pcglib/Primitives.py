@@ -3,6 +3,8 @@ import numpy as np
 import ServerOperations
 from GlobalVariables import mc
 from Compound import Compound
+from VectorOperations import Vector
+from Buffer import Buffer
 
 class Primitive(Compound):
 
@@ -25,13 +27,13 @@ class Cuboid(Primitive):
         self.Y = Y
         self.Z = Z
 
-    def set(self):
-        self._set(self.material)
+    def set(self, buffer):
+        self._set(self.material, buffer)
 
-    def carve(self):
-        self._set(0)
+    def carve(self, buffer):
+        self._set(0, buffer)
 
-    def _set(self, material):
+    def _set(self, material, buffer):
 
         #If all vectors are orthogonal to each other
         # TODO: MAKE THIS WORK FOR ALL CASES
@@ -53,28 +55,28 @@ class Cuboid(Primitive):
             for j in range(0, int(len_Y)):
                 for k in range(0, int(len_Z)):
                     current_pos = self.O + dir_X*i + dir_Y*j + dir_Z*k
-                    ServerOperations.set_block(current_pos, material, self.replacing)
+                    buffer.set(current_pos[0], current_pos[1], current_pos[2], material)
 
 
 class Sphere(Primitive):
-    def __init__(self, O, radius):
-        super().__init__(O)
+    def __init__(self, O, radius, material):
+        super().__init__(O, material)
         self.radius = radius
 
-    #Returns the position vector that is a normal on the surface of the sphere pointing in the direction vector
-    def normal(direction):
-        return []
-    
-    def set(self,material):
-        pos1 = np.subtract(self.O, [self.radius, self.radius, self.radius])
+    def set(self, buffer):
+        self._set(self.material, buffer)
+
+    def _set(self,material, buffer):
+        pos0 = self.O - [self.radius, self.radius, self.radius]
 
         for x in range(0,2*self.radius):
             for y in range(0,2*self.radius):
                 for z in range(0,2*self.radius):
-                    current_pos = pos1 + [x,y,z]
+                    current_pos = pos0 + [x,y,z]
 
-                    if(get_length(self.O - current_pos) <= self.radius):
-                        ServerOperations.set_block(current_pos, material)
+                    d = self.O - current_pos
+                    if(d.getLength() <= self.radius):
+                        buffer.set(current_pos[0], current_pos[1], current_pos[2], material)
     
 
 class Cylinder(Primitive):

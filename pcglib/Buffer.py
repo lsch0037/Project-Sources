@@ -13,8 +13,12 @@ class Buffer():
 
         self._arr = np.zeros((x_len, y_len, z_len))
 
-    def set(self, x,y,z,id):
-        self._arr[x][y][z] = id
+    def set(self, x,y,z, material):
+        self._arr[int(x)][int(y)][int(z)] = material
+
+    def setAbs(self, x,y,z, material):
+        self._arr[self._x_0 - int(x)][self._y_0 - int(y)][self._z_0 - int(z)] = material
+        # self._arr[self._x_0 + x][self._y_0 + y][self._z_0 + z] = material
 
     def resize(self, x_0, y_0, z_0, x,y,z):
 
@@ -38,6 +42,10 @@ class Buffer():
     def get(self, x, y, z):
         return self._arr[x][y][z]
 
+    def getAbs(self, x, y, z):
+        # return self._arr[x][y][z]
+        return self._arr[self._x_0 - x][self._y_0 - y][self._z_0 - z]
+
     def getPos0(self):
         return self._x_0, self._y_0, self._z_0
 
@@ -56,7 +64,7 @@ class Buffer():
     def getShape(self):
         return self._arr.shape
 
-    def write(self, other, ignoreAir=True):
+    def write(self, other):
         # if not self.isSubsetOf(other):
         #     print("other buffer must be subset of this buffer")
         #     return
@@ -66,11 +74,7 @@ class Buffer():
             for y in range(self._y_0, self._y_1):
                 for z in range(self._z_0, self._z_1):
                     # print(x,y,z)
-                    id = self.get(x,y,z)
-
-                    if ignoreAir and id == 0:
-                        continue
-                    
+                    id = self.getAbs(x,y,z)
                     other.set(x ,y, z, id)
 
     def isSubsetOf(self, other):

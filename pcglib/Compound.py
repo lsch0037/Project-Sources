@@ -30,23 +30,23 @@ class Compound:
         return subNode
 
 class additionNode(Compound):
-    def set(self):
+    def set(self, buffer):
         for child in self.children:
-            child.set()
+            child.set(buffer)
 
-    def carve(self):
+    def carve(self, buffer):
         for child in self.children:
-            child.carve()
+            child.carve(buffer)
 
 class subtractionNode(Compound):
 
-    def set(self):
-        self.children[0].set()
-        self.children[1].carve()
+    def set(self, buffer):
+        self.children[0].set(buffer)
+        self.children[1].carve(buffer)
 
-    def carve(self):
-        self.children[0].carve()
-        self.children[1].set()
+    def carve(self,buffer):
+        self.children[0].carve(buffer)
+        self.children[1].set(buffer)
 
 #THIS WILL EVENTUALLY BE REPLACED BY THE PRIMITIVE DATA TYPE ITSELF
 class PrimitiveNode(Compound):
@@ -58,12 +58,12 @@ class PrimitiveNode(Compound):
         self.replacing = replacing
 
     # Sets the shape in the world
-    def set(self):
+    def set(self,buffer):
         pos1 = self.O + [self.dim, self.dim, self.dim]
         ServerOperations.fill(self.O, pos1, self.material, self.replacing)
 
     # Sets the shape as air in the world
-    def carve(self):
+    def carve(self, buffer):
         pos1 = self.O + [self.dim, self.dim, self.dim]
         ServerOperations.fill(self.O, pos1, 0, self.replacing)
         
