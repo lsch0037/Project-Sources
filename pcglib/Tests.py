@@ -42,7 +42,7 @@ class testPcglib(unittest.TestCase):
     def testVectorLenght(self):
         vec1 = Vector([6,3,6])
 
-        len = vec1.getLenght()
+        len = vec1.getLength()
 
         self.assertEqual(len, 9)
 
@@ -139,6 +139,28 @@ class testPcglib(unittest.TestCase):
         ServerOperations.fill(O, I, 0)
         ServerOperations.fill(O_2, I_2, 0)
         print("Passed Test")
+
+    # def testSetSub(self):
+    #     print("Testing Setting Tree of Subtractions")
+    #     O = Zero + [10,100,10]
+    #     shape1 = PrimitiveNode(O, 10, 17)
+    #     O_2 = Zero + [-10,100,-10]
+    #     shape2 = PrimitiveNode(O_2, 10, 5)
+    #     shape3 = shape1 - shape2
+
+    #     shape3.set()
+
+    #     I = O + [10,10,10]
+    #     blocksShape1 = ServerOperations.query_blocks(O,I)
+    #     I_2 = O_2 + [10,10,10]
+    #     blocksShape2 = ServerOperations.query_blocks(O_2,I_2)
+
+    #     self.assertEqual(set(blocksShape1), {17})
+    #     self.assertEqual(set(blocksShape2), {5})
+
+    #     ServerOperations.fill(O, I, 0)
+    #     ServerOperations.fill(O_2, I_2, 0)
+    #     print("Passed Test")
 
 if __name__ == '__main__':
     unittest.main()
