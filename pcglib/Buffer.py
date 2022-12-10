@@ -2,49 +2,25 @@ import numpy as np
 from VectorOperations import Vector
 
 class Buffer():
-    def __init__(self, x_0=0, y_0=0, z_0=0, x_len=10, y_len=10, z_len=10):
+    def __init__(self, x_0=-10, y_0=-10, z_0=-10, x_1=10, y_1=10, z_1=10):
         self._x_0 = x_0
         self._y_0 = y_0
         self._z_0 = z_0
 
-        self._x_1 = x_0 + x_len
-        self._y_1 = y_0 + y_len
-        self._z_1 = z_0 + z_len
+        self._x_1 = x_1
+        self._y_1 = y_1
+        self._z_1 = z_1
 
-        self._arr = np.zeros((x_len, y_len, z_len))
+        self._arr = np.zeros((x_1 - x_0 + 1, y_1 - y_0 + 1, z_1 - z_0 + 1))
 
+        self.anchors = []
+
+    # Basic Getters and Setters
     def set(self, x,y,z, material):
-        self._arr[int(x)][int(y)][int(z)] = material
-
-    def setAbs(self, x,y,z, material):
-        self._arr[self._x_0 - int(x)][self._y_0 - int(y)][self._z_0 - int(z)] = material
-        # self._arr[self._x_0 + x][self._y_0 + y][self._z_0 + z] = material
-
-    def resize(self, x_0, y_0, z_0, x,y,z):
-
-        newBuffer = Buffer(x_0, y_0, z_0, x, y, z)
-
-        len_x = self._x_1 - self._x_0
-        len_y = self._y_1 - self._y_0
-        len_z = self._z_1 - self._z_0
-
-        dx_0 = self._x_0 + x_0
-        dy_0 = self._y_0 + y_0
-        dz_0 = self._z_0 + z_0
-
-        for i in range(0, len_x):
-            for j in range(0, len_y):
-                for k in range(0, len_z):
-                    newBuffer._arr[dx_0 + i][dy_0 + j][dz_0 + k] = self._arr[i][j][k]
-
-        return newBuffer
+        self._arr[int(x) - self._x_0][int(y) - self._y_0][int(z) - self._z_0] =  material
 
     def get(self, x, y, z):
-        return self._arr[x][y][z]
-
-    def getAbs(self, x, y, z):
-        # return self._arr[x][y][z]
-        return self._arr[self._x_0 - x][self._y_0 - y][self._z_0 - z]
+        return self._arr[int(x) - self._x_0][int(y) - self._y_0][int(z) - self._z_0]
 
     def getPos0(self):
         return self._x_0, self._y_0, self._z_0
@@ -52,29 +28,69 @@ class Buffer():
     def getPos1(self):
         return self._x_1, self._y_1, self._z_1
 
-    def shiftOrigin(self, x, y, z):
-        self._x_0 += x
-        self._y_0 += y
-        self._z_0 += z
+    # Anchors
+    def setAnchor(self,x,y,z):
 
-        self._x_1 += x
-        self._y_1 += y
-        self._z_1 += z
+        if x < self._x_0 or x > self._x_1:
+            return
+        elif y < self._y_0 or y > self._y_1:
+            return
+        elif z < self._z_0 or z > self._z_1:
+            return
+
+        self.anchors.append((x,y,z))
+
+    def getAnchor(self, i):
+        return self.anchors[i]
+
+    def alignAnchor(self, i, other, j):
+        x,y,z = self.getAnchor(i)
 
     def getShape(self):
         return self._arr.shape
 
-    def write(self, other):
-        # if not self.isSubsetOf(other):
-        #     print("other buffer must be subset of this buffer")
-        #     return
+    def shift(self, dx, dy, dz):
+        self._x_0 += dx
+        self._y_0 += dy
+        self._z_0 += dz
 
+        self._x_1 += dx
+        self._y_1 += dy
+        self._z_1 += dz
+
+    # def setRelative(self, x,y,z, material):
+    #     self._arr[int(x)][int(y)][int(z)] = material
+
+    # Resize the buffer to the given coordinates
+    def resize(self, x_0, y_0, z_0, x_1, y_1, z_1):
+
+        newArr = np.zeros((x_1 - x_0,y_1 - y_0,z_1 - z_0))
+
+        dx_0 = self._x_0 - x_0
+        dy_0 = self._y_0 - y_0
+        dz_0 = self._z_0 - z_0
+
+        for x in range(0, self._x_1 - self._x_0):
+            for y in range(0, self._y_1 - self._y_0):
+                for z in range(0, self._z_1 - self._z_0):
+                    newArr[x + dx_0][y + dy_0][z + dz_0] = self._arr[x][y][z]
+
+        self._arr = newArr
+        self._x_0 = x_0
+        self._y_0 = y_0
+        self._z_0 = z_0
+        self._x_1 = x_1
+        self._y_1 = y_1
+        self._z_1 = z_1
+
+
+    def write(self, other):
         id = 0
-        for x in range(self._x_0, self._x_1):
-            for y in range(self._y_0, self._y_1):
-                for z in range(self._z_0, self._z_1):
-                    # print(x,y,z)
-                    id = self.getAbs(x,y,z)
+
+        for x in range(self._x_0, self._x_1 + 1):
+            for y in range(self._y_0, self._y_1 + 1):
+                for z in range(self._z_0, self._z_1 + 1):
+                    id = self.get(x,y,z)
                     other.set(x ,y, z, id)
 
     def isSubsetOf(self, other):
@@ -97,8 +113,8 @@ class Buffer():
         return True
 
 class GameBuffer(Buffer):
-    def __init__(self, mc, Zero, x_0=0, y_0=0, z_0=0, x_len=10, y_len=10, z_len=10):
-        super().__init__(x_0,y_0,z_0, x_len,y_len,z_len)
+    def __init__(self, mc, Zero, x_0=-10, y_0=-10, z_0=-10, x_1=10,y_1=10,z_1=10,):
+        super().__init__(x_0,y_0,z_0, x_1, y_1, z_1)
         self._x_offset = Zero[0]
         self._y_offset = Zero[1]
         self._z_offset = Zero[2]
