@@ -64,15 +64,15 @@ class Buffer():
     # Resize the buffer to the given coordinates
     def resize(self, x_0, y_0, z_0, x_1, y_1, z_1):
 
-        newArr = np.zeros((x_1 - x_0,y_1 - y_0,z_1 - z_0))
+        newArr = np.zeros((x_1 - x_0 +1 ,y_1 - y_0 + 1,z_1 - z_0 + 1))
 
         dx_0 = self._x_0 - x_0
         dy_0 = self._y_0 - y_0
         dz_0 = self._z_0 - z_0
 
-        for x in range(0, self._x_1 - self._x_0):
-            for y in range(0, self._y_1 - self._y_0):
-                for z in range(0, self._z_1 - self._z_0):
+        for x in range(0, self._x_1 - self._x_0 + 1):
+            for y in range(0, self._y_1 - self._y_0 + 1):
+                for z in range(0, self._z_1 - self._z_0 + 1):
                     newArr[x + dx_0][y + dy_0][z + dz_0] = self._arr[x][y][z]
 
         self._arr = newArr
