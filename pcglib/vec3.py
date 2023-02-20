@@ -36,22 +36,22 @@ class vec3():
 
     # Adding two vectors
     def __add__(self, other):
-        result = []
-        otherArray = []
+
+        result = vec3()
 
         if isinstance(other, vec3):
-            otherArray = other._arr
+
+            for i in range(3):
+                result._arr[i] = self._arr[i] + other._arr[i]
 
         elif isinstance(other, list):
-            otherArray = other
+            for i in range(3):
+                result._arr[i] = self._arr[i] + other[i]
 
         else:
             raise TypeError("unsupported operand type(s) for +: '{}' and '{}'").format(self.__class__, type(other))
 
-        for i in range(3):
-            result.append(self._arr[i] + otherArray[i])
-
-        return vec3(result)
+        return result
 
 
     # Subtracting two vectors
@@ -80,8 +80,15 @@ class vec3():
 
     # Cross multiplication of two vectors
     def __mul__(self, other):
-        # TODO DO CROSS MULTIPLICATION
-        pass
+
+        # if other is a scalar
+        if isinstance(other, (int, float)):
+            result = vec3()
+
+            for i in range(3):
+                result._arr[i] = self._arr[i] * other
+
+            return result
 
     # Divides each value in the vector by the scalar
     def __truediv__(self, scalar):

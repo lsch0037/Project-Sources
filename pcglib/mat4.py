@@ -16,8 +16,16 @@ class mat4():
         else:
             raise TypeError("unsupported constructor type(s): '{}'").format(type(args[0]))
 
+    # Returns the row with the given index
     def __getitem__(self,index):
-        return self._arr[index]
+        if index == 0:
+            return self._arr[0:4]
+        elif index == 1:
+            return self._arr[4:8]
+        elif index == 2:
+            return self._arr[8:12]
+        elif index == 3:
+            return self._arr[12:16]
 
     def __toList__(self):
         return self._arr
@@ -147,4 +155,4 @@ class mat4():
         pass
 
     def identity(self):
-        self._arr = [1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,0,1]
+        self._arr = [1.0,0.0,0.0,0.0, 0.0,1.0,0.0,0.0, 0.0,0.0,1.0,0.0, 0.0,0.0,0.0,1.0]

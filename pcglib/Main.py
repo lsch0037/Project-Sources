@@ -7,11 +7,13 @@ from Buffer import Buffer
 from Buffer import GameBuffer
 from vec3 import vec3
 from mat4 import mat4
+from new_primitive import new_cube
 
 game = GameBuffer(mc, Zero)
 
-m = mat4([0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15])
-m2 = mat4()
-m2.identity()
+p0 = vec3([0.0,100.0,0.0])
+r0 = mat4()
+r0.identity()
 
-print(m*m2)
+c = new_cube(p0,r0, 3)
+c.set(1, game)

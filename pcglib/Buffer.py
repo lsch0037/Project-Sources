@@ -16,8 +16,8 @@ class Buffer():
         self.anchors = []
 
     # Basic Getters and Setters
-    def set(self, x,y,z, material):
-        self._arr[int(x) - self._x_0][int(y) - self._y_0][int(z) - self._z_0] =  material
+    # def set(self, x,y,z, material):
+    #     self._arr[int(x) - self._x_0][int(y) - self._y_0][int(z) - self._z_0] =  material
 
     def get(self, x, y, z):
         return self._arr[int(x) - self._x_0][int(y) - self._y_0][int(z) - self._z_0]
@@ -132,10 +132,15 @@ class GameBuffer(Buffer):
         self._z_offset = Zero[2]
         self.mc = mc
 
-    def set(self,x,y,z,id):
-        msg = "Set block at ", str(x) ,", ", str(y), ",", str(z), "to ", id
-        self.mc.postToChat(msg)
-        self.mc.setBlock(x + self._x_0 + self._x_offset,y + self._y_0 + self._y_offset,z + self._z_0 + self._z_offset, id)
+    # def set(self,x,y,z,id):
+    #     msg = "Set block at ", str(x) ,", ", str(y), ",", str(z), "to ", id
+    #     self.mc.postToChat(msg)
+    #     self.mc.setBlock(x + self._x_0 + self._x_offset,y + self._y_0 + self._y_offset,z + self._z_0 + self._z_offset, id)
+
+    def set(self, pos, id):
+        print("Pos:", pos)
+        print("id:", id)
+        self.mc.setBlock(pos[0] + self._x_offset,pos[1] + self._y_offset,pos[2] + self._z_offset, id)
 
     def get(self,x,y,z):
         return self.mc.getBlock(x + self._x_0 + self._x_offset,y + self._y_0 + self._y_offset,z + self._z_0 + self._z_offset)
