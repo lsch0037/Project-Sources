@@ -34,6 +34,7 @@ class vec3():
             raise TypeError("unsupported operand type(s) for +: '{}' and '{}'").format(self.__class__, type(other))
 
 
+    # Adding two vectors
     def __add__(self, other):
         result = []
         otherArray = []
@@ -53,6 +54,7 @@ class vec3():
         return vec3(result)
 
 
+    # Subtracting two vectors
     def __sub__(self, other):
         result = []
         otherArray = []
@@ -76,6 +78,7 @@ class vec3():
     def __abs__(self):
         return math.sqrt(self._arr[0]**2 + self._arr[1]**2 + self._arr[2]**2)
 
+    # Cross multiplication of two vectors
     def __mul__(self, other):
         # TODO DO CROSS MULTIPLICATION
         pass

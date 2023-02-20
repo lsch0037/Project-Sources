@@ -32,6 +32,7 @@ class mat4():
         else:
             raise TypeError("unsupported operand type(s) for +: '{}' and '{}'").format(self.__class__, type(other))
 
+    # Create a new matrix with the same values
     def clone(self):
         return mat4(self._arr)
 
@@ -55,6 +56,7 @@ class mat4():
         return mat4(newMat)
 
 
+    # Perform a rotation around the X axis of theta radiants
     def rotateX(self, theta):
         result = self.clone()
 
@@ -73,25 +75,41 @@ class mat4():
         return result
 
 
-
+    # Perform a rotation around the Y axis of theta radiants
     def rotateY(self,theta):
         result = self.clone()
 
         cos_term = math.cos(theta)
         sin_term = math.sin(theta)
 
-        self._arr[2] = self._arr[2] * cos_term - self._arr[10] * sin_term
-        self._arr[3] = self._arr[3] * cos_term - self._arr[11] * sin_term
-        self._arr[8] = self._arr[0] * cos_term + self._arr[8] * sin_term
-        self._arr[9] = self._arr[1] * cos_term + self._arr[9] * sin_term
-        self._arr[10] = self._arr[2] * cos_term + self._arr[10] * sin_term
-        self._arr[11] = self._arr[3] * cos_term + self._arr[11] * sin_term
+        result._arr[0] = self._arr[0] * cos_term - self._arr[8] * sin_term
+        result._arr[1] = self._arr[1] * cos_term - self._arr[9] * sin_term
+        result._arr[2] = self._arr[2] * cos_term - self._arr[10] * sin_term
+        result._arr[3] = self._arr[3] * cos_term - self._arr[11] * sin_term
+        result._arr[8] = self._arr[0] * cos_term + self._arr[8] * sin_term
+        result._arr[9] = self._arr[1] * cos_term + self._arr[9] * sin_term
+        result._arr[10] = self._arr[2] * cos_term + self._arr[10] * sin_term
+        result._arr[11] = self._arr[3] * cos_term + self._arr[11] * sin_term
 
         return result
 
-    def rotateZ(self):
-        pass
-        
+    # Perform a rotation around the Z axis of theta radiants
+    def rotateZ(self,theta):
+        result = self.clone()
+
+        cos_term = math.cos(theta)
+        sin_term = math.sin(theta)
+
+        result._arr[0] = self._arr[0] * cos_term + self._arr[4] * sin_term
+        result._arr[1] = self._arr[1] * cos_term + self._arr[5] * sin_term
+        result._arr[2] = self._arr[2] * cos_term + self._arr[6] * sin_term
+        result._arr[3] = self._arr[3] * cos_term + self._arr[7] * sin_term
+        result._arr[4] = self._arr[4] * cos_term - self._arr[0] * sin_term
+        result._arr[5] = self._arr[5] * cos_term - self._arr[1] * sin_term
+        result._arr[6] = self._arr[6] * cos_term - self._arr[2] * sin_term
+        result._arr[7] = self._arr[7] * cos_term - self._arr[3] * sin_term
+
+        return result
 
     # Matrix multiplication
     def __mul__(self, other):
