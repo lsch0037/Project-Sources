@@ -1,8 +1,18 @@
 import math
 
 class vec3():
-    def __init__(self, x,y,z):
-        self._arr = [x,y,z]
+    def __init__(self, *args):
+        if len(args) == 0:
+            self._arr = [0,0,0]
+        
+        elif len(args) == 1 and isinstance(args[0], list):
+            self._arr = args[0]
+
+        elif len(args) == 3:
+            self._arr = [args[0], args[1], args[2]]
+
+        else:
+            raise TypeError("unsupported constructor type(s): '{}'").format(type(args[0]))
 
     def __getitem__(self, index):
         return self._arr[index]
@@ -11,7 +21,7 @@ class vec3():
         return self._arr
 
     def __str__(self):
-        return "["+ str(self._arr[0]) +", "+ str(self._arr[1]) +", "+ str(self._arr[2])+ "]"
+        return str(self._arr)
 
     def __eq__(self, other):
         if isinstance(other, vec3):
@@ -25,25 +35,41 @@ class vec3():
 
 
     def __add__(self, other):
+        result = []
+        otherArray = []
+
         if isinstance(other, vec3):
-            return vec3(self._arr[0] + other._arr[0],self._arr[1] + other._arr[1],self._arr[2] + other._arr[2])
+            otherArray = other._arr
 
         elif isinstance(other, list):
-            return vec3(self._arr[0] + other[0] ,self._arr[1] + other[1], self._arr[2] + other[2])
+            otherArray = other
 
         else:
             raise TypeError("unsupported operand type(s) for +: '{}' and '{}'").format(self.__class__, type(other))
 
+        for i in range(3):
+            result.append(self._arr[i] + otherArray[i])
+
+        return vec3(result)
+
 
     def __sub__(self, other):
+        result = []
+        otherArray = []
+
         if isinstance(other, vec3):
-            return vec3(self._arr[0] - other._arr[0],self._arr[1] - other._arr[1],self._arr[2] - other._arr[2])
+            otherArray = other._arr
 
         elif isinstance(other, list):
-            return vec3(self._arr[0] - other[0] ,self._arr[1] - other[1], self._arr[2] - other[2])
+            otherArray = other
 
         else:
             raise TypeError("unsupported operand type(s) for -: '{}' and '{}'").format(self.__class__, type(other))
+
+        for i in range(3):
+            result.append(self._arr[i] - otherArray[i])
+
+        return vec3(result)
         
 
     #Returns the absolute distance of the vector
@@ -66,6 +92,10 @@ class vec3():
 
         else:
             raise TypeError("unsupported operand type(s) for /: '{}' and '{}'").format(self.__class__, type(scalar))
+
+    # Create a new vector with the same values
+    def clone(self):
+        return vec3(self._arr[0], self._arr[1], self._arr[2])
         
     # Returns the direction vector
     def dir(self):
