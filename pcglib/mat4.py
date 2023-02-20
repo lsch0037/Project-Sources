@@ -1,12 +1,15 @@
 import math
+from vec3 import vec3
 
 class mat4():
     # Creates a new identity matrix
     def __init__(self, *args):
         
+        # If no arguments given, set all 0
         if len(args) == 0:
-            self._arr = [1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,0,1]
+            self._arr = [0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0]
 
+        # If an array of 16 as argument, set values to it
         elif isinstance(args[0], list) and len(args[0]) == 16:
             self._arr = args[0]
 
@@ -113,7 +116,26 @@ class mat4():
 
     # Matrix multiplication
     def __mul__(self, other):
-        pass
+
+        if isinstance(other, vec3):
+            pass
+
+        elif isinstance(other, mat4):
+            result = mat4()
+            for r in range(4):
+                for c in range(4):
+
+                    term1 = self._arr[c]   *other._arr[r*4] 
+                    term2 = self._arr[4+c] *other._arr[r*4 + 1]
+                    term3 = self._arr[8+c] *other._arr[r*4 + 2]
+                    term4 = self._arr[12+c]*other._arr[r*4 + 3]
+                    result._arr[r*4 + c] = term1 + term2 + term3 + term4
+            
+            return result
+        
+        else:
+            raise TypeError("unsupported operand type(s) for *: '{}' and '{}'").format(self.__class__, type(other))
+
 
     def scale(self, v):
         pass
@@ -125,4 +147,4 @@ class mat4():
         pass
 
     def identity(self):
-        pass
+        self._arr = [1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,0,1]

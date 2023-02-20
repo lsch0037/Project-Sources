@@ -10,9 +10,8 @@ from mat4 import mat4
 
 game = GameBuffer(mc, Zero)
 
-v = vec3(1,2,3)
-v2 = v.clone() - [5,6,7]
+m = mat4([0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15])
+m2 = mat4()
+m2.identity()
 
-print(v)
-print(v2)
-print(v+v2)
+print(m*m2)
