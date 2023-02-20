@@ -112,6 +112,18 @@ class Buffer():
 
         return True
 
+    # Returns the height of the ground at the position
+    def get_ground_height(self, x, z):
+        # TODO CHECK THAT POS IS IN THE CORRECT RANGE
+
+        for i in range(0,255):
+            block = self.get(x, 255-i, z)
+            # print("block at ", x, 255-i, z, ": ", block)
+
+            if(block != 0):
+                return i
+
+
 class GameBuffer(Buffer):
     def __init__(self, mc, Zero, x_0=-10, y_0=-10, z_0=-10, x_1=10,y_1=10,z_1=10,):
         super().__init__(x_0,y_0,z_0, x_1, y_1, z_1)
@@ -126,4 +138,5 @@ class GameBuffer(Buffer):
         self.mc.setBlock(x + self._x_0 + self._x_offset,y + self._y_0 + self._y_offset,z + self._z_0 + self._z_offset, id)
 
     def get(self,x,y,z):
-        return self.mc.setBlock(x + self._x_0 + self._x_offset,y + self._y_0 + self._y_offset,z + self._z_0 + self._z_offset)
+        return self.mc.getBlock(x + self._x_0 + self._x_offset,y + self._y_0 + self._y_offset,z + self._z_0 + self._z_offset)
+

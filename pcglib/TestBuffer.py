@@ -64,5 +64,7 @@ class TestBuffer(unittest.TestCase):
 
             self.assertEqual(buf.get(rand_x, rand_y, rand_z), 1)
 
+    # TODO: TEST GAME BUFFER
+
 if __name__ == '__main__':
     unittest.main()

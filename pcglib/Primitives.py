@@ -88,5 +88,5 @@ class Cylinder(Primitive):
     
     #sets the cylinder out of given material in the game world
     def set(self, material):
-        print("TO BE IMPLEMENTED")
-
+        # TODO IMPLEMENT
+        pass
