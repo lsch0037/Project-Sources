@@ -1,3 +1,7 @@
+import sys
+import os
+sys.path.append(os.path.abspath('../pcglib'))
+
 import unittest
 from Compound import *
 import ServerOperations

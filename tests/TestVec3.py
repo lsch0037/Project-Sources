@@ -1,8 +1,12 @@
 import unittest
+import sys
+import os
+sys.path.append(os.path.abspath('../pcglib'))
+
 from vec3 import vec3
 
 class testVectors(unittest.TestCase):
-    def testVectorAdd(self):
+    def testAdd(self):
         A = vec3([3,5,7])
         B = vec3([4,3,2])
 
@@ -33,7 +37,7 @@ class testVectors(unittest.TestCase):
 
         self.assertTrue(B == [9,3,15])
 
-    def testVectorDiv(self):
+    def testDiv(self):
         A = vec3([3,6,9])
 
         B = A / 3
@@ -41,14 +45,14 @@ class testVectors(unittest.TestCase):
         self.assertEqual(B, [1,2,3])
 
 
-    def testVectorLenght(self):
+    def testLen(self):
         A = vec3([6,3,6])
 
         len = abs(A)
 
         self.assertEqual(len, 9)
 
-    def testVectorDirection(self):
+    def testDir(self):
         A = vec3([6,3,6])
 
         dir = A.dir()

@@ -1,6 +1,9 @@
+import sys
+import os
+sys.path.append(os.path.abspath('../pcglib'))
+
 import unittest
 from random import randint
-
 from Buffer import Buffer
 
 class TestBuffer(unittest.TestCase):
