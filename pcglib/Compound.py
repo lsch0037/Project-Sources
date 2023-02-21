@@ -1,4 +1,4 @@
-import ServerOperations
+# import ServerOperations
 
 class Compound:
     def __init__(self):
@@ -60,12 +60,12 @@ class PrimitiveNode(Compound):
     # Sets the shape in the world
     def set(self,buffer):
         pos1 = self.O + [self.dim, self.dim, self.dim]
-        ServerOperations.fill(self.O, pos1, self.material, self.replacing)
+        # ServerOperations.fill(self.O, pos1, self.material, self.replacing)
 
     # Sets the shape as air in the world
     def carve(self, buffer):
         pos1 = self.O + [self.dim, self.dim, self.dim]
-        ServerOperations.fill(self.O, pos1, 0, self.replacing)
+        # ServerOperations.fill(self.O, pos1, 0, self.replacing)
         
     def transform(T):
         pass
