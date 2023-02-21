@@ -1,5 +1,6 @@
 from mcpi.minecraft import Minecraft
-from VectorOperations import Vector
+from vec3 import vec3
 
 mc = Minecraft.create()
-Zero = Vector([-144, -81, -224])
+
+Zero = vec3([-144, -81, -224])

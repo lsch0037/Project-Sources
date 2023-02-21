@@ -132,16 +132,13 @@ class GameBuffer(Buffer):
         self._z_offset = Zero[2]
         self.mc = mc
 
-    # def set(self,x,y,z,id):
-    #     msg = "Set block at ", str(x) ,", ", str(y), ",", str(z), "to ", id
-    #     self.mc.postToChat(msg)
-    #     self.mc.setBlock(x + self._x_0 + self._x_offset,y + self._y_0 + self._y_offset,z + self._z_0 + self._z_offset, id)
-
     def set(self, pos, id):
-        print("Pos:", pos)
-        print("id:", id)
+        msg = "Set block at ", str(pos[0]) ,", ", str(pos[1]), ",", str(pos[2]), "to ", id
+        self.msg(msg)
         self.mc.setBlock(pos[0] + self._x_offset,pos[1] + self._y_offset,pos[2] + self._z_offset, id)
 
-    def get(self,x,y,z):
-        return self.mc.getBlock(x + self._x_0 + self._x_offset,y + self._y_0 + self._y_offset,z + self._z_0 + self._z_offset)
+    def get(self, pos):
+        return self.mc.getBlock(pos[0] + self._x_offset, pos[1] + self._y_offset, pos[2] + self._z_offset)
 
+    def msg(self, msg):
+        self.mc.postToChat(msg)

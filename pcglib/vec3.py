@@ -80,15 +80,26 @@ class vec3():
 
     # Cross multiplication of two vectors
     def __mul__(self, other):
+        result = vec3()
 
         # if other is a scalar
         if isinstance(other, (int, float)):
-            result = vec3()
 
             for i in range(3):
                 result._arr[i] = self._arr[i] * other
 
-            return result
+
+        # If other is vector, cross multiplication
+        elif isinstance(other, vec3):
+            result._arr[0] = self._arr[1]*other._arr[2] - self._arr[2]*other._arr[1]
+            result._arr[1] = -self._arr[0]*other._arr[2] + self._arr[2]*other._arr[0]
+            result._arr[2] = self._arr[0]*other._arr[1] - self._arr[1]*other._arr[0]
+            
+
+        else:
+            raise TypeError("unsupported operand type(s) for *: '{}' and '{}'").format(self.__class__, type(other))
+
+        return result
 
     # Divides each value in the vector by the scalar
     def __truediv__(self, scalar):

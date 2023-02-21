@@ -1,59 +1,10 @@
+import unittest
 from Compound import *
-import numpy as np
 import ServerOperations
 from GlobalVariables import Zero
-from VectorOperations import Vector
-from Buffer import Buffer
-
-# import unittest
+from vec3 import vec3
 
 class testPcglib(unittest.TestCase):
-    def testVectorAdd(self):
-        vec1 = Vector([3,5,7])
-        vec2 = Vector([4,3,2])
-
-        vec3 = vec1 + vec2
-
-        self.assertEqual(vec3.toList(), [7,8,9])
-
-    def testVectorSub(self):
-        vec1 = Vector([3,5,7])
-        vec2 = Vector([4,3,2])
-
-        vec3 = vec1 - vec2
-
-        self.assertEqual(vec3.toList(), [-1,2,5])
-
-    def testVectorMul(self):
-        vec1 = Vector([1,0,0])
-        vec2 = Vector([0,1,0])
-
-        vec3 = vec1 * vec2
-
-        self.assertEqual(vec3.toList(), [0,0,1])
-
-    def testVectorDiv(self):
-        vec1 = Vector([3,6,9])
-
-        vec3 = vec1 / 3
-
-        self.assertEqual(vec3.toList(), [1,2,3])
-
-
-    def testVectorLenght(self):
-        vec1 = Vector([6,3,6])
-
-        len = vec1.getLength()
-
-        self.assertEqual(len, 9)
-
-    def testVectorDirection(self):
-        vec1 = Vector([6,3,6])
-
-        direction = vec1.getDirection()
-
-        self.assertEqual(direction.toList(), [2/3, 1/3, 2/3])
-
     def testReplaceBlock(self):
         print("Testing replacing single block")
         O = Zero + [0,100,0]

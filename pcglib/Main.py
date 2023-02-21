@@ -11,9 +11,12 @@ from new_primitive import new_cube
 
 game = GameBuffer(mc, Zero)
 
-p0 = vec3([0.0,100.0,0.0])
+p0 = vec3([0.5,100.5,0.5])
 r0 = mat4()
 r0.identity()
+# r0.rotateY(3.0)
 
-c = new_cube(p0,r0, 3)
-c.set(1, game)
+material = 0
+
+c = new_cube(p0,r0, 4)
+c.set(material, game)
