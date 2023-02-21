@@ -1,8 +1,8 @@
-import unittest
 import sys
 import os
 sys.path.append(os.path.abspath('../pcglib'))
 
+import unittest
 from vec3 import vec3
 
 class testVectors(unittest.TestCase):
@@ -14,6 +14,7 @@ class testVectors(unittest.TestCase):
 
         self.assertEqual(C, [7,8,9])
 
+
     def testSub(self):
         A = vec3([3,5,7])
         B = vec3([4,3,2])
@@ -21,6 +22,7 @@ class testVectors(unittest.TestCase):
         C = A - B
 
         self.assertTrue(C == [-1,2,5])
+
 
     def testCrossProd(self):
         A = vec3([1,0,0])
@@ -30,12 +32,14 @@ class testVectors(unittest.TestCase):
 
         self.assertTrue(C == [0,0,1])
 
+
     def testDotProd(self):
         A = vec3([3,1,5])
 
         B = A*3
 
         self.assertTrue(B == [9,3,15])
+
 
     def testDiv(self):
         A = vec3([3,6,9])
@@ -51,6 +55,7 @@ class testVectors(unittest.TestCase):
         len = abs(A)
 
         self.assertEqual(len, 9)
+
 
     def testDir(self):
         A = vec3([6,3,6])

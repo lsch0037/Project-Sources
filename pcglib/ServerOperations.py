@@ -1,5 +1,4 @@
 from GlobalVariables import mc
-import numpy as np
 
 def set_block(pos, id, replacing=-1):
     if replacing != -1 and query_block(pos) != replacing:

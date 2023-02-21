@@ -1,6 +1,3 @@
-import numpy as np
-from VectorOperations import Vector
-
 class Buffer():
     def __init__(self, x_0=-10, y_0=-10, z_0=-10, x_1=10, y_1=10, z_1=10):
         self._x_0 = x_0

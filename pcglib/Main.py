@@ -1,5 +1,4 @@
-from GlobalVariables import mc
-from GlobalVariables import Zero
+from Global import *
 from Buffer import GameBuffer
 from vec3 import vec3
 from mat4 import mat4

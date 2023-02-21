@@ -1,4 +1,3 @@
-import numpy as np
 from Compound import Compound
 
 from vec3 import vec3
