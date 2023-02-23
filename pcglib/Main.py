@@ -1,22 +1,17 @@
-from Game import GameBuffer
+from Game import *
 from vec3 import vec3
 from mat4 import mat4
 from primitive import *
+from new_buffer import *
 
 # Offset of the server
 Zero = vec3([-144, -81, -224])
 
 # Initiating game object
-game = GameBuffer(Zero)
+# game = GameBuffer(Zero)
+game = new_buffer(Zero)
+pos = vec3(0,1,2)
 
-p0 = vec3([0.5,100.5,0.5])
-r0 = mat4()
-r0.identity()
-# r0.rotateY(3.0)
+game.set(pos, 1)
 
-material = 0
-
-c = cube(p0,r0, 4)
-c.set(material, game)
-
-s = sphere(p0,r0, 4)
+print(game.get(pos))
