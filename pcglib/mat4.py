@@ -2,7 +2,7 @@ import math
 from vec3 import vec3
 
 class mat4():
-    # Creates a new identity matrix
+    # Creates a new matrix of all 0s
     def __init__(self, *args):
         
         # If no arguments given, set all 0

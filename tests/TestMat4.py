@@ -16,7 +16,15 @@ class testMatrix(unittest.TestCase):
         pass
 
     def testRotX(self):
-        pass
+        m = mat4()
+        m.identity()
+
+        m.rotateX(0.1)
+
+        print(m)
+
+        # self.assertTrue(False)
+
 
     def testRotY(self):
         pass
@@ -41,3 +49,6 @@ class testMatrix(unittest.TestCase):
 
     def testIdentity(self):
         pass
+
+if __name__ == '__main__':
+    unittest.main()

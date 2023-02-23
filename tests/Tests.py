@@ -4,8 +4,6 @@ sys.path.append(os.path.abspath('../pcglib'))
 
 import unittest
 from Compound import *
-import ServerOperations
-from GlobalVariables import Zero
 from vec3 import vec3
 
 class testPcglib(unittest.TestCase):
