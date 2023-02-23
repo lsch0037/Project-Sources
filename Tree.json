@@ -1,0 +1,15 @@
+{
+    "Union":{
+        "Trunk":{
+            "Shape" : "Cylinder",
+            "Radius" : 1,
+            "Length" : 7,
+            "Material" : "Wood"
+        },
+        "Crown" : {
+            "Shape" : "Sphere",
+            "Radius" : 5,
+            "Material" : "Leaves"
+        }
+    }
+}

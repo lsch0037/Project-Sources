@@ -1,8 +1,0 @@
-Anchor(0,0)
-
-Cuboid()
-
-House(position){
-    Cuboid(center, position, 10),
-    
-}

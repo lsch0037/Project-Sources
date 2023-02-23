@@ -1,0 +1,16 @@
+{
+    "args" : ["pos", "height", "trunk_rad", "crown_size","wood_type", "leaves_type"],
+    "Trunk":{
+        "pos" : "$pos",
+        "Shape" : "Cylinder",
+        "Radius" : "$trunk_rad",
+        "Length" : "$height",
+        "Material" : "$wood_type"
+    },
+    "Crown" : {
+        "pos" : "$pos + [0,$height, 0]",
+        "Shape" : "Sphere",
+        "Radius" : "$crown_size",
+        "Material" : "$leaves_type"
+    }
+}

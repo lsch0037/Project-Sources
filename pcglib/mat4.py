@@ -1,5 +1,6 @@
 import math
-from vec3 import vec3
+# from vec3 import vec3
+from pcglib.vec3 import vec3
 
 class mat4():
     # Creates a new matrix of all 0s

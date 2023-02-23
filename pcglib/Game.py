@@ -1,5 +1,6 @@
 from mcpi.minecraft import Minecraft
-from new_buffer import new_buffer
+
+from pcglib.new_buffer import new_buffer
 
 class Game(new_buffer):
     def __init__(self, offset):
