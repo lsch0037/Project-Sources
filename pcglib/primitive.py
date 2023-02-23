@@ -5,14 +5,13 @@ from mat4 import mat4
 
 class primitive(Compound):
     # Constructor with 2 optional arguments: (postition:vec3, rotation:mat4)
-    def __init__(self, pos, rot):
+    def __init__(self, pos, rot, material):
         # super().__init__()
         self.children = []
         self.pos = pos
         self.rot = rot
+        self.material = material
 
-    def set(self, material, buffer):
-        pass
 
 class cube(primitive):
     def __init__(self, pos, rot, size):
@@ -31,7 +30,8 @@ class cube(primitive):
                 for k in range(self.size):
                     current_pos = self.pos + x_d*i + y_d*j + z_d*k
 
-                    buffer.set(current_pos, material)
+                    # buffer.set(current_pos, material)
+                    buffer.set(current_pos, self.material)
 
 class cuboid(primitive):
     # Constructor for a cuboid primitive

@@ -8,10 +8,10 @@ from new_buffer import *
 Zero = vec3([-144, -81, -224])
 
 # Initiating game object
-# game = GameBuffer(Zero)
-game = new_buffer(Zero)
-pos = vec3(0,1,2)
+game = Game(Zero)
+pos = vec3(0,100,0)
 
+print(game.get(pos))
 game.set(pos, 1)
 
 print(game.get(pos))

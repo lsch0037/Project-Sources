@@ -5,18 +5,20 @@ class new_buffer():
         self._z_offset = offset[2]
         self.d = dict()
 
-
     def set(self, pos, id):
         if pos[0] not in self.d.keys():
             self.d[pos[0]] = dict()
 
-        if pos[1] not in self.d[str(pos[0])].keys():
+        if pos[1] not in (self.d[pos[0]]).keys():
             self.d[pos[0]][pos[1]] = dict()
 
-        if pos[2] not in self.d[pos[0]][pos[1]].keys():
+        if pos[2] not in ((self.d[pos[0]])[pos[1]]).keys():
             self.d[pos[0]][pos[1]][pos[2]] = dict()
 
         self.d[pos[0]][pos[1]][pos[2]] = id
 
     def get(self, pos):
-        return self.d[pos[0]][pos[1]][pos[2]]
+        try:
+            return self.d[pos[0]][pos[1]][pos[2]]
+        except KeyError:
+            return 0

@@ -1,12 +1,11 @@
 from mcpi.minecraft import Minecraft
-from Buffer import Buffer
+from new_buffer import new_buffer
 
-class GameBuffer(Buffer):
-    def __init__(self, Zero, x_0=-10, y_0=-10, z_0=-10, x_1=10,y_1=10,z_1=10,):
-        super().__init__(x_0,y_0,z_0, x_1, y_1, z_1)
-        self._x_offset = Zero[0]
-        self._y_offset = Zero[1]
-        self._z_offset = Zero[2]
+class Game(new_buffer):
+    def __init__(self, offset):
+        self._x_offset = offset[0]
+        self._y_offset = offset[1]
+        self._z_offset = offset[2]
         self.mc = Minecraft.create()
 
     def set(self, pos, id):
