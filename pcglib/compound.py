@@ -29,6 +29,8 @@ class compound():
             child.set(buffer)
 
 class unionNode(compound):
+    # ? EXPLORE HAVING MORE THAN 2 CHILDREN
+
     def set(self, buffer):
         for child in self.children:
             child.set(buffer)
@@ -38,6 +40,7 @@ class unionNode(compound):
             child.carve(buffer)
 
 class differenceNode(compound):
+    # ?EXPLORE HAVING MORE THAN 2 CHILDREN
 
     def set(self, buffer):
         self.children[0].set(buffer)
@@ -48,4 +51,5 @@ class differenceNode(compound):
         self.children[1].set(buffer)
 
 class intersectionNode(compound):
+    # ? EXPLORE HAVING MORE THAN 2 CHILDREN
     pass

@@ -22,3 +22,7 @@ class new_buffer():
             return self.d[pos[0]][pos[1]][pos[2]]
         except KeyError:
             return 0
+
+    # ? REMOVES THE THE ENTRY AT THAT POSITION (UNDOES CHANGES)
+    def unset(self, pos):
+        pass

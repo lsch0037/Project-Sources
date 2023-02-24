@@ -5,14 +5,14 @@ from pcglib.primitive import *
 from pcglib.new_buffer import *
 
 # Offset of the server
-Zero = vec3([-144, -81, -224])
+Zero = vec3([-144.5, -81.5, -224.5])
 
 # Initiating game object
 game = Game(Zero)
-pos = vec3(0,100,0)
+pos = vec3(0.5,100.5,0.5)
 
 rot = mat4()
 rot.identity()
 
-c = cube(pos, rot, 0, 10)
+c = cylinder(pos, rot, 1, 6, 10)
 c.set(game)

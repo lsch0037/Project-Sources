@@ -12,6 +12,8 @@ class primitive(compound):
         self.rot = rot
         self.material = material
 
+    # ? UNSET FUNCTION TO SIMPLIFY DIFFERENCE (CARVING)
+
 
 class cube(primitive):
     def __init__(self, pos, rot,material, size):
@@ -36,7 +38,7 @@ class cuboid(primitive):
     # Constructor for a cuboid primitive
     # dim: a vector where the magnitude of i,j and k determine the dimensions of the cuboid in each direction
     def __init__(self, pos, rot, material, dim):
-        super().__init__(pos, rot,material)
+        super().__init__(pos, rot, material)
         self.dim = dim
 
     def set(self, buffer):
@@ -55,6 +57,7 @@ class cuboid(primitive):
 
 class sphere(primitive):
     def __init__(self, pos, rot, material, rad):
+        # TODO: HARDCODE ROTATION AS IDENTITY
         super().__init__(pos, rot,material)
         self.rad = rad
 
@@ -77,5 +80,16 @@ class cylinder(primitive):
         self.len = len
 
     def set(self, buffer):
-        # TODO SET CYLINDER
-        pass
+        print("Setting cylinder")
+        x_d = vec3(self.rot[0][0:3])
+        y_d = vec3(self.rot[1][0:3])
+        z_d = vec3(self.rot[2][0:3])
+
+        for h in range(self.len):
+            center_pos = self.pos + y_d*h
+            for i in range(-self.rad, self.rad):
+                for j in range(-self.rad, self.rad):
+                    current_pos = self.pos + x_d*i + y_d*h + z_d*j
+
+                    if abs(current_pos - center_pos) <= self.rad:
+                        buffer.set(current_pos, self.material)

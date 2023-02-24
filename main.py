@@ -5,13 +5,19 @@ from pcglib.vec3 import vec3
 from pcglib.mat4 import mat4
 from pcglib.Game import Game
 from pcglib.primitive import *
-from pcglib.compound import compound
+from pcglib.compound import *
 
 # CONSTANTS
 origin = vec3(0.5,100.5,0.5)
 idMat = mat4()
 idMat.identity()
 
+materials = {
+    "Air":0,
+    "Stone": 1,
+    "Wood" : 17,
+    "Leaves" : 18
+}
 
 # INTERPRETING ARGUMENT
 fileName = sys.argv[1]
@@ -29,37 +35,26 @@ f.close()
 prog = json.loads(text)
 
 def parse_program(prog):
+    print("Parsing Program:", prog)
     tree = compound()
 
-    for key in prog:
-
-        # Parsing Operators
-        if key == "Union":
-            subTree = parse_union(prog)
-            tree.addChild(subTree)
-
-        elif key == "Intersection":
-            pass
-
-        elif key == "Difference":
-            pass
-
-        # Parsing Primitives
-        elif isPrimitive(prog):
-            node = parse_primitive(prog)
-            tree.addChild(node)
+    # for key in prog:
+    node = parse_expression(prog)
+    tree.addChild(node)
         
     return tree
 
-
-def isPrimitive(prog):
+def parse_expression(prog):
+    print("Parsing Expression:", prog)
     if "Shape" in prog:
-        return True
-
-    return False
+        return parse_primitive(prog)
+    
+    else:
+        return parse_operator(prog)
 
 
 def parse_primitive(prog):
+    print("Parsing Primitive:", prog)
     shape = prog["Shape"]
 
     if shape == "Cube":
@@ -68,9 +63,26 @@ def parse_primitive(prog):
     elif shape == "Sphere":
         return parse_sphere(prog)
 
+    elif shape == "Cylinder":
+        return parse_cylinder(prog)
+
     # TODO FOR OTHER SHAPES
 
+def parse_operator(prog):
+    print("Parsing Operator:", prog)
+    if "Union" in prog:
+        return parse_union(prog["Union"])
+
+    elif "Intersection" in prog:
+        pass
+
+    elif "Difference" in prog:
+        pass
+    # TODO FOR OTHER OPERATORS
+
+
 def parse_cube(prog):
+    print("Parsing Cube:", prog)
     size = prog["Size"]
     material = prog["Material"]
 
@@ -78,15 +90,54 @@ def parse_cube(prog):
 
 
 def parse_sphere(prog):
+    print("Parsing Sphere:", prog)
     rad = prog["Radius"]
-    material = prog["Material"]
+    material = get_material(prog)
 
     return sphere(origin, idMat, material, rad)
+
+def parse_cylinder(prog):
+    print("Parsing Cylinder:", prog)
+    rad = prog["Radius"]
+    len = prog["Length"]
+    material = get_material(prog)
+
+    return cylinder(origin, idMat, material, rad, len)
+
 
 # TODO PARSE OTHER PRIMITIVES
 
 def parse_union(prog):
-    return None
+    print("Parsing Union:", prog)
+    union_node = unionNode()
+
+    for key in prog:
+        node = parse_expression(prog[key])
+        union_node.addChild(node)
+        print("Added expression to node")
+
+    return union_node
+
+def get_material(prog):
+    if not "Material" in prog:
+        return 0
+
+    mat = prog["Material"]
+
+    if isinstance(mat, int):
+        return mat
+
+    elif isinstance(mat, str):
+        if mat not in materials:
+            raise ValueError("Material '",mat,"' is not defined")
+            # return None
+        else:
+            return materials[mat]
+
+    elif isinstance(mat, dict):
+        # ? IF MATERIAL EXPRESSION
+        pass
+
 
 # TODO PARSE OTHER OPERATORS
 

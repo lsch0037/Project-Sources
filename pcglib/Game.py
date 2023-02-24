@@ -1,4 +1,5 @@
 from mcpi.minecraft import Minecraft
+import math
 
 from pcglib.new_buffer import new_buffer
 

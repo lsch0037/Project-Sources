@@ -8,7 +8,7 @@
         },
         "Crown" : {
             "Shape" : "Sphere",
-            "Radius" : 5,
+            "Radius" : 3,
             "Material" : "Leaves"
         }
     }
