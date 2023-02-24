@@ -1,4 +1,4 @@
-class new_compound():
+class compound():
     def __init__(self):
         self.children = []
 
@@ -28,7 +28,7 @@ class new_compound():
         for child in self.children:
             child.set(buffer)
 
-class unionNode(new_compound):
+class unionNode(compound):
     def set(self, buffer):
         for child in self.children:
             child.set(buffer)
@@ -37,7 +37,7 @@ class unionNode(new_compound):
         for child in self.children:
             child.carve(buffer)
 
-class differenceNode(new_compound):
+class differenceNode(compound):
 
     def set(self, buffer):
         self.children[0].set(buffer)
@@ -47,5 +47,5 @@ class differenceNode(new_compound):
         self.children[0].carve(buffer)
         self.children[1].set(buffer)
 
-class intersectionNode(new_compound):
+class intersectionNode(compound):
     pass

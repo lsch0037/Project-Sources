@@ -1,9 +1,9 @@
-from pcglib.new_compound import new_compound
+from pcglib.compound import compound
 
 from pcglib.vec3 import vec3
 from pcglib.mat4 import mat4
 
-class primitive(new_compound):
+class primitive(compound):
     # Constructor with 2 optional arguments: (postition:vec3, rotation:mat4)
     def __init__(self, pos, rot, material):
         # super().__init__()

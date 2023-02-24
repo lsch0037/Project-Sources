@@ -11,7 +11,6 @@ Zero = vec3([-144, -81, -224])
 game = Game(Zero)
 pos = vec3(0,100,0)
 
-
 rot = mat4()
 rot.identity()
 

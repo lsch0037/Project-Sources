@@ -4,8 +4,13 @@ import json
 from pcglib.vec3 import vec3
 from pcglib.mat4 import mat4
 from pcglib.Game import Game
-from pcglib.primitive import cube
-from pcglib.new_compound import new_compound
+from pcglib.primitive import *
+from pcglib.compound import compound
+
+# CONSTANTS
+origin = vec3(0.5,100.5,0.5)
+idMat = mat4()
+idMat.identity()
 
 
 # INTERPRETING ARGUMENT
@@ -24,22 +29,25 @@ f.close()
 prog = json.loads(text)
 
 def parse_program(prog):
-    tree = new_compound()
+    tree = compound()
 
-    print(prog)
     for key in prog:
 
         # Parsing Operators
         if key == "Union":
-            pass
+            subTree = parse_union(prog)
+            tree.addChild(subTree)
+
         elif key == "Intersection":
             pass
+
         elif key == "Difference":
             pass
 
         # Parsing Primitives
         elif isPrimitive(prog):
-            parse_primitive(prog, tree)
+            node = parse_primitive(prog)
+            tree.addChild(node)
         
     return tree
 
@@ -50,26 +58,38 @@ def isPrimitive(prog):
 
     return False
 
-def parse_primitive(prog,tree):
+
+def parse_primitive(prog):
     shape = prog["Shape"]
 
     if shape == "Cube":
-        return parse_cube(prog, tree)
+        return parse_cube(prog)
 
     elif shape == "Sphere":
-        pass
+        return parse_sphere(prog)
+
     # TODO FOR OTHER SHAPES
 
-def parse_cube(prog, tree):
-    pos = vec3(0,100,0)
-    rot = mat4()
-    rot.identity()
-
+def parse_cube(prog):
     size = prog["Size"]
     material = prog["Material"]
 
-    node = cube(pos, rot, material, size)
-    tree.addChild(node)
+    return cube(origin, idMat, material, size)
+
+
+def parse_sphere(prog):
+    rad = prog["Radius"]
+    material = prog["Material"]
+
+    return sphere(origin, idMat, material, rad)
+
+# TODO PARSE OTHER PRIMITIVES
+
+def parse_union(prog):
+    return None
+
+# TODO PARSE OTHER OPERATORS
+
 
 tree = parse_program(prog)
 
