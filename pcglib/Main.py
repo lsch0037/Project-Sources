@@ -2,10 +2,10 @@ from Game import *
 from vec3 import vec3
 from mat4 import mat4
 from primitive import *
-from new_buffer import *
+from buffer import *
 
 # Offset of the server
-Zero = vec3([-144, -81, -224])
+Zero = vec3([-142, -81, -223])
 
 # Initiating game object
 game = Game(Zero)

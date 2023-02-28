@@ -1,0 +1,3 @@
+Primitive := Cube | Sphere | Cuboid | Cylinder
+Operator := Union | Intersection | Difference
+Exression := <Primitive> | <Operator> [Primitive]

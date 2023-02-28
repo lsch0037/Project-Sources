@@ -3,13 +3,14 @@
         "Trunk":{
             "Shape" : "Cylinder",
             "Radius" : 1,
-            "Length" : 7,
+            "Length" : 10,
             "Material" : "Wood"
         },
         "Crown" : {
             "Shape" : "Sphere",
-            "Radius" : 3,
-            "Material" : "Leaves"
+            "Radius" : 4,
+            "Material" : "Leaves",
+            "Relative": [0,8,0]
         }
     }
 }

@@ -3,3 +3,11 @@ pcglib/__pycache__
 pcglib/__pycache__/*
 *.pyc
 *.pyo
+.vscode
+Report/*.aux
+Report/*.fdb_latexmk
+Report/*.fls
+Report/*.log
+Report/*.out
+Report/*.pdf
+Report/*.synctex.gz

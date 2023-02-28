@@ -1,8 +1,8 @@
-class new_buffer():
-    def __init__(self, offset):
-        self._x_offset = offset[0]
-        self._y_offset = offset[1]
-        self._z_offset = offset[2]
+class buffer():
+    def __init__(self):
+        # self._x_offset = offset[0]
+        # self._y_offset = offset[1]
+        # self._z_offset = offset[2]
         self.d = dict()
 
     def set(self, pos, id):
@@ -21,8 +21,22 @@ class new_buffer():
         try:
             return self.d[pos[0]][pos[1]][pos[2]]
         except KeyError:
-            return 0
+            return -1
 
     # ? REMOVES THE THE ENTRY AT THAT POSITION (UNDOES CHANGES)
     def unset(self, pos):
-        pass
+        try:
+            self.d[pos[0]][pos[1]].pop(pos[2])
+        except KeyError:
+            return
+
+    def ground(self, x,z):
+        # TODO RETURN THE HEIGHT 1 ABOVE THE GROUND ON THAT SPOT
+
+        for i in range(0,255):
+            pos = [x,255-i, z]
+
+            if self.get(pos) > 0:
+                return pos
+        
+        return [x, -1, z]
