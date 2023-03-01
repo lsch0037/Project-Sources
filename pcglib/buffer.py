@@ -1,8 +1,5 @@
 class buffer():
     def __init__(self):
-        # self._x_offset = offset[0]
-        # self._y_offset = offset[1]
-        # self._z_offset = offset[2]
         self.d = dict()
 
     def set(self, pos, id):
@@ -23,7 +20,7 @@ class buffer():
         except KeyError:
             return -1
 
-    # ? REMOVES THE THE ENTRY AT THAT POSITION (UNDOES CHANGES)
+    # REMOVES THE THE ENTRY AT THAT POSITION (UNDOES CHANGES)
     def unset(self, pos):
         try:
             self.d[pos[0]][pos[1]].pop(pos[2])
@@ -31,12 +28,16 @@ class buffer():
             return
 
     def ground(self, x,z):
-        # TODO RETURN THE HEIGHT 1 ABOVE THE GROUND ON THAT SPOT
 
         for i in range(0,255):
-            pos = [x,255-i, z]
-
-            if self.get(pos) > 0:
-                return pos
+            if self.get([x,255-i,z]) > 0:
+                return 255-i
         
-        return [x, -1, z]
+        return -1
+
+    def write(self, other):
+        for i in self.d:
+            for j in self.d[i]:
+                for k in self.d[i][j]:
+                    pos = [int(i), int(j), int(k)]
+                    other.set(pos, self.get(pos))

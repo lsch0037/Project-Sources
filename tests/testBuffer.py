@@ -15,6 +15,7 @@ class testBuffer(unittest.TestCase):
 
         self.assertEqual(buf.get(pos), -1)
 
+
     def testGetSet(self):
         buf = buffer()
 
@@ -23,6 +24,7 @@ class testBuffer(unittest.TestCase):
         buf.set(pos, id)
 
         self.assertEqual(buf.get(pos), id)
+
 
     def testUnsetSet(self):
         buf = buffer()
@@ -33,6 +35,7 @@ class testBuffer(unittest.TestCase):
         buf.unset(pos)
 
         self.assertEqual(buf.get(pos), -1)
+
 
     def testUnsetEmpty(self):
         buf = buffer()
@@ -61,7 +64,33 @@ class testBuffer(unittest.TestCase):
             x = randint(0,size)
             z = randint(0,size)
 
-            self.assertEqual(buf.ground(x,z), [x,height_map[x][z],z])
+            self.assertEqual(buf.ground(x,z), height_map[x][z])
+
+
+    def testWriteTo(self):
+        buf1 = buffer()
+        buf2 = buffer()
+
+        poss = []
+
+        # Add random entries
+        for i in range(10):
+            pos = [randint(0,10), randint(0,10), randint(0,10)]
+
+            id = randint(0, 10)
+            poss.append(pos)
+
+            buf1.set(pos, id)
+
+        # Write buffer
+        buf1.write(buf2)
+
+        # Test entries are correct
+        for j in range(len(poss)):
+            pos = poss[j]
+            
+            self.assertEqual(buf1.get(pos), buf2.get(pos))
+
 
 if __name__ == '__main__':
     unittest.main()

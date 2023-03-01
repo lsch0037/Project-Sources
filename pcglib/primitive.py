@@ -56,8 +56,10 @@ class cuboid(primitive):
                     buffer.set(current_pos, self.material)
 
 class sphere(primitive):
-    def __init__(self, pos, rot, material, rad):
+    def __init__(self, pos, material, rad):
         # TODO: HARDCODE ROTATION AS IDENTITY
+        rot = mat4()
+        rot.identity()
         super().__init__(pos, rot,material)
         self.rad = rad
 

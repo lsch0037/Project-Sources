@@ -1,7 +1,8 @@
 {
     "Props":{
         "Absolute":[10,100,10],
-        "Material":"Stone"
+        "Material":"Stone",
+        "OnGround": true
     },
     "Union":{
         "Box":{

@@ -1,6 +1,5 @@
 import sys
 import json
-import copy
 
 from pcglib.vec3 import vec3
 from pcglib.mat4 import mat4
@@ -170,6 +169,7 @@ def get_position(prog, props):
     else:
         pos = props["Position"]
         return vec3(pos)
+
 
 def parse_props(prog, props):
     print("Parsing Properties", prog)

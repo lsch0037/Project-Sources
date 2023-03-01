@@ -5,7 +5,7 @@ from pcglib.primitive import *
 from pcglib.buffer import *
 
 # Offset of the server
-Zero = vec3([-144.5, -81.5, -224.5])
+Zero = [-144, -81, -224]
 
 # Initiating game object
 game = Game(Zero)
