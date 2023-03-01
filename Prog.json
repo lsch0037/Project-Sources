@@ -1,0 +1,27 @@
+{
+    "Tree": {
+        "Union": {
+            "Trunk": {
+                "Shape": "Cylinder",
+                "Radius": 1,
+                "Length": 10,
+                "Material": "Wood"
+            },
+            "Crown": {
+                "Shape": "Sphere",
+                "Radius": 4,
+                "Material": "Leaves",
+                "Relative": [
+                    0,
+                    8,
+                    0
+                ]
+            }
+        }
+    },
+    "Sphere": {
+        "Shape": "Sphere",
+        "Radius": 3,
+        "Material": 4
+    }
+}

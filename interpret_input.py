@@ -3,8 +3,14 @@ import os
 from os import path
 import json
 
-# Constants
-expressions = []
+def loadJson(file):
+    f = open(file,"r")
+
+    text = f.read()
+
+    f.close()
+
+    return json.loads(text)
 
 # Reading Input
 fileName = sys.argv[1]
@@ -23,12 +29,27 @@ if not path.isdir('json'):
     print("Could not find 'json' folder, created it.")
     os.mkdir('json')
 
+# Parse words
+prog = dict()
 
 for word in splits:
-    print(word)
-
+    json_path = 'json\\'+word+'.json'
     
+    if path.exists(json_path):
+        print("Parsing expression:", word)
 
-def parseKnownExpression(word):
+        expr = loadJson(json_path)
 
-    return False
+        prog[word] = expr
+
+    else:
+        print("No known expression:",word)
+
+print(prog)
+
+# Write to 'Prog.json'
+f = open('Prog.json', 'w')
+
+f.write(json.dumps(prog, indent=4))
+
+f.close()
