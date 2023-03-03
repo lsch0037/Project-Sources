@@ -3,6 +3,8 @@ from pcglib.compound import compound
 from pcglib.vec3 import vec3
 from pcglib.mat4 import mat4
 
+import numpy as np
+
 class primitive(compound):
     # Constructor with 2 optional arguments: (postition:vec3, rotation:mat4)
     def __init__(self, pos, rot, material):
@@ -64,15 +66,14 @@ class sphere(primitive):
         self.rad = rad
 
     def set(self, buffer):
-        pos0 = self.pos - [self.rad, self.rad, self.rad]
+        pos0 = np.array(self.pos - [self.rad, self.rad, self.rad])
 
         for x in range(0,2*self.rad):
             for y in range(0,2*self.rad):
                 for z in range(0,2*self.rad):
-                    current_pos = pos0 + [x,y,z]
+                    current_pos = pos0 + np.array([x,y,z])
 
-                    d = self.pos - current_pos
-                    if(abs(d) <= self.rad):
+                    if np.linalg.norm(self.pos - current_pos) <= self.rad:
                         buffer.set(current_pos, self.material)
 
 class cylinder(primitive):
@@ -83,9 +84,11 @@ class cylinder(primitive):
 
     def set(self, buffer):
         print("Setting cylinder")
-        x_d = vec3(self.rot[0][0:3])
-        y_d = vec3(self.rot[1][0:3])
-        z_d = vec3(self.rot[2][0:3])
+
+        x_d = np.array(self.rot[0][0:3])
+        y_d = np.array(self.rot[1][0:3])
+        z_d = np.array(self.rot[2][0:3])
+
 
         for h in range(self.len):
             center_pos = self.pos + y_d*h
@@ -93,5 +96,5 @@ class cylinder(primitive):
                 for j in range(-self.rad, self.rad):
                     current_pos = self.pos + x_d*i + y_d*h + z_d*j
 
-                    if abs(current_pos - center_pos) <= self.rad:
+                    if np.linalg.norm(current_pos - center_pos) <= self.rad:
                         buffer.set(current_pos, self.material)

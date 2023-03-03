@@ -1,20 +1,20 @@
 {
-    "Union":{
-        "Size": 4,
-        "Absolute": [0,100,0],
+    "Size": 4,
+    "Absolute": "!ground(0,0)",
+    "TestProp1" : "Yes",
+    "TestProp2" : true,
+    "TestProp3" : 14,
+    "Material" : "Air",
 
-        "Content" : [
-            {
-                "Shape":"Cube",
-                "Size":10
-            },
-            {
-                "Shape":"Sphere",
-                "Radius": 5,
-                "Material": "Air",
-                "Relative": [0,10,0]
-            }
-        ]
-
-    }
+    "Union":[
+        {
+            "Shape":"Cube"
+        },
+        {
+            "Shape":"Sphere",
+            "Radius": 5,
+            "Material": "Air",
+            "Relative": [0,10,0]
+        }
+    ]
 }

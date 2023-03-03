@@ -31,6 +31,7 @@ class buffer():
 
         for i in range(0,255):
             if self.get([x,255-i,z]) > 0:
+                print("Ground:", 255-i)
                 return 255-i
         
         return -1

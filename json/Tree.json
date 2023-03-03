@@ -1,16 +1,17 @@
 {
-    "Union":{
-        "Trunk":{
+    "Absolute":"!ground(0,0)",
+    "Union":[
+        {
             "Shape" : "Cylinder",
             "Radius" : 1,
             "Length" : 10,
             "Material" : "Wood"
         },
-        "Crown" : {
+        {
             "Shape" : "Sphere",
             "Radius" : 4,
             "Material" : "Leaves",
             "Relative": [0,8,0]
         }
-    }
+    ]
 }

@@ -10,7 +10,6 @@ from pcglib.primitive import *
 from pcglib.compound import *
 
 # CONSTANTS
-origin = vec3(0.5,100.5,0.5)
 idMat = mat4()
 idMat.identity()
 
@@ -35,6 +34,10 @@ text = f.read()
 f.close()
 
 # print(text)
+
+# CREATING GAME OBJECT
+zero_offset = vec3([-144, -81, -224])
+game = Game(zero_offset)
 
 # CREATING JSON OBJECT
 prog = json.loads(text)
@@ -104,7 +107,7 @@ def parse_cube(prog,parent_props):
     print("Props:", props)
 
     size = props["Size"]
-    material = props["Material"]
+    material = materials[props["Material"]]
     pos = props["Position"]
 
     print("cube:",pos, idMat, material, size)
@@ -118,7 +121,7 @@ def parse_sphere(prog,props):
     print("Props:", props)
 
     rad = props["Radius"]
-    material = props["Material"]
+    material = materials[props["Material"]]
     pos = props["Position"]
 
     print("Sphere(pos:",pos,", Material:", material, ",Radius:", rad,")")
@@ -130,7 +133,7 @@ def parse_cylinder(prog, props):
     print("Parsing Cylinder:", prog)
     rad = props["Radius"]
     len = props["Length"]
-    material = props["Material"]
+    material = materials[props["Material"]]
     pos = props["Position"]
 
     return cylinder(pos, idMat, material, rad, len)
@@ -148,35 +151,6 @@ def parse_union(prog, props):
 
     return union_node
 
-
-def get_material(prog, props):
-    mat = str()
-    
-    if "Material" in prog:
-        mat = prog["Material"]
-
-    else:
-        mat = props["Material"]
-
-    return materials[mat]
-
-
-def get_position(prog, props):
-
-    if "Absolute" in prog:
-        pos = prog["Absolute"]
-        return np.array(pos)
-
-    elif "Relative" in prog:
-        rel = np.array(prog["Relative"])
-        pos = np.array(props["Position"])
-        return np.add(pos,rel)
-
-    else:
-        pos = props["Position"]
-        return np.array(pos)
-
-
 def parse_props(prog, parent_props):
 
     props = parent_props.copy()
@@ -188,25 +162,60 @@ def parse_props(prog, parent_props):
         elif key == "Absolute" or key == "Relative":
             continue
 
-        props[key] = prog[key]
+        props[key] = parse_value(prog, props,prog[key])
 
 
     # POSITION PROPERTIES
     if "Absolute" in prog:
-        props["Position"] = prog["Absolute"]
+        props["Position"] = parse_value(prog, props, prog["Absolute"])
     
     elif "Relative" in prog:
         pos = np.array(props["Position"])
-        rel = np.array(prog["Relative"])
+        rel = np.array(parse_value(prog, props,prog["Relative"]))
         props["Position"] = pos + rel
+        print("New Position:", props["Position"])
 
     return props
 
-def parse_variable(prog, props):
-    pass
 
-def parse_function(prog,props):
-    pass
+def parse_value(prog, props, val):
+    print("Parsing value:", val)
+    if isinstance(val, str):
+        if val[0] == '!':
+            return parse_function(prog, props, val)
+
+        elif val[0] == '$':
+            return parse_variable(prog, props, val)
+
+        else:
+            return val
+
+    else:
+        return val
+
+def parse_variable(prog, props, value):
+    print("Parsing variable:", value)
+    varName = value.replace('$', '')
+    return props[varName]
+
+def parse_function(prog,props, value):
+    print("Parsing function:", value)
+    funName = value.split('!')[1].split('(')[0]
+    args = value.split('(')[1].split(')')[0]
+
+    print("Function:", funName, "Args:", args)
+
+    if funName == "ground":
+        return ground(args)
+    
+
+def ground(args):
+    x = float(args.split(',')[0])
+    z = float(args.split(',')[1])
+
+    y = game.ground(x,z)
+
+    return [x,y,z]
 
 
 # TODO PARSE OTHER OPERATORS
@@ -214,7 +223,5 @@ def parse_function(prog,props):
 
 tree = parse_program(prog)
 
-# zero_offset = vec3([-144, -81, -224])
-# game = Game(zero_offset)
 
-# tree.set(game)
+tree.set(game)
