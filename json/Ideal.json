@@ -1,0 +1,18 @@
+{
+    "Union":{
+        "Absolute":[10,"Ground",10],
+        "AllowedOffset": 10,
+        "Material":"Stone",
+
+        "Box":{
+            "Shape":"Cube",
+            "Size":10
+        },
+        "Ball":{
+            "Shape":"Sphere",
+            "Radius": 5,
+            "Material": "Air",
+            "Relative": [0,10,0]
+        }
+    }
+}
