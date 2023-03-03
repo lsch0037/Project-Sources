@@ -1,5 +1,5 @@
 {
     "Shape":"Sphere",
     "Radius": 3,
-    "Material": 4
+    "Material": "Stone"
 }

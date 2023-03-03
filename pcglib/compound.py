@@ -28,6 +28,7 @@ class compound():
         for child in self.children:
             child.set(buffer)
 
+
 class unionNode(compound):
     # ? EXPLORE HAVING MORE THAN 2 CHILDREN
 

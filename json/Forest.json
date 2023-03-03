@@ -1,0 +1,14 @@
+{
+    "Absolute": "!ground(0,0)",
+    "Union":[
+        {
+            "Shape": "TreeParameterised",
+            "Height": 10,
+            "CrownSize" : 5,
+            "TrunkSize" : 2,
+            "LeavesType": "Leaves",
+            "WoodType":"Wood"
+        }
+
+    ]
+}

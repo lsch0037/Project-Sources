@@ -66,7 +66,7 @@ class sphere(primitive):
         self.rad = rad
 
     def set(self, buffer):
-        pos0 = np.array(self.pos - [self.rad, self.rad, self.rad])
+        pos0 = np.array(self.pos) - np.array([self.rad, self.rad, self.rad])
 
         for x in range(0,2*self.rad):
             for y in range(0,2*self.rad):

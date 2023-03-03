@@ -1,0 +1,16 @@
+{
+    "Union":[
+        {
+            "Shape" : "Cylinder",
+            "Radius" : "$TrunkSize",
+            "Length" : "$Height",
+            "Material" : "$WoodType"
+        },
+        {
+            "Shape" : "Sphere",
+            "Radius" : "$CrownSize",
+            "Material" : "$LeavesType",
+            "Relative": [0,"$Height",0]
+        }
+    ]
+}

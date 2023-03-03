@@ -1,5 +1,7 @@
 import sys
 import json
+import os
+from os import path
 
 import numpy as np
 
@@ -62,18 +64,28 @@ def parse_expression(expr, parent_props):
 
     # If expression is a primitive
     if "Shape" in expr:
-        return parse_primitive(expr, props)
+        # return parse_primitive(expr, props)
+        return parse_shape(expr, props)
     
     # If expression is an operator
     else:
         return parse_operator(expr, props)
 
+def parse_shape(prog, props):
+    print("Parsing Shape:", prog)
+    print("Props:", props)
 
-def parse_primitive(prog, props):
+    shape = props["Shape"]
 
+    if shape in primitiveNames:
+        return parse_primitive(prog, props, shape)
+
+    else:
+        return parse_custom_shape(prog, props, shape)
+
+def parse_primitive(prog, props, shape):
     print("Parsing Primitive:", prog)
     print("Props:", props)
-    shape = prog["Shape"]
 
     if shape == "Cube":
         return parse_cube(prog, props)
@@ -85,6 +97,24 @@ def parse_primitive(prog, props):
         return parse_cylinder(prog, props)
 
     # TODO FOR OTHER SHAPES
+
+def parse_custom_shape(prog, props, shapeName):
+    print("Parsing Custom Shape")
+
+    json_path = 'json\\'+shapeName+'.json'
+
+    if path.exists(json_path):
+        f = open(json_path)
+
+        text = f.read()
+
+        f.close()
+
+        shape = json.loads(text)
+
+        return parse_expression(shape, props)
+    else:
+        raise ValueError("Invalid Shape: {}".format(shapeName))
 
 def parse_operator(operator, props):
     print("Parsing Operator:", prog)
@@ -131,6 +161,8 @@ def parse_sphere(prog,props):
 
 def parse_cylinder(prog, props):
     print("Parsing Cylinder:", prog)
+    print("Props:", props)
+
     rad = props["Radius"]
     len = props["Length"]
     material = materials[props["Material"]]
@@ -189,21 +221,29 @@ def parse_value(prog, props, val):
 
         else:
             return val
+    
+    if isinstance(val, list):
+        newList = []
+
+        for item in val:
+            newList.append(parse_value(prog,props,item))
+
+        return newList
 
     else:
         return val
 
 def parse_variable(prog, props, value):
-    print("Parsing variable:", value)
     varName = value.replace('$', '')
+
+    print("Parsing varaible", value, "->", props[varName])
+
     return props[varName]
 
 def parse_function(prog,props, value):
     print("Parsing function:", value)
     funName = value.split('!')[1].split('(')[0]
     args = value.split('(')[1].split(')')[0]
-
-    print("Function:", funName, "Args:", args)
 
     if funName == "ground":
         return ground(args)
