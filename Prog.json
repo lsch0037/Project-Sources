@@ -5,12 +5,17 @@
     "originY": "!ground($originX,$originZ)",
     "origin": ["$originX","$originY", "$originZ"],
     "Position":"$origin",
-    "Union":[
+    "Difference":[
         {
             "Shape": "Sphere",
             "Radius": 4,
             "Material": "Diamond Block",
-            "Relative": [0,10,0]
-        } 
+            "Relative": [10,10,0]
+        },
+        {
+            "Shape": "Cuboid",
+            "Dimensions":[20, 20, 20],
+            "Material": "Diamond Block"
+        }
     ]
 }

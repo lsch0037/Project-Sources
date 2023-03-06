@@ -19,7 +19,7 @@ materials = {
     "Wooden Planks":5,
     "Wood" : 17,
     "Leaves" : 18,
-    "Diamond Block": 56
+    "Diamond Block": 57
 }
 
 shapeOperators = ["Union", "Intersection", "Difference"]
@@ -79,10 +79,13 @@ def parse_primitive(prog, props, shape):
     elif shape == "Cylinder":
         return parse_cylinder(prog, props)
 
+    elif shape == "Cuboid":
+        return parse_cuboid(prog, props)
+
     # TODO FOR OTHER SHAPES
 
 def parse_custom_shape(prog, props, shapeName):
-    print("Parsing Custom Shape")
+    # print("Parsing Custom Shape")
 
     json_path = 'json\\'+shapeName+'.json'
 
@@ -110,10 +113,7 @@ def parse_operator(operator, props):
         pass
 
     elif "Difference" in prog:
-        pass
-    # TODO FOR OTHER OPERATORS
-
-
+        return parse_difference(operator["Difference"],props)
 
 
 def variable_assign(json_prog, props):
@@ -202,6 +202,16 @@ def parse_union(prog, props):
         union_node.addChild(node)
 
     return union_node
+
+def parse_difference(prog, props):
+    print("Parsing Difference:", prog)
+    diff_node = differenceNode()
+
+    for item in prog:
+        node = parse_expression(item, props)
+        diff_node.addChild(node)
+
+    return diff_node
     
 # !PRIMITIVE SHAPES
 def parse_cube(prog,parent_props):
@@ -244,6 +254,19 @@ def parse_cylinder(prog, props):
     print("Cylinder(pos:{pos}, rot:{rot}, mat:{material}, rad:{rad}, len{len})".format(pos=pos, rot=idMat, material=material, rad=rad, len=len))
 
     return cylinder(pos, idMat, material, rad, len)
+
+def parse_cuboid(prog,props):
+    print("Parsing Cuboid:", prog)
+    print("Props:", props)
+
+    pos = props["Position"]
+    rot = idMat
+    material = materials[props["Material"]]
+    dim = props["Dimensions"]
+
+    print("Cuboid(pos:{pos}, rot:{rot}, material:{material}, dim:{dim})".format(pos=pos, rot=rot, material=material, dim=dim))
+
+    return cuboid(pos, idMat, material, dim)
 
 # !BUILT IN FUNCTIONS
 
