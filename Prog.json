@@ -1,13 +1,16 @@
 {
-    "HouseSizeInner": 8,
-    "HouseSizeOuter": 10,
-    "HouseHeight": 5,
-    "HouseWalls": "Wooden Planks",
-    "HouseFloor": "Wooden Planks",
-    "Absolute": [0,"!ground(0,0)",0],
+    "Label":"Cut in half sphere",
+    "originX": 0,
+    "originZ":0,
+    "originY": "!ground($originX,$originZ)",
+    "origin": ["$originX","$originY", "$originZ"],
+    "Position":"$origin",
     "Union":[
         {
-            "Shape":"House"
-        }
+            "Shape": "Sphere",
+            "Radius": 4,
+            "Material": "Diamond Block",
+            "Relative": [0,10,0]
+        } 
     ]
 }

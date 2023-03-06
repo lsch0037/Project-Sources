@@ -26,9 +26,15 @@ class compound():
         
         return subNode
 
-    def set(self, buffer):
+    def set(self, buf):
+        # raise ValueError("Cannot call 'set' on generic node")
         for child in self.children:
-            child.set(buffer)
+            child.set(buf)
+
+    def unset(self,buf):
+        # raise ValueError("Cannot call 'unset' on generic node")
+        for child in self.children:
+            child.unset(buf)
 
 
 class unionNode(compound):

@@ -5,47 +5,28 @@ from os import path
 
 import numpy as np
 
-from pcglib.vec3 import vec3
-from pcglib.mat4 import mat4
 from pcglib.Game import Game
 from pcglib.primitive import *
 from pcglib.compound import *
 
-# CONSTANTS
-idMat = mat4()
-idMat.identity()
+
+# !GLOBAL CONSTANTS
+idMat = np.identity(3)
 
 materials = {
     "Air":0,
     "Stone": 1,
     "Wooden Planks":5,
     "Wood" : 17,
-    "Leaves" : 18
+    "Leaves" : 18,
+    "Diamond Block": 56
 }
 
 shapeOperators = ["Union", "Intersection", "Difference"]
-varOperators = ["Add", "Sub", "Mul", "Div"]
 primitiveNames = ["Cube", "Sphere", "Cuboid", "Cylinder"]
 
-# INTERPRETING ARGUMENT
-fileName = sys.argv[1]
 
-# READING FILE
-f = open(fileName, "r")
-
-text = f.read()
-
-f.close()
-
-# print(text)
-
-# CREATING GAME OBJECT
-# zero_offset = vec3([-144, -81, -224])
-zero_offset = np.array([-144, -81, -224])
-game = Game(zero_offset)
-
-# CREATING JSON OBJECT
-prog = json.loads(text)
+# ! LANGUAGE CONSTRUCTS
 
 def parse_program(prog):
     tree = compound()
@@ -62,7 +43,7 @@ def parse_program(prog):
 def parse_expression(expr, parent_props):
 
     print("Parsing Expression:", expr)
-    props = parse_props(expr, parent_props)
+    props = variable_assign(expr, parent_props)
     print("Props:", props)
 
     # If expression is a shape
@@ -133,8 +114,98 @@ def parse_operator(operator, props):
     # TODO FOR OTHER OPERATORS
 
 
+
+
+def variable_assign(json_prog, props):
+    new_props = props.copy()
+
+    for key in json_prog:
+        if key == "Relative":
+            abs_pos = np.array(new_props["Position"])
+            rel_pos = variable_expression(json_prog["Relative"], new_props)
+            new_props["Position"] = abs_pos + rel_pos
+            continue
+
+        if key in shapeOperators:
+            continue
+
+        new_props[key] = variable_expression(json_prog[key], new_props)
+
+
+    return new_props
+
+def variable_expression(var_expr, vars):
+    # If the expression is a string
+    if isinstance(var_expr, str):
+        # If expression is a function call
+        if var_expr[0] == '!':
+            return function_call(var_expr, vars)
+
+        # If expression is a variable expansion
+        elif var_expr[0] == '$':
+            return variable_expansion(var_expr, vars)
+
+        # Otherwise return literal
+        else:
+            return var_expr
+    
+    # If the expression is a list
+    if isinstance(var_expr, list):
+        newList = []
+
+        # For each list item, parse varaible expression
+        for item in var_expr:
+            newList.append(variable_expression(item,vars))
+
+        return newList
+
+    # Otherwise, return literal
+    else:
+        return var_expr
+
+
+def variable_expansion(var_exp, props):
+    varName = var_exp.replace('$', '')
+
+    print("Parsing varaible", var_exp, "->", props[varName])
+
+    return props[varName]
+
+
+def function_call(fn_call,props):
+    print("Parsing function:", fn_call)
+    funName = fn_call.split('!')[1].split('(')[0]
+
+    args_str = fn_call.split('(')[1].split(')')[0]
+    args_split = args_str.split(',')
+
+    args = []
+
+    for arg in args_split:
+        args.append(variable_expression(arg, props))
+
+    print("Evaluated args:", args)
+
+    if funName == "ground":
+        return ground(args[0], args[1])
+    elif funName == "add":
+        pass
+        # TODO OTHER FUNCTION CALLS
+
+# !GEOMETRIC OPERATORS
+def parse_union(prog, props):
+    print("Parsing Union:", prog)
+    union_node = unionNode()
+
+    for item in prog:
+        node = parse_expression(item, props)
+        union_node.addChild(node)
+
+    return union_node
+    
+# !PRIMITIVE SHAPES
 def parse_cube(prog,parent_props):
-    props = parse_props(prog,parent_props)
+    props = variable_assign(prog,parent_props)
     print("Parsing Cube:", prog)
     print("Props:", props)
 
@@ -170,96 +241,35 @@ def parse_cylinder(prog, props):
     material = materials[props["Material"]]
     pos = props["Position"]
 
+    print("Cylinder(pos:{pos}, rot:{rot}, mat:{material}, rad:{rad}, len{len})".format(pos=pos, rot=idMat, material=material, rad=rad, len=len))
+
     return cylinder(pos, idMat, material, rad, len)
 
+# !BUILT IN FUNCTIONS
 
-# TODO PARSE OTHER PRIMITIVES
-
-def parse_union(prog, props):
-    print("Parsing Union:", prog)
-    union_node = unionNode()
-
-    for item in prog:
-        node = parse_expression(item, props)
-        union_node.addChild(node)
-
-    return union_node
-
-def parse_props(prog, parent_props):
-
-    props = parent_props.copy()
-
-    for key in prog:
-        if key in shapeOperators:
-            continue
-
-        elif key == "Absolute" or key == "Relative":
-            continue
-
-        props[key] = parse_value(prog, props,prog[key])
+def ground(x, z):
+    return game.ground(float(x),float(z))
 
 
-    # POSITION PROPERTIES
-    if "Absolute" in prog:
-        props["Position"] = parse_value(prog, props, prog["Absolute"])
-    
-    elif "Relative" in prog:
-        pos = np.array(props["Position"])
-        rel = np.array(parse_value(prog, props,prog["Relative"]))
-        props["Position"] = pos + rel
-        print("New Position:", props["Position"])
 
-    return props
+# !PARSING PROGRAM
+# INTERPRETING ARGUMENT
+fileName = sys.argv[1]
 
+# READING FILE
+f = open(fileName, "r")
 
-def parse_value(prog, props, val):
-    print("Parsing value:", val)
-    if isinstance(val, str):
-        if val[0] == '!':
-            return parse_function(prog, props, val)
+text = f.read()
 
-        elif val[0] == '$':
-            return parse_variable(prog, props, val)
+f.close()
 
-        else:
-            return val
-    
-    if isinstance(val, list):
-        newList = []
+# CREATING GAME OBJECT
+# zero_offset = vec3([-144, -81, -224])
+zero_offset = np.array([-144, -81, -224])
+game = Game(zero_offset)
 
-        for item in val:
-            newList.append(parse_value(prog,props,item))
-
-        return newList
-
-    else:
-        return val
-
-def parse_variable(prog, props, value):
-    varName = value.replace('$', '')
-
-    print("Parsing varaible", value, "->", props[varName])
-
-    return props[varName]
-
-def parse_function(prog,props, value):
-    print("Parsing function:", value)
-    funName = value.split('!')[1].split('(')[0]
-    args = value.split('(')[1].split(')')[0]
-
-    if funName == "ground":
-        return ground(args)
-    
-
-def ground(args):
-    x = float(args.split(',')[0])
-    z = float(args.split(',')[1])
-
-    return game.ground(x,z)
-
-
-# TODO PARSE OTHER OPERATORS
-
+# CREATING JSON OBJECT
+prog = json.loads(text)
 
 tree = parse_program(prog)
 

@@ -1,5 +1,17 @@
-Primitive := Cube | Sphere | Cuboid | Cylinder
-Operator := Union | Intersection | Difference
-Exression := <Primitive> | <Operator> [Primitive]
+PrimitiveType := "Cube" | "Sphere" | "Cuboid" | "Cylinder"
+GeometryOperator := "Union" | "Intersection" | "Difference"
+FunctionName := "ground" | "add" | "sub" | "mul" | "div"
 
-Program := [Expression]
+Program := Expression
+
+# GEOMETRY #
+GeoExpression := [{VarAssign}] (<Shape> | <GeoOperation>)
+Shape := '{' [{VarAssign}]  "Shape": <ShapeType>  [{VarAssign}]'}'
+<ShapeType> = PrimitiveType | <String>
+GeoOperation := <GeoOperator> ':' {GeoExpression}
+
+# VARIABLES #
+<VarAssign> := <String> ':' <VarExpression>
+<VarExpression> := <LiteralValue> | <FunctionCall> | <VariableExpansion>
+<VariableExpansion> := '$' <String>
+<FunctionCall> := '!' <String> '(' (<FunctionName>) [{',' <VarExpression>}] ')'

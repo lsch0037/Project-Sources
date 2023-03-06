@@ -17,7 +17,6 @@ cb2 = cube(pos2, rot, 1, 5)
 
 tree = cb1 - cb2
 
-
 tree.set(game)
 
 # cb1.set(game)

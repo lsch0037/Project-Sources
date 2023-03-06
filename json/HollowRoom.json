@@ -8,7 +8,7 @@
         },
         {
             "Shape":"Cube",
-            "Size": 8,
+            "Size": "!",
             "Relative": [1,1,1]
         }
     ]

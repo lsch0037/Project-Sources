@@ -22,4 +22,4 @@ class Game(buffer):
         self.mc.postToChat(msg)
     
     def write(self, other):
-        return
+        raise ValueError("Cannot call write on game buffer object")

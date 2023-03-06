@@ -10,7 +10,7 @@ class primitive(compound):
         self.material = material
 
     def _set_internal(self, buf, operator):
-        return
+        raise ValueError("Cannot call _set_internal on generic primitive")
 
     def set(self, buf):
         self._set_internal(buf, "set")
@@ -39,8 +39,6 @@ class cube(primitive):
                         buffer.set(current_pos, self.material)
                     elif op == "unset":
                         buffer.unset(current_pos)
-
-
 
 class cuboid(primitive):
     # Constructor for a cuboid primitive
