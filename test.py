@@ -1,6 +1,4 @@
 from pcglib.Game import Game
-from pcglib.vec3 import vec3
-from pcglib.mat4 import mat4
 from pcglib.primitive import *
 from pcglib.buffer import *
 
@@ -9,12 +7,17 @@ Zero = [-144, -81, -224]
 
 # Initiating game object
 game = Game(Zero)
-pos = vec3(0.5,100.5,0.5)
+pos1 = np.array([0.5,game.ground(0.5,0.5),0.5])
+pos2 = pos1 + np.array([0.0,5.0,0.0])
 
-# rot = mat4()
-# rot.identity()
+rot = np.identity(3)
 
-# c = cylinder(pos, rot, 1, 6, 10)
-# c.set(game)
+cb1 = cube(pos1, rot, 1, 10)
+cb2 = cube(pos2, rot, 1, 5)
 
-print(game.ground(0,0))
+tree = cb1 - cb2
+
+
+tree.set(game)
+
+# cb1.set(game)

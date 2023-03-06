@@ -1,10 +1,8 @@
 {
-    "Size": 4,
-    "Absolute": "!ground(0,0)",
-    "TestProp1" : "Yes",
-    "TestProp2" : true,
-    "TestProp3" : 14,
-    "Material" : "Air",
+    "Size": 10,
+    "GroundOrigin": "!ground(0,0)",
+    "Absolute": [0,"$GroundOrigin",0],
+    "Material" : "Stone",
 
     "Union":[
         {

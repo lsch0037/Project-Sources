@@ -1,0 +1,15 @@
+{
+    "Absolute":[0,"!ground(0,0)",0],
+    "Difference":[
+        {
+            "Shape":"Cube",
+            "Size":10,
+            "Material":"$WallMaterial"
+        },
+        {
+            "Shape":"Cube",
+            "Size": 8,
+            "Relative": [1,1,1]
+        }
+    ]
+}

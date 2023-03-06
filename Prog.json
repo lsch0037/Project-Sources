@@ -1,27 +1,13 @@
 {
-    "Tree": {
-        "Union": {
-            "Trunk": {
-                "Shape": "Cylinder",
-                "Radius": 1,
-                "Length": 10,
-                "Material": "Wood"
-            },
-            "Crown": {
-                "Shape": "Sphere",
-                "Radius": 4,
-                "Material": "Leaves",
-                "Relative": [
-                    0,
-                    8,
-                    0
-                ]
-            }
+    "HouseSizeInner": 8,
+    "HouseSizeOuter": 10,
+    "HouseHeight": 5,
+    "HouseWalls": "Wooden Planks",
+    "HouseFloor": "Wooden Planks",
+    "Absolute": [0,"!ground(0,0)",0],
+    "Union":[
+        {
+            "Shape":"House"
         }
-    },
-    "Sphere": {
-        "Shape": "Sphere",
-        "Radius": 3,
-        "Material": "Stone"
-    }
+    ]
 }

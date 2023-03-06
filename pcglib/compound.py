@@ -1,3 +1,5 @@
+from pcglib.buffer import buffer
+
 class compound():
     def __init__(self):
         self.children = []
@@ -30,26 +32,42 @@ class compound():
 
 
 class unionNode(compound):
-    # ? EXPLORE HAVING MORE THAN 2 CHILDREN
 
-    def set(self, buffer):
-        for child in self.children:
-            child.set(buffer)
+    def set(self, buf):
+        newBuf = buffer()
 
-    def carve(self, buffer):
         for child in self.children:
-            child.carve(buffer)
+            child.set(newBuf)
+
+        newBuf.write(buf)
+
+    def unset(self, buf):
+        newBuf = buffer()
+
+        for child in self.children:
+            child.unset(newBuf)
+
+        newBuf.write(buf)
 
 class differenceNode(compound):
-    # ?EXPLORE HAVING MORE THAN 2 CHILDREN
+    def set(self,buf):
+        newBuf = buffer()
+        self.children[0].set(newBuf)
+    
+        for i in range(1,len(self.children)):
+            self.children[i].unset(newBuf)
 
-    def set(self, buffer):
-        self.children[0].set(buffer)
-        self.children[1].carve(buffer)
+        newBuf.write(buf)
+    
+    def unset(self,buf):
+        newBuf = buffer()
+        self.children[0].unset(newBuf)
+    
+        for i in range(1,len(self.children)):
+            self.children[i].set(newBuf)
 
-    def carve(self,buffer):
-        self.children[0].carve(buffer)
-        self.children[1].set(buffer)
+        newBuf.write(buf)
+
 
 class intersectionNode(compound):
     # ? EXPLORE HAVING MORE THAN 2 CHILDREN

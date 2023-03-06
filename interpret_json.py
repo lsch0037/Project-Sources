@@ -18,11 +18,13 @@ idMat.identity()
 materials = {
     "Air":0,
     "Stone": 1,
+    "Wooden Planks":5,
     "Wood" : 17,
     "Leaves" : 18
 }
 
-operatorNames = ["Union", "Intersection", "Difference"]
+shapeOperators = ["Union", "Intersection", "Difference"]
+varOperators = ["Add", "Sub", "Mul", "Div"]
 primitiveNames = ["Cube", "Sphere", "Cuboid", "Cylinder"]
 
 # INTERPRETING ARGUMENT
@@ -38,7 +40,8 @@ f.close()
 # print(text)
 
 # CREATING GAME OBJECT
-zero_offset = vec3([-144, -81, -224])
+# zero_offset = vec3([-144, -81, -224])
+zero_offset = np.array([-144, -81, -224])
 game = Game(zero_offset)
 
 # CREATING JSON OBJECT
@@ -62,9 +65,8 @@ def parse_expression(expr, parent_props):
     props = parse_props(expr, parent_props)
     print("Props:", props)
 
-    # If expression is a primitive
+    # If expression is a shape
     if "Shape" in expr:
-        # return parse_primitive(expr, props)
         return parse_shape(expr, props)
     
     # If expression is an operator
@@ -188,7 +190,7 @@ def parse_props(prog, parent_props):
     props = parent_props.copy()
 
     for key in prog:
-        if key in operatorNames:
+        if key in shapeOperators:
             continue
 
         elif key == "Absolute" or key == "Relative":
@@ -253,9 +255,7 @@ def ground(args):
     x = float(args.split(',')[0])
     z = float(args.split(',')[1])
 
-    y = game.ground(x,z)
-
-    return [x,y,z]
+    return game.ground(x,z)
 
 
 # TODO PARSE OTHER OPERATORS
@@ -263,5 +263,6 @@ def ground(args):
 
 tree = parse_program(prog)
 
+print("Finished")
 
 tree.set(game)
