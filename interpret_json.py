@@ -102,18 +102,22 @@ def parse_custom_shape(prog, props, shapeName):
     else:
         raise ValueError("Invalid Shape: {}".format(shapeName))
 
-def parse_operator(operator, props):
+def parse_operator(prog, props):
     print("Parsing Operator:", prog)
 
 
     if "Union" in prog:
-        return parse_union(operator["Union"], props)
+        return parse_union(prog["Union"], props)
 
     elif "Intersection" in prog:
         pass
 
     elif "Difference" in prog:
-        return parse_difference(operator["Difference"],props)
+        return parse_difference(prog["Difference"],props)
+
+    else:
+        raise ValueError("Invalid Operator: {}".format(prog))
+
 
 
 def variable_assign(json_prog, props):
@@ -182,14 +186,19 @@ def function_call(fn_call,props):
     args = []
 
     for arg in args_split:
-        args.append(variable_expression(arg, props))
+        arg_cleaned = arg.replace(' ','')
+        args.append(variable_expression(arg_cleaned, props))
 
     print("Evaluated args:", args)
 
     if funName == "ground":
         return ground(args[0], args[1])
     elif funName == "add":
-        pass
+        return float(args[0]) + float(args[1])
+    elif funName == "sub":
+        return float(args[0]) - float(args[1])
+    elif funName == "mul":
+        return float(args[0])*float(args[1])
         # TODO OTHER FUNCTION CALLS
 
 # !GEOMETRIC OPERATORS

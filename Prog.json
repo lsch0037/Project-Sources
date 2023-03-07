@@ -1,21 +1,10 @@
 {
-    "Label":"Cut in half sphere",
-    "originX": 0,
-    "originZ":0,
-    "originY": "!ground($originX,$originZ)",
-    "origin": ["$originX","$originY", "$originZ"],
-    "Position":"$origin",
-    "Difference":[
-        {
-            "Shape": "Sphere",
-            "Radius": 4,
-            "Material": "Diamond Block",
-            "Relative": [10,10,0]
-        },
-        {
-            "Shape": "Cuboid",
-            "Dimensions":[20, 20, 20],
-            "Material": "Diamond Block"
-        }
-    ]
+    "Position":[0,"!ground(0,0)",0],
+    "WallMaterial":"Stone",
+    "FloorMaterial":"Wooden Planks",
+    "CeilingMaterial":"Wooden Planks",
+    "RoomSize":12,
+    "WallThickness":1,
+    "RoomHeight":5,
+    "Shape": "HollowRoom"
 }

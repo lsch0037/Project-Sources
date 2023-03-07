@@ -53,9 +53,9 @@ class cuboid(primitive):
         y_d = self.rot[1]
         z_d = self.rot[2]
 
-        for i in range(self.dim[0]):
-            for j in range(self.dim[1]):
-                for k in range(self.dim[2]):
+        for i in range(int(self.dim[0])):
+            for j in range(int(self.dim[1])):
+                for k in range(int(self.dim[2])):
                     current_pos = self.pos + x_d*i + y_d*j + z_d*k
 
                     if op == "set":

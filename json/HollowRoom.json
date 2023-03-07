@@ -1,15 +1,39 @@
 {
-    "Absolute":[0,"!ground(0,0)",0],
-    "Difference":[
+    "TwiceWallThickness":"!mul($WallThickness, 2)",
+    "RoomSizeInner":"!sub($RoomSize, $TwiceWallThickness)",
+    "RoomHeightInner":"!sub($RoomHeight,2)",
+    "CeilingHeight":"!sub($RoomHeight, 1)",
+    "Union":[
         {
-            "Shape":"Cube",
-            "Size":10,
-            "Material":"$WallMaterial"
+            "Difference":[
+                {
+                    "Label":"Outer",
+                    "Shape":"Cuboid",
+                    "Dimensions":["$RoomSize", "$RoomHeight","$RoomSize"],
+                    "Material":"$WallMaterial"
+                },
+                {
+                    "Label":"Inner",
+                    "Shape":"Cuboid",
+                    "Dimensions":["$RoomSizeInner", "$RoomHeightInner","$RoomSizeInner"],
+                    "Relative": ["$WallThickness",1,"$WallThickness"],
+                    "Material":"$WallMaterial"
+                }
+            ]
         },
         {
-            "Shape":"Cube",
-            "Size": "!",
-            "Relative": [1,1,1]
-        }
+            "Label": "Floor",
+            "Shape":"Cuboid",
+            "Relative":["$WallThickness",0,"$WallThickness"],
+            "Dimensions":["$RoomSizeInner", 1, "$RoomSizeInner"],
+            "Material":"$FloorMaterial"
+        },
+        {
+            "Label": "Ceiling",
+            "Shape":"Cuboid",
+            "Relative":["$WallThickness","$CeilingHeight","$WallThickness"],
+            "Dimensions":["$RoomSizeInner", 1, "$RoomSizeInner"],
+            "Material":"$CeilingMaterial"
+        }       
     ]
 }
