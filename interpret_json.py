@@ -191,8 +191,8 @@ def function_call(fn_call,props):
 
     print("Evaluated args:", args)
 
-    if funName == "ground":
-        return ground(args[0], args[1])
+    if funName == "getHeight":
+        return getHeight(args[0], args[1])
 
     elif funName == "add":
         return float(args[0]) + float(args[1])
@@ -289,8 +289,8 @@ def parse_cuboid(prog,props):
 
 # !BUILT IN FUNCTIONS
 
-def ground(x, z):
-    return game.ground(float(x),float(z))
+def getHeight(x, z):
+    return game.getHeight(float(x),float(z))
 
 def matchSquare(x,z,max_offset, size):
     return game.matchSquare(x,z,max_offset, size)

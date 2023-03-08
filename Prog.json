@@ -1,6 +1,6 @@
 {
     "#Position":"!matchSquare(0,0,20,12)",
-    "Position":[0,"!ground(0,0)",0],
+    "Position":[0,"!getHeight(0,0)",0],
     "WallMaterial":"Stone",
     "FloorMaterial":"Wooden Planks",
     "CeilingMaterial":"Wooden Planks",

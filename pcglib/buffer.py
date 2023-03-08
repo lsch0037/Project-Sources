@@ -31,7 +31,7 @@ class buffer():
         except KeyError:
             return
 
-    def ground(self, x,z):
+    def getHeight(self, x,z):
         pos = np.array([x,255,z])
 
         for i in range(0,255):
@@ -42,12 +42,19 @@ class buffer():
         return -1
 
     def matchSquare(self,x,z,max_off, size):
-        return
-        height_map = np.full((2*max_off, 2*max_off),np.empty)
+        return None
 
-        final_pos = np.array([x,height_map[x][z], z])
+        searchAreaSize = max_off*2
+        searchAreaPosX = x - max_off
+        searchAreaPosZ = z - max_off
 
-        # return final_pos
+        bestPos = None
+        minBlockChanges = float('inf')
+
+        for x in range(searchAreaPosX, searchAreaPosX+searchAreaSize):
+            for z in range(searchAreaPosZ, searchAreaPosZ+searchAreaSize):
+
+                y = self.getHeight(x,z)
 
 
     def write(self, other):
