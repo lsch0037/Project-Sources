@@ -1,5 +1,7 @@
 import numpy as np
 
+import math
+
 class buffer():
     def __init__(self):
         self.d = dict()
@@ -41,20 +43,49 @@ class buffer():
         
         return -1
 
-    def matchSquare(self,x,z,max_off, size):
-        return None
+    def matchSquare(self,center_x,center_z,max_off, size):
 
         searchAreaSize = max_off*2
-        searchAreaPosX = x - max_off
-        searchAreaPosZ = z - max_off
+        searchAreaPosX = center_x - max_off
+        searchAreaPosZ = center_z - max_off
 
         bestPos = None
-        minBlockChanges = float('inf')
+        minUnfitScore = float('inf')
 
-        for x in range(searchAreaPosX, searchAreaPosX+searchAreaSize):
-            for z in range(searchAreaPosZ, searchAreaPosZ+searchAreaSize):
+        for x in range(searchAreaPosX, searchAreaPosX+searchAreaSize - size):
+            for z in range(searchAreaPosZ, searchAreaPosZ+searchAreaSize - size):
+                print("pos:",x,z)
 
-                y = self.getHeight(x,z)
+                # dist = math.sqrt(abs(x-center_x)**2 + abs(z-center_z)**2)
+                dist = math.dist([x,z], [center_x, center_z])
+
+                # print("Distance from center:", dist)
+
+                y = self.getHeight(x,z) + 1
+
+                blocksChanged = 0
+                airUnder = 0
+                for i in range(size):
+                    for j in range(size):
+
+                        if self.get([x+i, y, z+j]) != 0:
+                            blocksChanged +=1
+
+                        elif self.get([x+i, y-1, z+j]) == 0:
+                            airUnder += 1
+
+                # print("BlocksChagned:", blocksChanged)
+                # print("AirUnder:", airUnder)
+
+                unfitScore = (1+dist) * (1 + blocksChanged) * (1 + airUnder)
+                # print("unfitScore:", unfitScore)
+
+                if unfitScore < minUnfitScore:
+                    minUnfitScore = unfitScore
+                    bestPos = [x,y,z]
+
+        return np.array(bestPos)
+
 
 
     def write(self, other):

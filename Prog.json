@@ -1,11 +1,11 @@
 {
-    "#Position":"!matchSquare(0,0,20,12)",
-    "Position":[0,"!getHeight(0,0)",0],
-    "WallMaterial":"Stone",
-    "FloorMaterial":"Wooden Planks",
-    "CeilingMaterial":"Wooden Planks",
-    "RoomSize":12,
-    "WallThickness":1,
+    "GroundHeight": "!getHeight(0,0)",
+    "Position":[0, "!add($GroundHeight,1)",0],
+    "WallMaterial":"Diamond Block",
+    "FloorMaterial":"Stone",
+    "CeilingMaterial":"Stone",
+    "RoomSize":20,
+    "WallThickness":3,
     "RoomHeight":5,
     "Shape": "HollowRoom"
 }
