@@ -1,6 +1,6 @@
 import sys
 import os
-sys.path.append(os.path.abspath('../pcglib'))
+sys.path.append(os.path.abspath('../pcglib/'))
 
 from Game import Game
 import unittest

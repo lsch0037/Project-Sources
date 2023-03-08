@@ -3,7 +3,6 @@
     "GroundOrigin": "!ground(0,0)",
     "Absolute": [0,"$GroundOrigin",0],
     "Material" : "Stone",
-
     "Union":[
         {
             "Shape":"Cube"

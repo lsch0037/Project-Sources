@@ -23,3 +23,6 @@ class Game(buffer):
     
     def write(self, other):
         raise ValueError("Cannot call write on game buffer object")
+
+    def ground(self, x, z):
+        return self.mc.getHeight(x + self.offset[0],z + self.offset[2]) - self.offset[1]

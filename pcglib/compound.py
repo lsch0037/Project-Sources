@@ -76,5 +76,5 @@ class differenceNode(compound):
 
 
 class intersectionNode(compound):
-    # ? EXPLORE HAVING MORE THAN 2 CHILDREN
+    # TODO: IMPLEMENT
     pass

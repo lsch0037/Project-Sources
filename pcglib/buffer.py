@@ -15,7 +15,7 @@ class buffer():
             self.d[pos[0]][pos[1]][pos[2]] = dict()
 
         self.d[pos[0]][pos[1]][pos[2]] = id
-        print("Set ",pos)
+        # print("Set ",pos)
 
     def get(self, pos):
         try:
@@ -25,27 +25,36 @@ class buffer():
 
     # REMOVES THE THE ENTRY AT THAT POSITION (UNDOES CHANGES)
     def unset(self, pos):
-        print("Unset ", pos)
+        # print("Unset ", pos)
         try:
             self.d[pos[0]][pos[1]].pop(pos[2])
         except KeyError:
             return
 
     def ground(self, x,z):
+        pos = np.array([x,255,z])
 
         for i in range(0,255):
-            if self.get([x,255-i,z]) > 0:
-                # print("Ground:", 255-i)
+            pos[1] = 255-i
+            if self.get(pos) > 0:
                 return 255-i
         
         return -1
+
+    def matchSquare(self,x,z,max_off, size):
+        return
+        height_map = np.full((2*max_off, 2*max_off),np.empty)
+
+        final_pos = np.array([x,height_map[x][z], z])
+
+        # return final_pos
+
 
     def write(self, other):
         print("Writing buffer...")
         for i in self.d:
             for j in self.d[i]:
                 for k in self.d[i][j]:
-                    # pos = [int(i), int(j), int(k)]
                     pos = np.array([i,j,k])
                     other.set(pos, self.get(pos))
 

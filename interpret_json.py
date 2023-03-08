@@ -193,12 +193,22 @@ def function_call(fn_call,props):
 
     if funName == "ground":
         return ground(args[0], args[1])
+
     elif funName == "add":
         return float(args[0]) + float(args[1])
+
     elif funName == "sub":
         return float(args[0]) - float(args[1])
+
     elif funName == "mul":
         return float(args[0])*float(args[1])
+
+    elif funName == "div":
+        return float(args[0])/float(args[1])
+
+    elif funName == "matchSquare":
+        return matchSquare(args[0],args[1],args[2],args[3])
+
         # TODO OTHER FUNCTION CALLS
 
 # !GEOMETRIC OPERATORS
@@ -282,6 +292,8 @@ def parse_cuboid(prog,props):
 def ground(x, z):
     return game.ground(float(x),float(z))
 
+def matchSquare(x,z,max_offset, size):
+    return game.matchSquare(x,z,max_offset, size)
 
 
 # !PARSING PROGRAM
