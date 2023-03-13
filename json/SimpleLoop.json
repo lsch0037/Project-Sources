@@ -1,23 +1,33 @@
 {
     "Loop":{
         "loop_var":"x_iter",
-        "loop_range":10,
+        "loop_range":5,
 
         "loop_body":{
-            "x_offset": "!mul($x_iter,3)",
+            "x_offset": "!mul($x_iter,7)",
 
             "Loop":{
-                "loop_var":"y_iter",
-                "loop_range":10,
+                "loop_var":"z_iter",
+                "loop_range":5,
 
                 "loop_body":{
-                    "y_offset":"!mul($y_iter,3)",
-                    "groundHeight":"!getHeight($x_offset,$y_offset)",
-                    "Position":["$x_offset","!add($groundHeight,1)","$y_offset"],
+                    "z_offset":"!mul($z_iter,7)",
 
-                    "Shape":"Cube",
-                    "Size":1,
-                    "Material":"Stone"
+                    "x_rand":"!randInt(0,3)",
+                    "z_rand":"!randInt(0,3)",
+
+                    "x_pos":"!add($x_offset,$x_rand)",
+                    "z_pos":"!add($z_offset,$z_rand)",
+
+                    "groundHeight":"!getHeight($x_pos,$z_pos)",
+                    "Position":["$x_pos","!add($groundHeight,1)","$z_pos"],
+
+                    "Shape":"TreeParameterised",
+                    "TrunkSize":"!randInt(1,3)",
+                    "Height":"!randInt(5,10)",
+                    "WoodType":"Wood",
+                    "LeavesType":"Leaves",
+                    "CrownSize":"!randInt(3,5)"
                 }
             }
 

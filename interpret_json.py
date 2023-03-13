@@ -208,7 +208,7 @@ def function_call(fn_call,props):
     #     return matchSquare(args[0],args[1],args[2],args[3])
 
     elif funName == "randInt":
-        return randomInt(args[0],args[1])
+        return randomInt(int(args[0]),int(args[1]))
 
         # TODO OTHER FUNCTION CALLS
 
@@ -235,8 +235,6 @@ def parse_difference(prog, props):
     
 
 def parse_loop(prog, parent_props):
-    print("Parsing Loop")
-
 
     # Checking that variables exist
     if not "loop_var" in prog:

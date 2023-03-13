@@ -1,37 +1,36 @@
 {
-    "initPosX":0,
-    "initPosY":0,
+    "Loop":{
+        "loop_var":"x_iter",
+        "loop_range":5,
 
-    "Iterate": {
-        "loop_var":"X",
-        "loop_start":0,
-        "loop_end":10,
+        "loop_body":{
+            "x_offset": "!mul($x_iter,7)",
 
+            "Loop":{
+                "loop_var":"z_iter",
+                "loop_range":5,
 
-        "Body":{
-            "Iterate": {
-                "loop_var":"Z",
-                "loop_range":10,
+                "loop_body":{
+                    "z_offset":"!mul($z_iter,7)",
 
-                "Body":{
+                    "x_rand":"!randInt(0,3)",
+                    "z_rand":"!randInt(0,3)",
 
-                    "treeOffsetX":"!mul($X,$initPosX)",
-                    "treeOffsetZ":"!mul($Z,$initPosZ)",
+                    "x_pos":"!add($x_offset,$x_rand)",
+                    "z_pos":"!add($z_offset,$z_rand)",
 
-                    "treePosX":"!add($treeOffsetX, $initPosX)",
-                    "treePosZ":"!add($treeOffsetZ, $initPosZ)",
+                    "groundHeight":"!getHeight($x_pos,$z_pos)",
+                    "Position":["$x_pos","!add($groundHeight,1)","$z_pos"],
 
-                    "Position":["$treePosX", "!getHeight($treePosX, $treePosZ)", "$treePosZ"],
-
-
-                    "Shape": "TreeParameterised",
-                    "Height": "!randInt(5,10)",
-                    "CrownSize" : "!randInt(4,6)",
-                    "TrunkSize" : "!randInt(1,3)",
-                    "LeavesType": "Leaves",
-                    "WoodType":"Wood"
+                    "Shape":"TreeParameterised",
+                    "TrunkSize":"!randInt(1,3)",
+                    "Height":"!randInt(5,10)",
+                    "WoodType":"Wood",
+                    "LeavesType":"Leaves",
+                    "CrownSize":"!randInt(3,5)"
                 }
             }
+
         }
     }
 }
