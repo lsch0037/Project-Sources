@@ -1,13 +1,37 @@
 {
-    "Absolute": "!ground(0,0)",
-    "Union":[
-        {
-            "Shape": "TreeParameterised",
-            "Height": 10,
-            "CrownSize" : 5,
-            "TrunkSize" : 2,
-            "LeavesType": "Leaves",
-            "WoodType":"Wood"
+    "initPosX":0,
+    "initPosY":0,
+
+    "Iterate": {
+        "loop_var":"X",
+        "loop_start":0,
+        "loop_end":10,
+
+
+        "Body":{
+            "Iterate": {
+                "loop_var":"Z",
+                "loop_range":10,
+
+                "Body":{
+
+                    "treeOffsetX":"!mul($X,$initPosX)",
+                    "treeOffsetZ":"!mul($Z,$initPosZ)",
+
+                    "treePosX":"!add($treeOffsetX, $initPosX)",
+                    "treePosZ":"!add($treeOffsetZ, $initPosZ)",
+
+                    "Position":["$treePosX", "!getHeight($treePosX, $treePosZ)", "$treePosZ"],
+
+
+                    "Shape": "TreeParameterised",
+                    "Height": "!randInt(5,10)",
+                    "CrownSize" : "!randInt(4,6)",
+                    "TrunkSize" : "!randInt(1,3)",
+                    "LeavesType": "Leaves",
+                    "WoodType":"Wood"
+                }
+            }
         }
-    ]
+    }
 }

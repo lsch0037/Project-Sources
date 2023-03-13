@@ -45,6 +45,19 @@ class buffer():
 
     def matchSquare(self,center_x,center_z,max_off, size):
 
+        # TODO: MAKE MONTE CARLO
+
+        # !CREATE BUFFER
+        # !SET SHAPE TO BUFFER
+        # !SUPERIMPOSE BUFFER ON GAME AT OFFSET 0,0
+        # !GET SCORE FOR FITNESS AT POSITION
+        # *IF LESS THAN THRESHOLD
+            # ?MAYBE MOVE IN THE DIRECTION OF BEST FITNESS
+            # ?MAYBE MOVE ONE STEP FURTHER IN ALL DIRECTIONS
+            # !REPEAT
+
+        # !ELSE STOP
+
         searchAreaSize = max_off*2
         searchAreaPosX = center_x - max_off
         searchAreaPosZ = center_z - max_off
@@ -56,7 +69,6 @@ class buffer():
             for z in range(searchAreaPosZ, searchAreaPosZ+searchAreaSize - size):
                 print("pos:",x,z)
 
-                # dist = math.sqrt(abs(x-center_x)**2 + abs(z-center_z)**2)
                 dist = math.dist([x,z], [center_x, center_z])
 
                 # print("Distance from center:", dist)

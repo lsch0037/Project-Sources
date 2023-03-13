@@ -1,9 +1,11 @@
 import sys
 import json
 import os
+import copy
 from os import path
 
 import numpy as np
+import random
 
 from pcglib.Game import Game
 from pcglib.primitive import *
@@ -40,11 +42,10 @@ def parse_program(prog):
         
     return tree
 
+
 def parse_expression(expr, parent_props):
 
-    print("Parsing Expression:", expr)
     props = variable_assign(expr, parent_props)
-    print("Props:", props)
 
     # If expression is a shape
     if "Shape" in expr:
@@ -54,9 +55,8 @@ def parse_expression(expr, parent_props):
     else:
         return parse_operator(expr, props)
 
+
 def parse_shape(prog, props):
-    print("Parsing Shape:", prog)
-    print("Props:", props)
 
     shape = props["Shape"]
 
@@ -66,9 +66,8 @@ def parse_shape(prog, props):
     else:
         return parse_custom_shape(prog, props, shape)
 
+
 def parse_primitive(prog, props, shape):
-    print("Parsing Primitive:", prog)
-    print("Props:", props)
 
     if shape == "Cube":
         return parse_cube(prog, props)
@@ -84,8 +83,8 @@ def parse_primitive(prog, props, shape):
 
     # TODO FOR OTHER SHAPES
 
+
 def parse_custom_shape(prog, props, shapeName):
-    # print("Parsing Custom Shape")
 
     json_path = 'json\\'+shapeName+'.json'
 
@@ -102,9 +101,8 @@ def parse_custom_shape(prog, props, shapeName):
     else:
         raise ValueError("Invalid Shape: {}".format(shapeName))
 
-def parse_operator(prog, props):
-    print("Parsing Operator:", prog)
 
+def parse_operator(prog, props):
 
     if "Union" in prog:
         return parse_union(prog["Union"], props)
@@ -115,9 +113,11 @@ def parse_operator(prog, props):
     elif "Difference" in prog:
         return parse_difference(prog["Difference"],props)
 
+    elif "Loop" in prog:
+        return parse_loop(prog["Loop"], props)
+
     else:
         raise ValueError("Invalid Operator: {}".format(prog))
-
 
 
 def variable_assign(json_prog, props):
@@ -137,6 +137,7 @@ def variable_assign(json_prog, props):
 
 
     return new_props
+
 
 def variable_expression(var_expr, vars):
     # If the expression is a string
@@ -171,13 +172,10 @@ def variable_expression(var_expr, vars):
 def variable_expansion(var_exp, props):
     varName = var_exp.replace('$', '')
 
-    print("Parsing varaible", var_exp, "->", props[varName])
-
     return props[varName]
 
 
 def function_call(fn_call,props):
-    print("Parsing function:", fn_call)
     funName = fn_call.split('!')[1].split('(')[0]
 
     args_str = fn_call.split('(')[1].split(')')[0]
@@ -186,10 +184,10 @@ def function_call(fn_call,props):
     args = []
 
     for arg in args_split:
+        # TODO: ALLOW FOR FUNCTION CALLS IN ARGUMENTS
         arg_cleaned = arg.replace(' ','')
         args.append(variable_expression(arg_cleaned, props))
 
-    print("Evaluated args:", args)
 
     if funName == "getHeight":
         return getHeight(args[0], args[1])
@@ -206,14 +204,17 @@ def function_call(fn_call,props):
     elif funName == "div":
         return float(args[0])/float(args[1])
 
-    elif funName == "matchSquare":
-        return matchSquare(args[0],args[1],args[2],args[3])
+    # elif funName == "matchSquare":
+    #     return matchSquare(args[0],args[1],args[2],args[3])
+
+    elif funName == "randInt":
+        return randomInt(args[0],args[1])
 
         # TODO OTHER FUNCTION CALLS
 
+
 # !GEOMETRIC OPERATORS
 def parse_union(prog, props):
-    print("Parsing Union:", prog)
     union_node = unionNode()
 
     for item in prog:
@@ -222,8 +223,8 @@ def parse_union(prog, props):
 
     return union_node
 
+
 def parse_difference(prog, props):
-    print("Parsing Difference:", prog)
     diff_node = differenceNode()
 
     for item in prog:
@@ -232,25 +233,63 @@ def parse_difference(prog, props):
 
     return diff_node
     
+
+def parse_loop(prog, parent_props):
+    print("Parsing Loop")
+
+
+    # Checking that variables exist
+    if not "loop_var" in prog:
+        raise ValueError("No 'loop_var' variable in loop construct")
+
+    elif not "loop_range" in prog:
+        raise ValueError("No 'loop_range' variable in loop construct")
+
+    elif not "loop_body" in prog:
+        raise ValueError("No 'loop_body' variable in loop construct")
+
+    loop_var = prog["loop_var"]
+    loop_range = prog["loop_range"]
+    body = prog["loop_body"]
+
+
+    # Type checking
+    if not isinstance(loop_var, str):
+        raise TypeError("Loop variable 'loop_var' is of invalid type {type}".format(varname=loop_var, type = type(loop_var)))
+    
+    elif not isinstance(loop_range, int):
+        raise TypeError("Loop variable 'loop_start' is of invalid type {type}".format(varname=loop_start, type = type(loop_var)))
+
+    elif not isinstance(body, dict):
+        raise TypeError("Loop variable {varname} is of invalid type {type}".format(type = type(loop_var)))
+
+    uNode = unionNode()
+
+    for i in range(0, loop_range):
+        props = copy.copy(parent_props)
+        props[loop_var] = i
+
+        node = parse_expression(body, props)
+        uNode.addChild(node)
+
+    return uNode
+
+
+    
 # !PRIMITIVE SHAPES
 def parse_cube(prog,parent_props):
     props = variable_assign(prog,parent_props)
-    print("Parsing Cube:", prog)
-    print("Props:", props)
 
     size = props["Size"]
     material = materials[props["Material"]]
     pos = props["Position"]
 
-    print("cube:",pos, idMat, material, size)
     print("Cube(pos:",pos,", Material:", material,"Size:",size,")")
 
     return cube(pos, idMat, material, size)
 
 
 def parse_sphere(prog,props):
-    print("Parsing Sphere:", prog)
-    print("Props:", props)
 
     rad = props["Radius"]
     material = materials[props["Material"]]
@@ -262,8 +301,6 @@ def parse_sphere(prog,props):
 
 
 def parse_cylinder(prog, props):
-    print("Parsing Cylinder:", prog)
-    print("Props:", props)
 
     rad = props["Radius"]
     len = props["Length"]
@@ -274,9 +311,8 @@ def parse_cylinder(prog, props):
 
     return cylinder(pos, idMat, material, rad, len)
 
+
 def parse_cuboid(prog,props):
-    print("Parsing Cuboid:", prog)
-    print("Props:", props)
 
     pos = props["Position"]
     rot = idMat
@@ -287,13 +323,18 @@ def parse_cuboid(prog,props):
 
     return cuboid(pos, idMat, material, dim)
 
-# !BUILT IN FUNCTIONS
 
+# !BUILT IN FUNCTIONS
 def getHeight(x, z):
     return game.getHeight(float(x),float(z))
 
+
 def matchSquare(x,z,max_offset, size):
     return game.matchSquare(x,z,max_offset, size)
+
+
+def randomInt(min, max):
+    return random.randint(min, max)
 
 
 # !PARSING PROGRAM
@@ -308,7 +349,6 @@ text = f.read()
 f.close()
 
 # CREATING GAME OBJECT
-# zero_offset = vec3([-144, -81, -224])
 zero_offset = np.array([-144, -81, -224])
 game = Game(zero_offset)
 

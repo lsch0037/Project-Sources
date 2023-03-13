@@ -1,0 +1,15 @@
+{
+    "Loop":{
+        "loop_var":"id",
+        "loop_range":10,
+
+        "loop_body":{
+            "rel": "!mul($id,3)",
+            "Position":[0, "!getHeight(0,$rel)", "$rel"],
+
+            "Shape":"Cube",
+            "Size":1,
+            "Material":"Stone"
+        }
+    }
+}
