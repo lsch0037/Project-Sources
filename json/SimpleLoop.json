@@ -1,15 +1,26 @@
 {
     "Loop":{
-        "loop_var":"id",
+        "loop_var":"x_iter",
         "loop_range":10,
 
         "loop_body":{
-            "rel": "!mul($id,3)",
-            "Position":[0, "!getHeight(0,$rel)", "$rel"],
+            "x_offset": "!mul($x_iter,3)",
 
-            "Shape":"Cube",
-            "Size":1,
-            "Material":"Stone"
+            "Loop":{
+                "loop_var":"y_iter",
+                "loop_range":10,
+
+                "loop_body":{
+                    "y_offset":"!mul($y_iter,3)",
+                    "groundHeight":"!getHeight($x_offset,$y_offset)",
+                    "Position":["$x_offset","!add($groundHeight,1)","$y_offset"],
+
+                    "Shape":"Cube",
+                    "Size":1,
+                    "Material":"Stone"
+                }
+            }
+
         }
     }
 }
