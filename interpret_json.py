@@ -221,7 +221,7 @@ def function_call(fn_call,props):
 
 
 def parse_arguments(arguments, props):
-    # print("Arguments:",arguments)
+    print("Arguments:",arguments)
 
     # Replace all spaces
     text = arguments.replace(' ','')
@@ -236,14 +236,14 @@ def parse_arguments(arguments, props):
 
     splits = text.split(',')
 
-    # print("splits:", splits)
+    print("splits:", splits)
     tokens = []
 
     i = 0
     while i < len(splits):
         token = splits[i]
 
-        if len(token) > 0 and token[0] == '!':
+        if token[0] == '!' and token.find(')') == -1:
             
             j = i + 1
             while splits[j].find(')') == -1:
@@ -259,14 +259,14 @@ def parse_arguments(arguments, props):
         tokens.append(token)
         i += 1
 
-    # print("Tokens:", tokens)
+    print("Tokens:", tokens)
                 
     args = []
     for token in tokens:
         value = variable_expression(token, props)
         args.append(value)
 
-    # print("Final evaluated arguments:", args)
+    print("Final evaluated arguments:", args)
 
     return args
 
