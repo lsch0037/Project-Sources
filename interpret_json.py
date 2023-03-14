@@ -127,22 +127,26 @@ def variable_assign(json_prog, props):
     new_props = props.copy()
 
     for key in json_prog:
-        if key == "Relative":
+        if isinstance(json_prog[key], dict):
+            continue
+
+        elif key == "Relative":
             abs_pos = np.array(new_props["Position"])
             rel_pos = variable_expression(json_prog["Relative"], new_props)
             new_props["Position"] = abs_pos + rel_pos
             continue
 
-        if key in shapeOperators:
+        elif key in shapeOperators:
             continue
 
         new_props[key] = variable_expression(json_prog[key], new_props)
-
+        print("{key} -> {val}".format(key=key, val= new_props[key]))
 
     return new_props
 
 
 def variable_expression(var_expr, vars):
+    # print("Variable Expression:", var_expr)
     # If the expression is a string
     if isinstance(var_expr, str):
         # If expression is a function call
@@ -179,20 +183,13 @@ def variable_expansion(var_exp, props):
 
 
 def function_call(fn_call,props):
+
+    # Extract funciton name
     funName = fn_call.split('!')[1].split('(')[0]
 
-    args_str = fn_call.split('(')[1].split(')')[0]
-    args_split = args_str.split(',')
+    args_raw = fn_call.split('(', 1)[1].rsplit(')',1)[0]
 
-    print("Args raw:", args_split)
-
-    args = []
-
-    for arg in args_split:
-        # TODO: ALLOW FOR FUNCTION CALLS IN ARGUMENTS
-        arg_cleaned = arg.replace(' ','')
-        args.append(variable_expression(arg_cleaned, props))
-
+    args = parse_arguments(args_raw,props)
 
     if funName == "getHeight":
         return getHeight(args[0], args[1])
@@ -221,6 +218,57 @@ def function_call(fn_call,props):
         # TODO OTHER FUNCTION CALLS
     else:
         raise ValueError("No such function is defined: {}".format(funName))
+
+
+def parse_arguments(arguments, props):
+    # print("Arguments:",arguments)
+
+    # Replace all spaces
+    text = arguments.replace(' ','')
+
+    # Check that scopes are correct
+    if text.count('(') > text.count(')'):
+        raise ValueError("Unexpected ')' at {text}".format(text=text))
+
+    elif text.count('(') < text.count(')'):
+        raise ValueError("Expected ')' at {text}".format(text=text))
+
+
+    splits = text.split(',')
+
+    # print("splits:", splits)
+    tokens = []
+
+    i = 0
+    while i < len(splits):
+        token = splits[i]
+
+        if len(token) > 0 and token[0] == '!':
+            
+            j = i + 1
+            while splits[j].find(')') == -1:
+                token += splits[j]
+                j += 1
+            else:
+                target_token = splits[j]
+
+                token = token + ','+ target_token.split(')')[0] + ')'
+
+                i = j
+        
+        tokens.append(token)
+        i += 1
+
+    # print("Tokens:", tokens)
+                
+    args = []
+    for token in tokens:
+        value = variable_expression(token, props)
+        args.append(value)
+
+    # print("Final evaluated arguments:", args)
+
+    return args
 
 
 # !GEOMETRIC OPERATORS
