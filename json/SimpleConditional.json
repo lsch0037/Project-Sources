@@ -1,0 +1,19 @@
+{
+    "groundHeight":"!getHeight(0,0)",
+    "Position":[0,"!add($groundHeight,1)",0],
+
+    "If":{
+        "if_condition":"!isEqual(!getBlock($Position),Air)",
+
+        "if_block":{
+            "Shape":"Cube",
+            "Size":1,
+            "Material":"Diamond Block"
+        },
+        "else_block":{
+            "Shape":"Cube",
+            "Size":1,
+            "Material":"Stone"
+        }
+    }
+}

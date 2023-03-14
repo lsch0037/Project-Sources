@@ -116,6 +116,9 @@ def parse_operator(prog, props):
     elif "Loop" in prog:
         return parse_loop(prog["Loop"], props)
 
+    elif "If" in prog:
+        return parse_if(prog["If"],props)
+
     else:
         raise ValueError("Invalid Operator: {}".format(prog))
 
@@ -181,6 +184,8 @@ def function_call(fn_call,props):
     args_str = fn_call.split('(')[1].split(')')[0]
     args_split = args_str.split(',')
 
+    print("Args raw:", args_split)
+
     args = []
 
     for arg in args_split:
@@ -204,13 +209,18 @@ def function_call(fn_call,props):
     elif funName == "div":
         return float(args[0])/float(args[1])
 
-    # elif funName == "matchSquare":
-    #     return matchSquare(args[0],args[1],args[2],args[3])
-
     elif funName == "randInt":
         return randomInt(int(args[0]),int(args[1]))
 
+    elif funName == "isEqual":
+        return (args[0] == args[1])
+
+    elif funName == "getBlock":
+        return getBlock(args[0])
+
         # TODO OTHER FUNCTION CALLS
+    else:
+        raise ValueError("No such function is defined: {}".format(funName))
 
 
 # !GEOMETRIC OPERATORS
@@ -253,13 +263,13 @@ def parse_loop(prog, parent_props):
 
     # Type checking
     if not isinstance(loop_var, str):
-        raise TypeError("Loop variable 'loop_var' is of invalid type {type}".format(varname=loop_var, type = type(loop_var)))
+        raise TypeError("Loop variable {varname} is of invalid type {type}".format(varname="loop_var", type = type(loop_var)))
     
     elif not isinstance(loop_range, int):
-        raise TypeError("Loop variable 'loop_start' is of invalid type {type}".format(varname=loop_start, type = type(loop_var)))
+        raise TypeError("Loop variable {varname} is of invalid type {type}".format(varname="loop_range", type = type(loop_range)))
 
     elif not isinstance(body, dict):
-        raise TypeError("Loop variable {varname} is of invalid type {type}".format(type = type(loop_var)))
+        raise TypeError("Loop variable {varname} is of invalid type {type}".format(varname="loop_body",type = type(body)))
 
     uNode = unionNode()
 
@@ -272,6 +282,50 @@ def parse_loop(prog, parent_props):
 
     return uNode
 
+
+def parse_if(prog, parent_props):
+
+    if not "if_condition" in prog:
+        raise ValueError("No 'if_condition' variable in 'if' construct")
+
+    elif not "if_block" in prog:
+        raise ValueError("No 'if_block' variable in 'if' construct")
+    
+
+    condition = prog["if_condition"]
+    if_block = prog["if_block"]
+
+    else_block = None
+
+    if "else_block" in prog:
+        else_block = prog["else_block"]
+
+
+
+    # Type checking
+    if not isinstance(condition, (str, bool)):
+        raise TypeError("If variable {varname} is of invalid type {type}".format(varname="if_condition", type = type(condition)))
+    
+    elif not isinstance(if_block, dict):
+        raise TypeError("If variable {varname} is of invalid type {type}".format(varname="if_block", type = type(if_block)))
+
+    if not else_block == None and not isinstance(else_block, dict):
+        raise TypeError("If variable {varname} is of invalid type {type}".format(varname="else_block", type = type(else_block)))
+
+
+    # Evaluating condition
+    result = variable_expression(condition, parent_props)
+
+    # Type checking result
+    if not isinstance(result, bool):
+        raise TypeError("Condition must have return type 'bool' and not {type}".format(type = type(result)))
+
+    # Evaluating corresponding block
+    if result:
+        return parse_expression(if_block, parent_props)
+
+    elif not else_block == None and not result:
+        return parse_expression(else_block, parent_props)
 
     
 # !PRIMITIVE SHAPES
@@ -333,6 +387,9 @@ def matchSquare(x,z,max_offset, size):
 
 def randomInt(min, max):
     return random.randint(min, max)
+
+def getBlock(pos):
+    return game.get(pos)
 
 
 # !PARSING PROGRAM
