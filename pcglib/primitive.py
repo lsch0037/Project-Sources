@@ -19,9 +19,35 @@ class primitive(compound):
     def unset(self, buf):
         self._set_internal(buf, "unset")
 
-    def rotateX(self, theta):
+    def rotateX(self, deg):
+        theta = deg* math.pi / 180
+
         rotation = np.array(
-            [1.0,0.0,0.0, 0.0,math.cos(theta), -math.sin(theta), 0.0, math.sin(theta), math.cos(theta)]
+            [1.0,0.0,0.0,
+            0.0, math.cos(theta), -math.sin(theta),
+            0.0, math.sin(theta), math.cos(theta)]
+        ).reshape(3,3)
+
+        self.rot = np.matmul(self.rot, rotation)
+
+    def rotateY(self, deg):
+        theta = deg* math.pi / 180
+
+        rotation = np.array(
+            [math.cos(theta), 0.0, math.sin(theta),
+            0.0, 1.0, 0.0,
+            -math.sin(theta), 0, math.cos(theta)]
+        ).reshape(3,3)
+
+        self.rot = np.matmul(self.rot, rotation)
+
+    def rotateZ(self, deg):
+        theta = deg* math.pi / 180
+
+        rotation = np.array(
+            [math.cos(theta), -math.sin(theta), 0.0,
+            math.sin(theta), math.cos(theta), 0.0,
+            0.0, 0.0, 1.0]
         ).reshape(3,3)
 
         self.rot = np.matmul(self.rot, rotation)
@@ -56,14 +82,14 @@ class cuboid(primitive):
 
     def _set_internal(self, buffer, op):
 
-        x_d = self.rot[0]
-        y_d = self.rot[1]
-        z_d = self.rot[2]
+        x_dir = self.rot[0]
+        y_dir = self.rot[1]
+        z_dir = self.rot[2]
 
-        for i in range(int(self.dim[0])):
-            for j in range(int(self.dim[1])):
-                for k in range(int(self.dim[2])):
-                    current_pos = self.pos + x_d*i + y_d*j + z_d*k
+        for i in range(int(self.dim[0])*2):
+            for j in range(int(self.dim[1])*2):
+                for k in range(int(self.dim[2])*2):
+                    current_pos = self.pos + x_dir*(i/2) + y_dir*(j/2) + z_dir*(k/2)
 
                     if op == "set":
                         buffer.set(current_pos, self.material)
@@ -91,6 +117,16 @@ class sphere(primitive):
                         elif op == "unset":
                             buffer.unset(current_pos)
 
+    # !Rotating a sphere does nothing
+    def rotateX(self, theta):
+        return
+    
+    def rotateY(self, theta):
+        return
+
+    def rotateZ(self, theta):
+        return
+
 class cylinder(primitive):
     def __init__(self, pos, rot, material, rad, len):
         super().__init__(pos, rot,material)
@@ -103,13 +139,12 @@ class cylinder(primitive):
         y_d = self.rot[1]
         z_d = self.rot[2]
 
-
-        for h in range(self.len):
-            center_pos = self.pos + y_d*h
-            for i in range(-self.rad, self.rad):
-                for j in range(-self.rad, self.rad):
-                    current_pos = self.pos + x_d*i + y_d*h + z_d*j
-                    dist =np.linalg.norm(current_pos - center_pos)  
+        for h in range(self.len*2):
+            center_pos = self.pos + y_d*(h/2)
+            for i in range(-self.rad*2, self.rad*2):
+                for j in range(-self.rad*2, self.rad*2):
+                    current_pos = self.pos + x_d*(i/2) + y_d*(h/2) + z_d*(j/2)
+                    dist = np.linalg.norm(current_pos - center_pos)  
 
                     if dist <= self.rad:
                         if op == "set":
