@@ -19,38 +19,38 @@ class primitive(compound):
     def unset(self, buf):
         self._set_internal(buf, "unset")
 
-    def rotateX(self, deg):
-        theta = deg* math.pi / 180
+    # def rotateX(self, deg):
+    #     theta = deg* math.pi / 180
 
-        rotation = np.array(
-            [1.0,0.0,0.0,
-            0.0, math.cos(theta), -math.sin(theta),
-            0.0, math.sin(theta), math.cos(theta)]
-        ).reshape(3,3)
+    #     rotation = np.array(
+    #         [1.0,0.0,0.0,
+    #         0.0, math.cos(theta), -math.sin(theta),
+    #         0.0, math.sin(theta), math.cos(theta)]
+    #     ).reshape(3,3)
 
-        self.rot = np.matmul(self.rot, rotation)
+    #     self.rot = np.matmul(self.rot, rotation)
 
-    def rotateY(self, deg):
-        theta = deg* math.pi / 180
+    # def rotateY(self, deg):
+    #     theta = deg* math.pi / 180
 
-        rotation = np.array(
-            [math.cos(theta), 0.0, math.sin(theta),
-            0.0, 1.0, 0.0,
-            -math.sin(theta), 0, math.cos(theta)]
-        ).reshape(3,3)
+    #     rotation = np.array(
+    #         [math.cos(theta), 0.0, math.sin(theta),
+    #         0.0, 1.0, 0.0,
+    #         -math.sin(theta), 0, math.cos(theta)]
+    #     ).reshape(3,3)
 
-        self.rot = np.matmul(self.rot, rotation)
+    #     self.rot = np.matmul(self.rot, rotation)
 
-    def rotateZ(self, deg):
-        theta = deg* math.pi / 180
+    # def rotateZ(self, deg):
+    #     theta = deg* math.pi / 180
 
-        rotation = np.array(
-            [math.cos(theta), -math.sin(theta), 0.0,
-            math.sin(theta), math.cos(theta), 0.0,
-            0.0, 0.0, 1.0]
-        ).reshape(3,3)
+    #     rotation = np.array(
+    #         [math.cos(theta), -math.sin(theta), 0.0,
+    #         math.sin(theta), math.cos(theta), 0.0,
+    #         0.0, 0.0, 1.0]
+    #     ).reshape(3,3)
 
-        self.rot = np.matmul(self.rot, rotation)
+    #     self.rot = np.matmul(self.rot, rotation)
 
 
 class cube(primitive):

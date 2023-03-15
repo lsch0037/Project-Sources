@@ -1,19 +1,19 @@
 {
     "HalfRoomSize":"!div($RoomSize,2)",
     "SideSquared":"!pow($HalfRoomSize,2)",
-    "hypotenuse":"!sqrt(!mul(SideSquared,2))",
+    "hypotenuse":"!sqrt(!mul($SideSquared,2))",
     "Material":"$RoofMaterial",
 
     "Union":[
         {
             "Shape":"Cuboid",
-            "Orientation":"!rotateX($Orientation, 45)",
+            "Orientation":"!rotateX($Orientation, -45)",
             "Dimensions":["$RoomSize",1,"$hypotenuse"],
             "Relative":[0, "$HalfRoomSize", "$HalfRoomSize"]
         },
         {
             "Shape":"Cuboid",
-            "Action":"!rotateX(-45)",
+            "Orientation":"!rotateX($Orientation, 45)",
             "Dimensions":["$RoomSize",1,"$hypotenuse"]
         }
     ]

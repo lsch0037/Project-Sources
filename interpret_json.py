@@ -158,7 +158,8 @@ def variable_expression(var_expr, vars):
         elif var_expr[0] == '$':
             return variable_expansion(var_expr, vars)
 
-        elif var_expr.isnumeric():
+        # If expression is a string of a number
+        elif var_expr.replace(".","").replace("-","").isnumeric():
             return float(var_expr)
 
         # Otherwise return literal

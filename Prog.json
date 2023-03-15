@@ -1,6 +1,4 @@
 {
-    "Shape":"Roof",
-    "RoomSize":10,
-    "RoofMaterial":"Wooden Planks",
     "Position":[0, "!add(!getHeight(0,0),1)",0],
+    "Shape":"House"
 }
