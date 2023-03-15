@@ -32,9 +32,10 @@ primitiveNames = ["Cube", "Sphere", "Cuboid", "Cylinder"]
 
 def parse_program(prog):
     tree = compound()
-    props = {
-        "Position" : [0.5, 100.5, 0.5]
-    }
+    props = dict()
+
+    props["Position"] = np.array([0.0, 100.0, 0.0])
+    props["Orientation"] = np.identity(3)
 
     # Parse an expression
     node = parse_expression(prog,props)
@@ -157,6 +158,9 @@ def variable_expression(var_expr, vars):
         elif var_expr[0] == '$':
             return variable_expansion(var_expr, vars)
 
+        elif var_expr.isnumeric():
+            return float(var_expr)
+
         # Otherwise return literal
         else:
             return var_expr
@@ -206,6 +210,12 @@ def function_call(fn_call,props):
     elif funName == "div":
         return float(args[0])/float(args[1])
 
+    elif funName == "pow":
+        return math.pow(args[0],args[1])
+
+    elif funName == "sqrt":
+        return math.sqrt(args[0])
+
     elif funName == "randInt":
         return randomInt(int(args[0]),int(args[1]))
 
@@ -215,6 +225,8 @@ def function_call(fn_call,props):
     elif funName == "getBlock":
         return getBlock(args[0])
 
+    elif funName == "rotateX":
+        return rotateX(args[0], args[1])
         # TODO OTHER FUNCTION CALLS
     else:
         raise ValueError("No such function is defined: {}".format(funName))
@@ -383,10 +395,12 @@ def parse_cube(prog,parent_props):
     size = props["Size"]
     material = materials[props["Material"]]
     pos = props["Position"]
+    orientation = props["Orientation"]
+    print(type(orientation))
 
-    print("Cube(pos:",pos,", Material:", material,"Size:",size,")")
+    print("Cube(pos:{p}, rot:{r}, mat:{m}, size:{s}".format(p=pos,r=orientation,m=material,s=size))
 
-    return cube(pos, idMat, material, size)
+    return cube(pos, orientation, material, size)
 
 
 def parse_sphere(prog,props):
@@ -406,23 +420,72 @@ def parse_cylinder(prog, props):
     len = props["Length"]
     material = materials[props["Material"]]
     pos = props["Position"]
+    orientation = props["Orientation"]
+    print(type(orientation))
 
-    print("Cylinder(pos:{pos}, rot:{rot}, mat:{material}, rad:{rad}, len{len})".format(pos=pos, rot=idMat, material=material, rad=rad, len=len))
+    print("Cylinder(pos:{pos}, rot:{rot}, mat:{material}, rad:{rad}, len{len})".format(pos=pos, rot=orientation, material=material, rad=rad, len=len))
 
-    return cylinder(pos, idMat, material, rad, len)
+    return cylinder(pos, orientation, material, rad, len)
 
 
 def parse_cuboid(prog,props):
 
     pos = props["Position"]
-    rot = idMat
+    orientation = props["Orientation"]
     material = materials[props["Material"]]
     dim = props["Dimensions"]
 
-    print("Cuboid(pos:{pos}, rot:{rot}, material:{material}, dim:{dim})".format(pos=pos, rot=rot, material=material, dim=dim))
+    print("Cuboid(pos:{pos}, rot:{rot}, material:{material}, dim:{dim})".format(pos=pos, rot=orientation, material=material, dim=dim))
 
-    return cuboid(pos, idMat, material, dim)
+    return cuboid(pos, orientation, material, dim)
 
+# ! ROTATING THE MATRIX
+def rotateX(mat, deg):
+
+    # Type Checking
+    if not isinstance(mat, (list, np.ndarray)):
+        raise TypeError("Argument 'mat' is of invalid type: {t}".format(t=type(mat)))
+
+    elif not np.shape(mat) == (3,3):
+        raise ValueError("Argument 'mat' must have dimensions '(3,3)', not {d}".format(d=np.shape(mat)))
+
+    elif not isinstance(deg, (int,float)):
+        raise TypeError("Argument 'deg' must be of types 'int' or 'float', not {t}".format(t=type(deg)))
+
+    # np_map = np.array(mat).reshape(3,3)
+    # print(np_map)
+
+    theta = deg* math.pi / 180
+
+    rotation = np.array(
+        [1.0,0.0,0.0,
+        0.0, math.cos(theta), -math.sin(theta),
+        0.0, math.sin(theta), math.cos(theta)]
+    ).reshape(3,3)
+
+    return np.matmul(mat, rotation)
+
+def rotateY(mat, deg):
+    theta = float(deg)* math.pi / 180.0
+
+    rotation = np.array(
+        [math.cos(theta), 0.0, math.sin(theta),
+        0.0, 1.0, 0.0,
+        -math.sin(theta), 0, math.cos(theta)]
+    ).reshape(3,3)
+
+    return np.matmul(mat, rotation)
+
+def rotateZ(mat, deg):
+    theta = deg* math.pi / 180
+
+    rotation = np.array(
+        [math.cos(theta), -math.sin(theta), 0.0,
+        math.sin(theta), math.cos(theta), 0.0,
+        0.0, 0.0, 1.0]
+    ).reshape(3,3)
+
+    return np.matmul(mat, rotation)
 
 # !BUILT IN FUNCTIONS
 def getHeight(x, z):

@@ -1,0 +1,7 @@
+{
+    "Shape":"Cube",
+    "Orientation":"!rotateX($Orientation,30)",
+    "Size":10,
+    "Material":"Air",
+    "Position":[0,100,0]
+}

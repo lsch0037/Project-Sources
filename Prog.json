@@ -1,11 +1,6 @@
 {
-    "GroundHeight": "!getHeight(0,0)",
-    "Position":[0, "!add($GroundHeight,1)",0],
-    "WallMaterial":"Diamond Block",
-    "FloorMaterial":"Stone",
-    "CeilingMaterial":"Stone",
-    "RoomSize":20,
-    "WallThickness":3,
-    "RoomHeight":5,
-    "Shape": "HollowRoom"
+    "Shape":"Roof",
+    "RoomSize":10,
+    "RoofMaterial":"Wooden Planks",
+    "Position":[0, "!add(!getHeight(0,0),1)",0],
 }
