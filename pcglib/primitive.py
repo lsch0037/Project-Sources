@@ -1,6 +1,7 @@
 from pcglib.compound import compound
 
 import numpy as np
+import math
 
 class primitive(compound):
     def __init__(self, pos, rot, material):
@@ -18,6 +19,13 @@ class primitive(compound):
     def unset(self, buf):
         self._set_internal(buf, "unset")
 
+    def rotateX(self, theta):
+        rotation = np.array(
+            [1.0,0.0,0.0, 0.0,math.cos(theta), -math.sin(theta), 0.0, math.sin(theta), math.cos(theta)]
+        ).reshape(3,3)
+
+        self.rot = np.matmul(self.rot, rotation)
+
 
 class cube(primitive):
     def __init__(self, pos, rot,material, size):
@@ -29,11 +37,10 @@ class cube(primitive):
         y_d = self.rot[1]
         z_d = self.rot[2]
 
-
-        for i in range(self.size):
-            for j in range(self.size):
-                for k in range(self.size):
-                    current_pos = self.pos + x_d*i + y_d*j + z_d*k
+        for i in range(self.size*2):
+            for j in range(self.size*2):
+                for k in range(self.size*2):
+                    current_pos = self.pos + x_d*(i/2) + y_d*(j/2) + z_d*(k/2)
 
                     if op == "set":
                         buffer.set(current_pos, self.material)

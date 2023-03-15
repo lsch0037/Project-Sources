@@ -5,7 +5,7 @@
             "RoomSize":10,
             "WallThickness": 1,
             "WallMaterial":"Wooden Planks",
-            "Shape":"WindowedRoom"
+            "Shape":"HollowRoom"
         }
     ]
 }
