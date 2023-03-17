@@ -1,0 +1,16 @@
+{
+    "Position":[-10,62,-10],
+    "Union":[
+        {
+            "Relative":[0,1,0],
+            "Shape":"Cuboid",
+            "Dimensions":[30,20,30],
+            "Material":"Air"
+        },
+        {
+            "Shape":"Cuboid",
+            "Dimensions":[30,1,30],
+            "Material":"Grass"
+        }
+    ]
+}

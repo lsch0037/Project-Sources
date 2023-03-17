@@ -13,11 +13,11 @@ from pcglib.compound import *
 
 
 # !GLOBAL CONSTANTS
-idMat = np.identity(3)
-
 materials = {
     "Air":0,
     "Stone": 1,
+    "Grass":2,
+    "Dirt":3,
     "Wooden Planks":5,
     "Wood" : 17,
     "Leaves" : 18,
@@ -132,9 +132,14 @@ def variable_assign(json_prog, props):
             continue
 
         elif key == "Relative":
-            abs_pos = np.array(new_props["Position"])
+            abs_pos = new_props["Position"]
+            orientation = new_props["Orientation"]
+
             rel_pos = variable_expression(json_prog["Relative"], new_props)
-            new_props["Position"] = abs_pos + rel_pos
+
+            new_pos = abs_pos + np.dot(orientation,rel_pos)
+            print("New Position: {n}".format(n=new_pos))
+            new_props["Position"] = new_pos
             continue
 
         elif key in shapeOperators:
@@ -422,7 +427,6 @@ def parse_cylinder(prog, props):
     material = materials[props["Material"]]
     pos = props["Position"]
     orientation = props["Orientation"]
-    print(type(orientation))
 
     print("Cylinder(pos:{pos}, rot:{rot}, mat:{material}, rad:{rad}, len{len})".format(pos=pos, rot=orientation, material=material, rad=rad, len=len))
 
@@ -516,8 +520,10 @@ text = f.read()
 f.close()
 
 # CREATING GAME OBJECT
-zero_offset = np.array([-144, -81, -224])
-game = Game(zero_offset)
+zero_pc = np.array([-144, -81, -224])
+zero_laptop = np.array([-95.0, -65.0, -63.0])
+
+game = Game(zero_pc)
 
 # CREATING JSON OBJECT
 prog = json.loads(text)

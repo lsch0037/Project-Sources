@@ -5,10 +5,13 @@ from pcglib.primitive import *
 from pcglib.buffer import *
 
 # Offset of the server
-Zero = [-144, -81, -224]
+offset_pc = [-144, -81, -224]
+
+# Server on Laptop
+offset_laptop = [-95.0, -65.0, -63.0]
 
 # Initiating game object
-game = Game(Zero)
+game = Game(offset_pc)
 
 position = np.array([0.0,100.0,0.0])
 orientation = np.identity(3)

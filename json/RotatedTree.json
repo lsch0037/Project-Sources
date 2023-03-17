@@ -1,0 +1,5 @@
+{
+    "Position":[10, "!add(!getHeight(10,10),10)",10],
+    "Orientation":"!rotateX($Orientation, 30)",
+    "Shape":"House"
+}

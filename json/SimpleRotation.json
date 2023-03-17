@@ -2,6 +2,6 @@
     "Shape":"Cube",
     "Orientation":"!rotateX($Orientation,30)",
     "Size":10,
-    "Material":"Air",
+    "Material":"Stone",
     "Position":[0,100,0]
 }

@@ -1,6 +1,6 @@
 {
     "RoomSize":10,
-    "RoomHeight":5,
+    "RoomHeight":10,
     "Union":[
         {
             "Label":"Ground Floor",
