@@ -138,7 +138,7 @@ def variable_assign(json_prog, props):
             rel_pos = variable_expression(json_prog["Relative"], new_props)
 
             new_pos = abs_pos + np.dot(orientation,rel_pos)
-            print("New Position: {n}".format(n=new_pos))
+            # print("New Position: {n}".format(n=new_pos))
             new_props["Position"] = new_pos
             continue
 

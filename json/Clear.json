@@ -4,12 +4,12 @@
         {
             "Relative":[0,1,0],
             "Shape":"Cuboid",
-            "Dimensions":[30,20,30],
+            "Dimensions":[40,40,40],
             "Material":"Air"
         },
         {
             "Shape":"Cuboid",
-            "Dimensions":[30,1,30],
+            "Dimensions":[40,1,40],
             "Material":"Grass"
         }
     ]
