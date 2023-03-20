@@ -1,20 +1,18 @@
 {
-    "RoomSize":10,
-    "RoomHeight":10,
+    "Args":["HouseWidth","HouseHeight","HouseLength","WallMaterial","FloorMaterial","RoofMaterial"],
     "Union":[
         {
-            "Label":"Ground Floor",
-            "WallThickness": 1,
-            "WallMaterial":"Wooden Planks",
-            "FloorMaterial":"Stone",
-            "CeilingMaterial":"Stone",
-            "Shape":"HollowRoom"
+            "Shape":"HollowRoom",
+            "RoomHeight":"$HouseHeight",
+            "RoomLength":"$HouseLength",
+            "RoomWidth":"$HouseWidth"
         },
         {
-            "Label":"Roof",
+            "Relative":[0,"$HouseHeight",0],
             "Shape":"Roof",
-            "RoofMaterial":"Wooden Planks",
-            "Relative":[0,"$RoomHeight", 0]
+            "RoofWidth":"$HouseWidth",
+            "RoofHeight":"!div($HouseWidth,2)",
+            "RoofLength":"$HouseLength"
         }
     ]
 }

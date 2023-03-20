@@ -1,0 +1,11 @@
+{
+    "Position":[40,63,40],
+    "Shape":"House",
+    "HouseWidth":8,
+    "HouseHeight":5,
+    "HouseLength":12,
+    "WallMaterial":"Stone Bricks",
+    "WallThickness":1,
+    "FloorMaterial":"Oak Planks",
+    "RoofMaterial":"Bricks"
+}

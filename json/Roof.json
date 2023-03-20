@@ -1,20 +1,22 @@
 {
-    "HalfRoomSize":"!div($RoomSize,2)",
-    "SideSquared":"!pow($HalfRoomSize,2)",
-    "hypotenuse":"!sqrt(!mul($SideSquared,2))",
-    "Material":"$RoofMaterial",
+    "HalfRoofLength":"!div($RoofLength,2)",
+    "HalfRoofWidth":"!div($RoofLength,2)",
 
+    "Relative":["!sub(0,$HalfRoofLength)","$RoofHeight",0],
+    "2SideSquared":"!add(!pow($RoofHeight,2),!pow($HalfRoofWidth,2))",
+    "Hypotenuse":"!sqrt($2SideSquared)",
     "Union":[
         {
+            "Orientation":"!rotateX($Orientation,45)",
             "Shape":"Cuboid",
-            "Orientation":"!rotateX($Orientation, -45)",
-            "Dimensions":["$RoomSize",1,"$hypotenuse"],
-            "Relative":[0, "$HalfRoomSize", "$HalfRoomSize"]
+            "Dimensions":["$RoofLength",1,"$Hypotenuse"],
+            "Material":"$RoofMaterial"
         },
         {
+            "Orientation":"!rotateX($Orientation,135)",
             "Shape":"Cuboid",
-            "Orientation":"!rotateX($Orientation, 45)",
-            "Dimensions":["$RoomSize",1,"$hypotenuse"]
+            "Dimensions":["$RoofLength",1,"$Hypotenuse"],
+            "Material":"$RoofMaterial"
         }
     ]
 }

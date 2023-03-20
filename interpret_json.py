@@ -18,10 +18,13 @@ materials = {
     "Stone": 1,
     "Grass":2,
     "Dirt":3,
-    "Wooden Planks":5,
-    "Wood" : 17,
+    "Cobblestone":4,
+    "Oak Planks":5,
+    "Oak Wood" : 17,
     "Leaves" : 18,
-    "Diamond Block": 57
+    "Bricks":45,
+    "Diamond Block": 57,
+    "Stone Bricks":98
 }
 
 shapeOperators = ["Union", "Intersection", "Difference"]
@@ -239,7 +242,7 @@ def function_call(fn_call,props):
 
 
 def parse_arguments(arguments, props):
-    print("Arguments:",arguments)
+    # print("Arguments:",arguments)
 
     # Replace all spaces
     text = arguments.replace(' ','')
@@ -254,7 +257,7 @@ def parse_arguments(arguments, props):
 
     splits = text.split(',')
 
-    print("splits:", splits)
+    # print("splits:", splits)
     tokens = []
 
     i = 0
@@ -277,14 +280,14 @@ def parse_arguments(arguments, props):
         tokens.append(token)
         i += 1
 
-    print("Tokens:", tokens)
+    # print("Tokens:", tokens)
                 
     args = []
     for token in tokens:
         value = variable_expression(token, props)
         args.append(value)
 
-    print("Final evaluated arguments:", args)
+    # print("Final evaluated arguments:", args)
 
     return args
 

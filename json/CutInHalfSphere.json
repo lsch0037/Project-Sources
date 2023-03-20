@@ -2,7 +2,7 @@
     "Label":"Cut in half sphere",
     "originX": 0,
     "originZ":0,
-    "originY": "!ground($originX,$originZ)",
+    "originY": "!getHeight($originX,$originZ)",
     "origin": ["$originX","$originY", "$originZ"],
     "Position":"$origin",
     "Difference":[
