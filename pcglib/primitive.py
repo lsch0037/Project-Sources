@@ -69,6 +69,8 @@ class sphere(primitive):
         self.rad = rad
 
     def _set_internal(self, buffer, op):
+        print("Pos:{p}, Rad:{r}".format(p=self.pos, r=self.rad))
+
         pos0 = self.pos - np.array([self.rad, self.rad, self.rad])
 
         for x in range(0,2*self.rad):
@@ -79,7 +81,8 @@ class sphere(primitive):
 
                     if dist <= self.rad:
                         if op == "set":
-                            buffer.set(current_pos, self.material)
+                            # buffer.set(current_pos, self.material)
+                            buffer.set(current_pos, self.material.get())
                         elif op == "unset":
                             buffer.unset(current_pos)
 

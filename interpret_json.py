@@ -20,8 +20,9 @@ materials = {
     "Dirt":3,
     "Cobblestone":4,
     "Oak Planks":5,
+    "Water":9,
     "Oak Wood" : 17,
-    "Leaves" : 18,
+    "Oak Leaves" : 18,
     "Bricks":45,
     "Diamond Block": 57,
     "Stone Bricks":98
@@ -326,7 +327,7 @@ def parse_loop(prog, parent_props):
         raise ValueError("No 'loop_body' variable in loop construct")
 
     loop_var = prog["loop_var"]
-    loop_range = prog["loop_range"]
+    loop_range = int(variable_expression(prog["loop_range"],parent_props))
     body = prog["loop_body"]
 
 
@@ -460,9 +461,6 @@ def rotateX(mat, deg):
     elif not isinstance(deg, (int,float)):
         raise TypeError("Argument 'deg' must be of types 'int' or 'float', not {t}".format(t=type(deg)))
 
-    # np_map = np.array(mat).reshape(3,3)
-    # print(np_map)
-
     theta = deg* math.pi / 180
 
     rotation = np.array(
@@ -474,7 +472,18 @@ def rotateX(mat, deg):
     return np.matmul(mat, rotation)
 
 def rotateY(mat, deg):
-    theta = float(deg)* math.pi / 180.0
+
+    # Type Checking
+    if not isinstance(mat, (list, np.ndarray)):
+        raise TypeError("Argument 'mat' is of invalid type: {t}".format(t=type(mat)))
+
+    elif not np.shape(mat) == (3,3):
+        raise ValueError("Argument 'mat' must have dimensions '(3,3)', not {d}".format(d=np.shape(mat)))
+
+    elif not isinstance(deg, (int,float)):
+        raise TypeError("Argument 'deg' must be of types 'int' or 'float', not {t}".format(t=type(deg)))
+
+    theta = deg* math.pi / 180
 
     rotation = np.array(
         [math.cos(theta), 0.0, math.sin(theta),
@@ -485,6 +494,17 @@ def rotateY(mat, deg):
     return np.matmul(mat, rotation)
 
 def rotateZ(mat, deg):
+
+    # Type Checking
+    if not isinstance(mat, (list, np.ndarray)):
+        raise TypeError("Argument 'mat' is of invalid type: {t}".format(t=type(mat)))
+
+    elif not np.shape(mat) == (3,3):
+        raise ValueError("Argument 'mat' must have dimensions '(3,3)', not {d}".format(d=np.shape(mat)))
+
+    elif not isinstance(deg, (int,float)):
+        raise TypeError("Argument 'deg' must be of types 'int' or 'float', not {t}".format(t=type(deg)))
+
     theta = deg* math.pi / 180
 
     rotation = np.array(

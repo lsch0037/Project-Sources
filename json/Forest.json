@@ -22,7 +22,7 @@
                     "groundHeight":"!getHeight($x_pos,$z_pos)",
                     "Position":["$x_pos","!add($groundHeight,1)","$z_pos"],
 
-                    "Shape":"TreeParameterised",
+                    "Shape":"Tree",
                     "TrunkSize":"!randInt(1,3)",
                     "Height":"!randInt(5,10)",
                     "WoodType":"Wood",

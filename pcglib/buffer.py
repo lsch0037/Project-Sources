@@ -101,11 +101,8 @@ class buffer():
 
 
     def write(self, other):
-        print("Writing buffer...")
         for i in self.d:
             for j in self.d[i]:
                 for k in self.d[i][j]:
                     pos = np.array([i,j,k])
                     other.set(pos, self.get(pos))
-
-        print("...Done.")

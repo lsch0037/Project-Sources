@@ -1,17 +1,16 @@
 {
-    "Position":[0,"!getHeight(0,0)",0],
     "Union":[
         {
             "Shape" : "Cylinder",
-            "Radius" : 1,
-            "Length" : 10,
-            "Material" : "Wood"
+            "Radius" : "$TrunkSize",
+            "Length" : "$Height",
+            "Material" : "$WoodType"
         },
         {
             "Shape" : "Sphere",
-            "Radius" : 4,
-            "Material" : "Leaves",
-            "Relative": [0,8,0]
+            "Radius" : "$CrownSize",
+            "Material" : "$LeavesType",
+            "Relative": [0,"$Height",0]
         }
     ]
 }

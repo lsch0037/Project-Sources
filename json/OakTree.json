@@ -1,0 +1,9 @@
+{
+    "Position":[40,"!add(!getHeight(40,40),1)",40],
+    "Height":"!randInt(5, 20)",
+    "TrunkSize":"!randInt(1,!div($Height,3))",
+    "CrownSize":"!randInt(!add($TrunkSize,2),!add($TrunkSize, 5))",
+    "WoodType":"Oak Wood",
+    "LeavesType":"Oak Leaves",
+    "Shape":"Tree"
+}

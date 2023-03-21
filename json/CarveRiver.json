@@ -1,0 +1,31 @@
+{
+    "StartingX":0,
+    "StartingZ":0,
+    "X_size":"100",
+    "Loop":{
+        "loop_var":"iter",
+        "loop_range":"$X_size",
+
+        "loop_body":{
+            "X":"!add($StartingX,$iter)",
+            "Z":"!add($X, !randInt(-3,3))",
+            "Position":["$X","!getHeight($X,$Z)","$Z"],
+            "Rad":"!randInt(3,5)",
+
+            "Difference":[
+                {
+                    "Shape":"Sphere",
+                    "Radius":"$Rad",
+                    "Material":"Water"
+                },
+                {
+                    "Relative":["!sub(0,$Rad)", 1, "!sub(0,$Rad)"],
+                    "Shape":"Cuboid",
+                    "TwiceRadius":"!mul($Rad, 2)",
+                    "Dimensions":["$TwiceRadius","$TwiceRadius","$TwiceRadius"],
+                    "Material":"Air"
+                }
+            ]
+        }
+    }
+}
