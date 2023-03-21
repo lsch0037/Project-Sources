@@ -35,7 +35,8 @@ class cube(primitive):
                     current_pos = self.pos + x_d*(i/2) + y_d*(j/2) + z_d*(k/2)
 
                     if op == "set":
-                        buffer.set(current_pos, self.material)
+                        # buffer.set(current_pos, self.material)
+                        buffer.set(current_pos, self.material.get(current_pos))
                     elif op == "unset":
                         buffer.unset(current_pos)
 
@@ -58,7 +59,8 @@ class cuboid(primitive):
                     current_pos = self.pos + x_d*(i/2) + y_d*(j/2) + z_d*(k/2)
 
                     if op == "set":
-                        buffer.set(current_pos, self.material)
+                        # buffer.set(current_pos, self.material)
+                        buffer.set(current_pos, self.material.get(current_pos))
                     elif op == "unset":
                         buffer.unset(current_pos)
 
@@ -82,7 +84,7 @@ class sphere(primitive):
                     if dist <= self.rad:
                         if op == "set":
                             # buffer.set(current_pos, self.material)
-                            buffer.set(current_pos, self.material.get())
+                            buffer.set(current_pos, self.material.get(current_pos))
                         elif op == "unset":
                             buffer.unset(current_pos)
 
@@ -118,7 +120,8 @@ class cylinder(primitive):
 
                     if dist <= self.rad:
                         if op == "set":
-                            buffer.set(current_pos, self.material)
+                            # buffer.set(current_pos, self.material)
+                            buffer.set(current_pos, self.material.get(current_pos))
                         elif op == "unset":
                             buffer.unset(current_pos)
 
