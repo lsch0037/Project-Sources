@@ -1,0 +1,35 @@
+
+{
+    "Union":[
+        {
+            "Position":[10,80,10],
+            "Shape":"Sphere",
+            "Radius":10,
+            "Material":"Stone"
+        },
+        {
+            "Position":[50,80,50],
+
+            "Shape":"Sphere",
+            "Radius":10,
+
+            "Material":{
+                "Selector":"perlin",
+                "Air":0.5,
+                "Stone":1.0
+            }
+        },
+        {
+            "Position":[80,80,80],
+            "Shape":"Sphere",
+            "Radius":10,
+
+            "Material":[
+                "Air",
+                "Stone",
+                "Grass Block"
+            ]
+        }
+    ]
+
+}

@@ -120,7 +120,6 @@ class cylinder(primitive):
 
                     if dist <= self.rad:
                         if op == "set":
-                            # buffer.set(current_pos, self.material)
                             buffer.set(current_pos, self.material.get(current_pos))
                         elif op == "unset":
                             buffer.unset(current_pos)

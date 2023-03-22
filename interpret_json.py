@@ -10,24 +10,10 @@ import random
 from pcglib.Game import Game
 from pcglib.primitive import *
 from pcglib.compound import *
+from pcglib.material import *
 
 
 # !GLOBAL CONSTANTS
-materials = {
-    "Air":0,
-    "Stone": 1,
-    "Grass":2,
-    "Dirt":3,
-    "Cobblestone":4,
-    "Oak Planks":5,
-    "Water":9,
-    "Oak Wood" : 17,
-    "Oak Leaves" : 18,
-    "Bricks":45,
-    "Diamond Block": 57,
-    "Stone Bricks":98
-}
-
 shapeOperators = ["Union", "Intersection", "Difference"]
 primitiveNames = ["Cube", "Sphere", "Cuboid", "Cylinder"]
 
@@ -145,6 +131,7 @@ def variable_assign(json_prog, props):
             # print("New Position: {n}".format(n=new_pos))
             new_props["Position"] = new_pos
             continue
+        
 
         elif key in shapeOperators:
             continue
@@ -156,7 +143,6 @@ def variable_assign(json_prog, props):
 
 
 def variable_expression(var_expr, vars):
-    # print("Variable Expression:", var_expr)
     # If the expression is a string
     if isinstance(var_expr, str):
         # If expression is a function call
@@ -397,16 +383,46 @@ def parse_if(prog, parent_props):
     elif not else_block == None and not result:
         return parse_expression(else_block, parent_props)
 
+def parse_material(mat_exp):
+
+    # If Constant Material
+    if isinstance(mat_exp, str):
+        return constant_material(mat_exp)
+
+    # If random unweighted material
+    elif isinstance(mat_exp, list):
+        return random_material(mat_exp)
     
+    # If Complex Material with Weights
+    elif isinstance(mat_exp, dict):
+        ids = []
+        weight_threshold = []
+
+        for id in mat_exp:
+            if id == "Selector":
+                continue
+
+            ids.append(id)
+            weight_threshold.append(mat_exp[id])
+
+        print("ids:{i}, w/t:{w}".format(i=ids, w=weight_threshold))
+
+        selector = mat_exp["Selector"]
+        if selector == "perlin":
+            return perlin_material(ids, weight_threshold)
+
+        elif selector == "weighted":
+            return weighted_material(ids, weight_threshold)
+
+
 # !PRIMITIVE SHAPES
 def parse_cube(prog,parent_props):
     props = variable_assign(prog,parent_props)
 
     size = props["Size"]
-    material = materials[props["Material"]]
+    material = parse_material(props["Material"])
     pos = props["Position"]
     orientation = props["Orientation"]
-    print(type(orientation))
 
     print("Cube(pos:{p}, rot:{r}, mat:{m}, size:{s}".format(p=pos,r=orientation,m=material,s=size))
 
@@ -414,9 +430,10 @@ def parse_cube(prog,parent_props):
 
 
 def parse_sphere(prog,props):
+    print("Props:",props)
 
     rad = props["Radius"]
-    material = materials[props["Material"]]
+    material = parse_material(prog["Material"])
     pos = props["Position"]
 
     print("Sphere(pos:",pos,", Material:", material, ",Radius:", rad,")")
@@ -428,7 +445,7 @@ def parse_cylinder(prog, props):
 
     rad = props["Radius"]
     len = props["Length"]
-    material = materials[props["Material"]]
+    material = props["Material"]
     pos = props["Position"]
     orientation = props["Orientation"]
 
@@ -441,7 +458,7 @@ def parse_cuboid(prog,props):
 
     pos = props["Position"]
     orientation = props["Orientation"]
-    material = materials[props["Material"]]
+    material = props["Material"]
     dim = props["Dimensions"]
 
     print("Cuboid(pos:{pos}, rot:{rot}, material:{material}, dim:{dim})".format(pos=pos, rot=orientation, material=material, dim=dim))
