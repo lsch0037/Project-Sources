@@ -1,34 +1,42 @@
-
 {
     "Union":[
         {
-            "Position":[10,80,10],
+            "Position":[20,80,20],
             "Shape":"Sphere",
             "Radius":10,
             "Material":"Stone"
         },
         {
-            "Position":[50,80,50],
-
+            "Position":[20,80,50],
             "Shape":"Sphere",
             "Radius":10,
-
             "Material":{
                 "Selector":"perlin",
-                "Air":0.5,
-                "Stone":1.0
+                "Air":0.4,
+                "Grass Block":0.5,
+                "Stone":0.7
             }
         },
         {
-            "Position":[80,80,80],
+            "Position":[50,80,20],
             "Shape":"Sphere",
             "Radius":10,
-
             "Material":[
                 "Air",
                 "Stone",
                 "Grass Block"
             ]
+        },
+        {
+            "Position":[50, 80, 50],
+            "Shape":"Sphere",
+            "Radius":10,
+            "Material":{
+                "Selector":"weighted",
+                "Stone":0.1,
+                "Grass Block":0.1,
+                "Air":0.8
+            }
         }
     ]
 

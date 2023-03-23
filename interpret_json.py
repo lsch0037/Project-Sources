@@ -223,6 +223,13 @@ def function_call(fn_call,props):
 
     elif funName == "rotateX":
         return rotateX(args[0], args[1])
+
+    elif funName == "rotateY":
+        return rotateY(args[0], args[1])
+
+    elif funName == "rotateZ":
+        return rotateZ(args[0], args[1])
+
         # TODO OTHER FUNCTION CALLS
     else:
         raise ValueError("No such function is defined: {}".format(funName))
@@ -383,11 +390,13 @@ def parse_if(prog, parent_props):
     elif not else_block == None and not result:
         return parse_expression(else_block, parent_props)
 
-def parse_material(mat_exp):
+def parse_material(mat_exp, props):
+    print("Material:",mat_exp)
 
     # If Constant Material
     if isinstance(mat_exp, str):
-        return constant_material(mat_exp)
+        mat = variable_expression(mat_exp,props)
+        return constant_material(mat)
 
     # If random unweighted material
     elif isinstance(mat_exp, list):
@@ -398,6 +407,7 @@ def parse_material(mat_exp):
         ids = []
         weight_threshold = []
 
+        # Get weights/thresholds
         for id in mat_exp:
             if id == "Selector":
                 continue
@@ -433,7 +443,7 @@ def parse_sphere(prog,props):
     print("Props:",props)
 
     rad = props["Radius"]
-    material = parse_material(prog["Material"])
+    material = parse_material(prog["Material"],props)
     pos = props["Position"]
 
     print("Sphere(pos:",pos,", Material:", material, ",Radius:", rad,")")
@@ -445,7 +455,7 @@ def parse_cylinder(prog, props):
 
     rad = props["Radius"]
     len = props["Length"]
-    material = props["Material"]
+    material = parse_material(props["Material"],props)
     pos = props["Position"]
     orientation = props["Orientation"]
 
@@ -458,7 +468,7 @@ def parse_cuboid(prog,props):
 
     pos = props["Position"]
     orientation = props["Orientation"]
-    material = props["Material"]
+    material = parse_material(props["Material"],props)
     dim = props["Dimensions"]
 
     print("Cuboid(pos:{pos}, rot:{rot}, material:{material}, dim:{dim})".format(pos=pos, rot=orientation, material=material, dim=dim))

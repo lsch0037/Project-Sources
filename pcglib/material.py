@@ -51,6 +51,7 @@ class random_material(material):
     def get(self,pos):
         return random.choices(self.ids, weights=self.weights, k=1)
 
+
 class weighted_material(material):
     def __init__(self, ids, weights):
         super().__init__(ids)
@@ -58,6 +59,7 @@ class weighted_material(material):
 
     def get(self,pos):
         return random.choices(self.ids, weights=self.weights, k=1)
+
 
 class perlin_material(material):
     def __init__(self, ids, thresholds, seed=random.randint(100,10000), octaves=8):
@@ -80,6 +82,6 @@ class perlin_material(material):
                 bracket = i
                 break
 
-        print("Pos Scaled:{p}, Noise: {n} -> Id:{id} ".format(p=pos_scaled, n=noise_val,id=self.ids[bracket]))
+        # print("Pos Scaled:{p}, Noise: {n} -> Id:{id} ".format(p=pos_scaled, n=noise_val,id=self.ids[bracket]))
 
         return self.ids[bracket]
