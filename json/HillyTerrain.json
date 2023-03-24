@@ -1,0 +1,23 @@
+{
+    "Position":[0,"!getHeight(0,0)",0],
+    "Loop":{
+        "loop_var":"x",
+        "loop_range":10,
+
+        "loop_body":{
+            "Loop":{
+                "loop_var":"z",
+                "loop_range":10,
+
+                "loop_body":{
+                    "Relative":["$x","!mul(!perlin($x,$z))","$z"],
+                    "Material":{
+                        "selector":"even",
+                        "mat_ids":[],
+                        "weights":[]
+                    }
+                }
+            } 
+        }
+    }
+}

@@ -16,6 +16,7 @@ from pcglib.material import *
 # !GLOBAL CONSTANTS
 shapeOperators = ["Union", "Intersection", "Difference"]
 primitiveNames = ["Cube", "Sphere", "Cuboid", "Cylinder"]
+materialSelectorTypes = ["Random", "Perlin"]
 
 
 # ! LANGUAGE CONSTRUCTS
@@ -390,7 +391,56 @@ def parse_if(prog, parent_props):
     elif not else_block == None and not result:
         return parse_expression(else_block, parent_props)
 
-def parse_material(mat_exp, props):
+
+def parse_material(mat,props):
+    print("Material:",mat)
+
+    if not "Selector" in mat:
+        raise ValueError("Expected property '{p}'.".format(p="Selector"))
+    
+    selector = mat["Selector"]
+
+    if not selector in materialSelectorTypes:
+        raise ValueError("'{s}' is not a valid material selector".format(s=selector))
+
+    if not "Ids" in mat:
+        raise ValueError("Expected property '{p}'.".format(p="Ids"))
+    
+    ids = variable_expression(mat["Ids"],props)
+
+    if selector == "Random":
+
+        weights = None
+        if "Weights" in mat:
+            weights = variable_expression(mat["Weights"],props)
+
+        return random_material(ids, weights)
+
+
+    elif selector == "Perlin":
+        if "Thresholds" not in mat:
+            raise ValueError("Expected property '{p}' in material with selector '{s}'.".format(p="Thresholds",s=selector))
+
+        octaves = None
+        seed = None
+
+        if "Octaves" in mat:
+            octaves = variable_expression(mat["Octaves"], props)
+        else:
+            octaves = math.pow(2,random.randint(1,6))
+
+        if "Seed" in mat:
+            seed = variable_expression(mat["Seed"], props)
+        else:
+            seed = random.randint(0,10000)
+        
+
+        thresholds = variable_expression(mat["Thresholds"],props)
+
+        return perlin_material(ids, thresholds, seed, octaves)
+
+
+def parse_material_old(mat_exp, props):
     print("Material:",mat_exp)
 
     # If Constant Material
@@ -475,6 +525,7 @@ def parse_cuboid(prog,props):
 
     return cuboid(pos, orientation, material, dim)
 
+
 # ! ROTATING THE MATRIX
 def rotateX(mat, deg):
 
@@ -498,6 +549,7 @@ def rotateX(mat, deg):
 
     return np.matmul(mat, rotation)
 
+
 def rotateY(mat, deg):
 
     # Type Checking
@@ -519,6 +571,7 @@ def rotateY(mat, deg):
     ).reshape(3,3)
 
     return np.matmul(mat, rotation)
+
 
 def rotateZ(mat, deg):
 
@@ -542,14 +595,13 @@ def rotateZ(mat, deg):
 
     return np.matmul(mat, rotation)
 
+
 # !BUILT IN FUNCTIONS
 def getHeight(x, z):
     return game.getHeight(float(x),float(z))
 
-
 def matchSquare(x,z,max_offset, size):
     return game.matchSquare(x,z,max_offset, size)
-
 
 def randomInt(min, max):
     return random.randint(min, max)

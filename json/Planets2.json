@@ -1,0 +1,45 @@
+{
+    "Union":[
+        {
+            "Position":[20,80,20],
+            "Shape":"Sphere",
+            "Radius":10,
+            "Material":{
+                "Selector":"Random",
+                "Ids":["Stone"]
+            }
+        },
+        {
+            "Position":[20,80,50],
+            "Shape":"Sphere",
+            "Radius":10,
+            "Material":{
+                "Selector":"Perlin",
+                "Octaves":10,
+                "Ids":["Air","Stone","Grass Block"],
+                "Thresholds":[0.4,0.5,1.0]
+            }
+        },
+        {
+            "Position":[50,80,20],
+            "Shape":"Sphere",
+            "Radius":10,
+
+            "Material":{
+                "Selector":"Random",
+                "Ids":["Air","Stone","Grass Block"]
+            }
+        },
+        {
+            "Position":[50, 80, 50],
+            "Shape":"Sphere",
+            "Radius":10,
+            "Material":{
+                "Selector":"Random",
+                "Ids":["Stone","Grass Block"],
+                "Weights":[0.2,0.8]
+            }
+        }
+    ]
+
+}

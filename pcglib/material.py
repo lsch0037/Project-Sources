@@ -33,36 +33,27 @@ class material():
     def get(self,pos) -> None:
         pass
 
-class constant_material(material):
-    def __init__(self, id):
-        self.id = id_map[id]
-
-    def get(self, pos):
-        return self.id
-
 class random_material(material):
-    def __init__(self, ids):
+    def __init__(self, ids, weights=None):
         super().__init__(ids)
 
-        w = 1.0/len(ids)
+        if weights == None:
 
-        self.weights = [w for i in range(len(ids))]
+            w = 1.0/len(ids)
+            self.weights = [w for i in range(len(ids))]
+        else:
+            if not len(weights) == len(ids):
+                raise ValueError("Arrays 'Ids' and 'Weights' must be of the same lenght: {l1}, {l2}".format(l1=len(ids),l2=len(weights)))
 
-    def get(self,pos):
-        return random.choices(self.ids, weights=self.weights, k=1)
+            self.weights = weights
 
-
-class weighted_material(material):
-    def __init__(self, ids, weights):
-        super().__init__(ids)
-        self.weights = weights
 
     def get(self,pos):
         return random.choices(self.ids, weights=self.weights, k=1)
 
 
 class perlin_material(material):
-    def __init__(self, ids, thresholds, seed=random.randint(100,10000), octaves=8):
+    def __init__(self, ids, thresholds, seed, octaves):
         super().__init__(ids)
         self.noise = PerlinNoise(octaves=octaves,seed=seed)
         self.thresholds = thresholds
