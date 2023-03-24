@@ -14,10 +14,11 @@ from pcglib.material import *
 
 
 # !GLOBAL CONSTANTS
-shapeOperators = ["Union", "Intersection", "Difference"]
+operators = ["Union", "Intersection", "Difference","Primitive","Compound","Loop","If"]
+
 primitiveNames = ["Cube", "Sphere", "Cuboid", "Cylinder"]
 materialSelectorTypes = ["Random", "Perlin"]
-
+reservedProperties = ["Relative"]
 
 # ! LANGUAGE CONSTRUCTS
 
@@ -35,31 +36,37 @@ def parse_program(prog):
     return tree
 
 
-def parse_expression(expr, parent_props):
+def parse_expression(prog, parent_props):
 
-    props = variable_assign(expr, parent_props)
+    props = parse_properties(prog,parent_props)
 
-    # If expression is a shape
-    if "Shape" in expr:
-        return parse_shape(expr, props)
-    
-    # If expression is an operator
-    else:
-        return parse_operator(expr, props)
+    for key in prog:
 
+        if key == "Primitive":
+            return parse_primitive(prog[key],props)
+        
+        elif key == "Compound":
+            return parse_custom_shape(prog[key],props)
 
-def parse_shape(prog, props):
+        elif key in operators:
+            return parse_operator(prog, props, key)
 
-    shape = props["Shape"]
+        else:
+            pass
 
-    if shape in primitiveNames:
-        return parse_primitive(prog, props, shape)
+def parse_primitive(prog, parent_props):
+    print("Primitive:{}".format(prog))
 
-    else:
-        return parse_custom_shape(prog, props, shape)
+    props = parse_properties(prog,parent_props)
 
+    if not "Shape" in prog:
+        raise ValueError("Property '{p}' expected in '{s}' shape".format(p="Shape",s="Primitive"))
 
-def parse_primitive(prog, props, shape):
+    if not "Material" in prog:
+        raise ValueError("Property '{p}' expected in '{s}' shape".format(p="Material",s="Primitive"))
+
+    shape = prog["Shape"]
+
 
     if shape == "Cube":
         return parse_cube(prog, props)
@@ -75,10 +82,23 @@ def parse_primitive(prog, props, shape):
 
     # TODO FOR OTHER SHAPES
 
+    else:
+        raise ValueError("Primitive '{}' does not exist".format(shape))
 
-def parse_custom_shape(prog, props, shapeName):
 
-    json_path = 'json\\'+shapeName+'.json'
+def parse_custom_shape(prog, parent_props):
+    print("Compound:{}".format(prog))
+
+    props = parse_properties(prog, parent_props)
+
+    if not "Shape" in prog:
+        raise ValueError("Property '{p}' expected in '{s}' shape".format(p="Shape",s="Compound"))
+
+    shape = prog["Shape"]
+
+    # TODO CHECK METADATA FOR THE NECESSARY 
+
+    json_path = 'json\\'+shape+'.json'
 
     if path.exists(json_path):
         f = open(json_path)
@@ -91,10 +111,10 @@ def parse_custom_shape(prog, props, shapeName):
 
         return parse_expression(shape, props)
     else:
-        raise ValueError("Invalid Shape: {}".format(shapeName))
+        raise ValueError("Custom shape '{}' not found.".format(shape))
 
 
-def parse_operator(prog, props):
+def parse_operator(prog, props, op):
 
     if "Union" in prog:
         return parse_union(prog["Union"], props)
@@ -115,35 +135,36 @@ def parse_operator(prog, props):
         raise ValueError("Invalid Operator: {}".format(prog))
 
 
-def variable_assign(json_prog, props):
+def parse_properties(json_prog, props):
     new_props = props.copy()
 
     for key in json_prog:
-        if isinstance(json_prog[key], dict):
+        # if isinstance(json_prog[key], dict):
+        #     continue
+        if key in operators:
             continue
 
         elif key == "Relative":
             abs_pos = new_props["Position"]
             orientation = new_props["Orientation"]
 
-            rel_pos = variable_expression(json_prog["Relative"], new_props)
+            rel_pos = parse_property(json_prog["Relative"], new_props)
 
             new_pos = abs_pos + np.dot(orientation,rel_pos)
             # print("New Position: {n}".format(n=new_pos))
             new_props["Position"] = new_pos
             continue
-        
 
-        elif key in shapeOperators:
-            continue
 
-        new_props[key] = variable_expression(json_prog[key], new_props)
+        new_props[key] = parse_property(json_prog[key], new_props)
         print("{key} -> {val}".format(key=key, val= new_props[key]))
+
+    # print("New Props:", new_props)
 
     return new_props
 
 
-def variable_expression(var_expr, vars):
+def parse_property(var_expr, vars):
     # If the expression is a string
     if isinstance(var_expr, str):
         # If expression is a function call
@@ -168,7 +189,7 @@ def variable_expression(var_expr, vars):
 
         # For each list item, parse varaible expression
         for item in var_expr:
-            newList.append(variable_expression(item,vars))
+            newList.append(parse_property(item,vars))
 
         return newList
 
@@ -237,8 +258,6 @@ def function_call(fn_call,props):
 
 
 def parse_arguments(arguments, props):
-    # print("Arguments:",arguments)
-
     # Replace all spaces
     text = arguments.replace(' ','')
 
@@ -279,7 +298,7 @@ def parse_arguments(arguments, props):
                 
     args = []
     for token in tokens:
-        value = variable_expression(token, props)
+        value = parse_property(token, props)
         args.append(value)
 
     # print("Final evaluated arguments:", args)
@@ -289,6 +308,7 @@ def parse_arguments(arguments, props):
 
 # !GEOMETRIC OPERATORS
 def parse_union(prog, props):
+    print("Union:",prog)
     union_node = unionNode()
 
     for item in prog:
@@ -321,7 +341,7 @@ def parse_loop(prog, parent_props):
         raise ValueError("No 'loop_body' variable in loop construct")
 
     loop_var = prog["loop_var"]
-    loop_range = int(variable_expression(prog["loop_range"],parent_props))
+    loop_range = int(parse_property(prog["loop_range"],parent_props))
     body = prog["loop_body"]
 
 
@@ -378,7 +398,7 @@ def parse_if(prog, parent_props):
 
 
     # Evaluating condition
-    result = variable_expression(condition, parent_props)
+    result = parse_property(condition, parent_props)
 
     # Type checking result
     if not isinstance(result, bool):
@@ -395,6 +415,7 @@ def parse_if(prog, parent_props):
 def parse_material(mat,props):
     print("Material:",mat)
 
+    # 'Selector' type checking
     if not "Selector" in mat:
         raise ValueError("Expected property '{p}'.".format(p="Selector"))
     
@@ -403,20 +424,25 @@ def parse_material(mat,props):
     if not selector in materialSelectorTypes:
         raise ValueError("'{s}' is not a valid material selector".format(s=selector))
 
+
+    # 'Ids' type checking
     if not "Ids" in mat:
         raise ValueError("Expected property '{p}'.".format(p="Ids"))
     
-    ids = variable_expression(mat["Ids"],props)
+    ids = parse_property(mat["Ids"],props)
 
+
+    # Random selector
     if selector == "Random":
 
         weights = None
         if "Weights" in mat:
-            weights = variable_expression(mat["Weights"],props)
+            weights = parse_property(mat["Weights"],props)
 
         return random_material(ids, weights)
 
 
+    # Perlin Noise selector
     elif selector == "Perlin":
         if "Thresholds" not in mat:
             raise ValueError("Expected property '{p}' in material with selector '{s}'.".format(p="Thresholds",s=selector))
@@ -425,59 +451,23 @@ def parse_material(mat,props):
         seed = None
 
         if "Octaves" in mat:
-            octaves = variable_expression(mat["Octaves"], props)
+            octaves = parse_property(mat["Octaves"], props)
         else:
             octaves = math.pow(2,random.randint(1,6))
 
         if "Seed" in mat:
-            seed = variable_expression(mat["Seed"], props)
+            seed = parse_property(mat["Seed"], props)
         else:
             seed = random.randint(0,10000)
         
 
-        thresholds = variable_expression(mat["Thresholds"],props)
+        thresholds = parse_property(mat["Thresholds"],props)
 
         return perlin_material(ids, thresholds, seed, octaves)
 
-
-def parse_material_old(mat_exp, props):
-    print("Material:",mat_exp)
-
-    # If Constant Material
-    if isinstance(mat_exp, str):
-        mat = variable_expression(mat_exp,props)
-        return constant_material(mat)
-
-    # If random unweighted material
-    elif isinstance(mat_exp, list):
-        return random_material(mat_exp)
-    
-    # If Complex Material with Weights
-    elif isinstance(mat_exp, dict):
-        ids = []
-        weight_threshold = []
-
-        # Get weights/thresholds
-        for id in mat_exp:
-            if id == "Selector":
-                continue
-
-            ids.append(id)
-            weight_threshold.append(mat_exp[id])
-
-        print("ids:{i}, w/t:{w}".format(i=ids, w=weight_threshold))
-
-        selector = mat_exp["Selector"]
-        if selector == "perlin":
-            return perlin_material(ids, weight_threshold)
-
-        elif selector == "weighted":
-            return weighted_material(ids, weight_threshold)
-
-
 # !PRIMITIVE SHAPES
-def parse_cube(prog,parent_props):
-    props = variable_assign(prog,parent_props)
+def parse_cube(prog,props):
+    # props = parse_properties(prog,parent_props)
 
     size = props["Size"]
     material = parse_material(props["Material"])
@@ -493,7 +483,7 @@ def parse_sphere(prog,props):
     print("Props:",props)
 
     rad = props["Radius"]
-    material = parse_material(prog["Material"],props)
+    material = parse_material(props["Material"],props)
     pos = props["Position"]
 
     print("Sphere(pos:",pos,", Material:", material, ",Radius:", rad,")")
