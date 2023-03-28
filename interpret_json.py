@@ -2,16 +2,16 @@ import sys
 import json
 import os
 import copy
+import random
 from os import path
 
 import numpy as np
-import random
+from perlin_noise import PerlinNoise
 
 from pcglib.Game import Game
 from pcglib.primitive import *
 from pcglib.compound import *
 from pcglib.material import *
-
 
 # !GLOBAL CONSTANTS
 operators = ["Union", "Intersection", "Difference","Primitive","Compound","Loop","If"]
@@ -252,6 +252,9 @@ def function_call(fn_call,props):
     elif funName == "rotateZ":
         return rotateZ(args[0], args[1])
 
+    elif funName == "perlin":
+        return perlin(args[0], args[1], args[2])
+
         # TODO OTHER FUNCTION CALLS
     else:
         raise ValueError("No such function is defined: {}".format(funName))
@@ -301,7 +304,7 @@ def parse_arguments(arguments, props):
         value = parse_property(token, props)
         args.append(value)
 
-    # print("Final evaluated arguments:", args)
+    print("Final evaluated arguments:", args)
 
     return args
 
@@ -598,6 +601,10 @@ def randomInt(min, max):
 
 def getBlock(pos):
     return game.get(pos)
+
+def perlin(pos, seed=random.randint(0,10000), oct=1):
+    noise = PerlinNoise(seed, oct)
+    return noise.noise(pos)
 
 
 # !PARSING PROGRAM

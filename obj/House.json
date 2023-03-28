@@ -1,0 +1,18 @@
+{
+    "Args":["HouseWidth","HouseHeight","HouseLength","WallMaterial","FloorMaterial","RoofMaterial"],
+    "Union":[
+        {
+            "Shape":"HollowRoom",
+            "RoomHeight":"$HouseHeight",
+            "RoomLength":"$HouseLength",
+            "RoomWidth":"$HouseWidth"
+        },
+        {
+            "Relative":[0,"$HouseHeight",0],
+            "Shape":"Roof",
+            "RoofWidth":"$HouseWidth",
+            "RoofHeight":"!div($HouseWidth,2)",
+            "RoofLength":"$HouseLength"
+        }
+    ]
+}

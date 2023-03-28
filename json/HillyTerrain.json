@@ -10,11 +10,11 @@
                 "loop_range":10,
 
                 "loop_body":{
-                    "Relative":["$x","!mul(!perlin($x,$z))","$z"],
+                    "Relative":["$x","!mul(!perlin($x, $z, 123, 12))","$z"],
                     "Material":{
                         "selector":"even",
-                        "mat_ids":[],
-                        "weights":[]
+                        "mat_ids":["Coal Ore","Stone","Dirt","Grass Block"],
+                        "weights":[0.05, 0.5, 0.3, 0.15]
                     }
                 }
             } 

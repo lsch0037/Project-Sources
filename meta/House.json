@@ -1,0 +1,10 @@
+{
+    "Default":{
+        "HouseHeight":10,
+        "HouseLength":10,
+        "HouseWidth":10,
+        "WallMaterial":"Oak Planks",
+        "FloorMaterial":"Stone",
+        "RoofMaterial":"Bricks"
+    }
+}

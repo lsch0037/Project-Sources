@@ -1,8 +1,20 @@
 {
-    "Shape":"Roof2",
-    "Position":[40.0,63.5,40.0],
-    "RoofLength":10.0,
-    "RoofWidth":10.0,
-    "RoofHeight":5.0,
-    "RoofMaterial":"Bricks"
+    "Union": [
+        {
+            "Union": [
+                null,
+                null
+            ]
+        },
+        {
+            "Union": [
+                null
+            ]
+        },
+        {
+            "Union": [
+                null
+            ]
+        }
+    ]
 }

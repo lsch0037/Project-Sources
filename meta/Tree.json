@@ -1,0 +1,26 @@
+{
+    "Attributes":{
+        "Default":{
+            "Height":10,
+            "TrunkSize":3,
+            "CrownSize":5,
+            "WoodType":"Oak Wood",
+            "LeavesType":"Oak Leaves"
+        },
+        "Tall":{
+            "Height":20
+        },
+        "Short":{
+            "Height":5
+        }
+    },
+    "Modifiers":{
+        "on":{
+            "Relative":[0,"$Height",0]
+        }
+    },
+
+    "Plural":{
+        "Token":"Trees"
+    }
+}
