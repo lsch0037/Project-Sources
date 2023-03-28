@@ -1,5 +1,4 @@
 {
-    "Args":["HouseWidth","HouseHeight","HouseLength","WallMaterial","FloorMaterial","RoofMaterial"],
     "Union":[
         {
             "Shape":"HollowRoom",

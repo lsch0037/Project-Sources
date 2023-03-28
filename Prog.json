@@ -1,20 +1,27 @@
 {
+    "HouseHeight": 10,
+    "HouseLength": 10,
+    "HouseWidth": 10,
+    "WallMaterial": "Oak Planks",
+    "FloorMaterial": "Stone",
+    "RoofMaterial": "Bricks",
     "Union": [
         {
-            "Union": [
-                null,
-                null
-            ]
+            "Shape": "HollowRoom",
+            "RoomHeight": "$HouseHeight",
+            "RoomLength": "$HouseLength",
+            "RoomWidth": "$HouseWidth"
         },
         {
-            "Union": [
-                null
-            ]
-        },
-        {
-            "Union": [
-                null
-            ]
+            "Relative": [
+                0,
+                "$HouseHeight",
+                0
+            ],
+            "Shape": "Roof",
+            "RoofWidth": "$HouseWidth",
+            "RoofHeight": "!div($HouseWidth,2)",
+            "RoofLength": "$HouseLength"
         }
     ]
 }

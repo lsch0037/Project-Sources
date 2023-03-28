@@ -1,10 +1,17 @@
 {
-    "Default":{
-        "HouseHeight":10,
-        "HouseLength":10,
-        "HouseWidth":10,
-        "WallMaterial":"Oak Planks",
-        "FloorMaterial":"Stone",
-        "RoofMaterial":"Bricks"
+    "Attributes":{
+        "Default":{
+            "HouseHeight":10,
+            "HouseLength":10,
+            "HouseWidth":10,
+            "WallMaterial":"Oak Planks",
+            "FloorMaterial":"Stone",
+            "RoofMaterial":"Bricks"
+        }
+    },
+    "Modifiers":{
+        "on":{
+            "Relative":[0, "$HouseHeight", 0]
+        }
     }
 }
