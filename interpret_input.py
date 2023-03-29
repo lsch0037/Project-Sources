@@ -58,9 +58,6 @@ def verify_files():
 
         # TODO FOR PRLURALS
 
-def getObjectNames():
-    return list(objects.keys())
-
 def getDescriptors(object_name):
     return objects[object_name]["Descriptors"]
 
@@ -72,18 +69,16 @@ def tokenise(text):
     print("Tokenising paragraph: '{}'".format(text))
 
     words = re.findall(punct, text)
-    # token_types = [None] * len(words)
-
 
     tokens = [None] * len(words)
 
     for i in range(len(words)):
         current_word = words[i].title()
-        print("Word:", current_word)
+        # print("Word:", current_word)
 
         # if word is token
         if current_word in objects:
-            print(current_word, "is an object.")
+            # print(current_word, "is an object.")
             
             tokens[i] = (current_word, "Object")
 
@@ -99,24 +94,32 @@ def tokenise(text):
 
                     # if the word in question is a descriptor for the next object
                     if current_word in getDescriptors(lookahead_word):
-                        print(current_word," is a descriptor of", lookahead_word)
+                        # print(current_word," is a descriptor of", lookahead_word)
                         tokens[i] = (current_word, "Descriptor", lookahead_word)
 
                     # if the word in question is a modifier for the next object
                     elif current_word in getModifiers(lookahead_word):
-                        print(current_word," is a modifier of ", lookahead_word)
+                        # print(current_word," is a modifier of ", lookahead_word)
                         tokens[i] = (current_word, "Modifier", lookahead_word)
+
+                    # TODO IF TWO WORD MODIFIER
 
                     # if neither
                     else:
                         # print(current_word, " has no meaning.")
-                        tokens[i] = (current_word,"None")
+                        tokens[i] = None
                     
                     # Stop looking ahead
                     break
 
-    print("Tokens", tokens)
-    return tokens
+    final_tokens = []
+    for token in tokens:
+        if not token == None:
+            final_tokens.append(token)
+
+    print("Tokens", final_tokens)
+
+    return final_tokens
     
 
 def parse_paragraph(paragraph):
