@@ -2,70 +2,126 @@ import sys
 import os
 from os import path
 import json
+import re
 
-# !Importing nlp library
-# import spacy
-
-# nlp = spacy.load("en_core_web_sm")
-
-descriptors = ["Big", "Small", "Large", "Tall", "Short"]
-modifiers = ["on", "on top of", "next to", "under", "in", "south of", "north of", "east of", "west of"]
+# TODO LOAD LIST OF DESCRIPTORS AND MODIFIERS FROM THOSE USED IN THE FILES ITSELF
 
 objects = dict()
-meta = dict()
 
-def check_files():
+punct = r'\w+|[^\s\w]'
+
+def readFile(filePath):
+    f = open(filePath,"r")
+    content = f.read()
+    f.close()
+
+    return json.loads(content)
+
+
+def verify_files():
     global objects
-    global meta
 
-    for objName in os.listdir("obj"):
-        objPath = os.path.join('obj',objName)
-        metaPath = os.path.join('meta', objName)
+    # For each file in the 'obj' directory
+    for fileName in os.listdir("obj"):
+        object_name = fileName.removesuffix(".json").title()
+        objects[object_name] = dict()
 
+        objPath = os.path.join('obj',fileName)
+        metaPath = os.path.join('meta', fileName)
+
+        # If that file doesn't exist
         if not os.path.isfile(objPath):
             raise ValueError("Error, file is unexpected type: {}".format(objPath))
         
+        # If the corresponding meta file doesn't exist
         if not os.path.isfile(metaPath):
-            raise ValueError("No metadata file for '{}'".format(objName))
+            raise ValueError("No metadata file for '{}'".format(fileName))
 
-        f = open(objPath,"r")
-        objText = f.read()
-        f.close()
+        # TODO: VERIFY THAT ALL ARGUMENTS ARE DEFINED IN META
 
-        f = open(metaPath,"r")
-        metaText = f.read()
-        f.close()
+        meta_json = readFile(metaPath)
 
-        objJson = json.loads(objText)
-        metaJson = json.loads(metaText)
+        # If meta file doesn't have "Descriptors"
+        if not "Descriptors" in meta_json:
+            raise ValueError("Meta file '{f}' must have '{p}' {t} defined".format(f=metaPath, p="Descriptors", t="property"))
 
-        objNameCleaned = objName.removesuffix(".json")
 
-        objects[objNameCleaned] = objJson
-        meta[objNameCleaned] = metaJson
+        # Descriptors
+        if not "Default" in meta_json["Descriptors"]:
+            raise ValueError("Meta file '{f}' must have '{p}' {t} defined".format(f=metaPath, p="Default", t="attribute"))
+
+        objects[object_name]["Descriptors"] = list(meta_json["Descriptors"].keys())
+        objects[object_name]["Descriptors"].remove("Default")
+
+        # Modifiers
+        objects[object_name]["Modifiers"] = list(meta_json["Modifiers"].keys())
+
+        # TODO FOR PRLURALS
+
+def getObjectNames():
+    return list(objects.keys())
+
+def getDescriptors(object_name):
+    return objects[object_name]["Descriptors"]
+
+def getModifiers(object_name):
+    return objects[object_name]["Modifiers"]
+
+
+def tokenise(text):
+    print("Tokenising paragraph: '{}'".format(text))
+
+    words = re.findall(punct, text)
+    # token_types = [None] * len(words)
+
+
+    tokens = [None] * len(words)
+
+    for i in range(len(words)):
+        current_word = words[i].title()
+        print("Word:", current_word)
+
+        # if word is token
+        if current_word in objects:
+            print(current_word, "is an object.")
+            
+            tokens[i] = (current_word, "Object")
+
+        else:
+            # Search forward for object
+            for j in range(i+1, len(words)):
+                lookahead_word = words[j].title()
+                # print("Lookahead",lookahead_word)
+
+                # if the next object has been found
+                if lookahead_word in objects:
+                    # print("Next object found:",lookahead_word)
+
+                    # if the word in question is a descriptor for the next object
+                    if current_word in getDescriptors(lookahead_word):
+                        print(current_word," is a descriptor of", lookahead_word)
+                        tokens[i] = (current_word, "Descriptor", lookahead_word)
+
+                    # if the word in question is a modifier for the next object
+                    elif current_word in getModifiers(lookahead_word):
+                        print(current_word," is a modifier of ", lookahead_word)
+                        tokens[i] = (current_word, "Modifier", lookahead_word)
+
+                    # if neither
+                    else:
+                        # print(current_word, " has no meaning.")
+                        tokens[i] = (current_word,"None")
+                    
+                    # Stop looking ahead
+                    break
+
+    print("Tokens", tokens)
+    return tokens
     
-# def tokensise(text):
-#     tokens = []
-
-#     sentences = text.split(".")
-#     for sentence in sentences:
-
-#         phrases = sentence.split(",")
-#         phrase_tkns = []
-#         for phrase in phrases:
-
-#             words = phrase.split()
-#             phrase_tkns.append(words)
-        
-#         tokens.append(phrase_tkns)
-
-#     return tokens
-
 
 def parse_paragraph(paragraph):
     print("Parsing paragraph: '{}'".format(paragraph))
     sentences = paragraph.split(".")
-    print("Sentences:",sentences)
 
     if len(sentences) < 3:
         return parse_sentence(sentences[0])
@@ -80,6 +136,7 @@ def parse_paragraph(paragraph):
     prog["Union"] = sentence_progs
 
     return prog
+
 
 def parse_sentence(sentence):
     print("Parsing sentence: '{}'".format(sentence))
@@ -102,6 +159,24 @@ def parse_sentence(sentence):
 def parse_clause(clause):
     print("Parsing clause: '{}'".format(clause))
 
+    words = clause.split()
+
+
+    for i in len(words):
+        if words[i] in objects:
+            current_description = clause.split()
+            parse_description(current_description, object_name) 
+            pass
+
+def parse_description(description, object_name):
+    possible_descriptors = objects[object_name]
+
+    description
+
+
+def parse_clause_old(clause):
+    print("Parsing clause: '{}'".format(clause))
+
     first_mod_index = len(clause)
     first_mod = None
     
@@ -112,35 +187,50 @@ def parse_clause(clause):
             first_mod = m
 
     if first_mod == None:
-        return parse_object(clause)
+        obj, desc = parse_object(clause)
+        return eval_object(obj, desc)
 
     else:
-        # print("Evaluating modifier '{}'".format(first_mod))
-        # splits = clause.split(first_mod, 1)
-        first_clause, mod, second_clause = clause.partition(first_mod)
+        first_clause,mod, other_clause = clause.partition(first_mod)
+        parse_clause(other_clause)
         
-        first_obj = parse_object(first_clause)
-        mod = parse_modifier(second_clause, first_mod)
-        second_obj = parse_clause(second_clause)
+        print("First Obj Desc:", first_obj)
+        print("Other:", other_clause)
+        
+        return parse_modifier(first_obj, first_mod, scnd_obj)
 
-        return eval_modifier(first_obj, mod, second_obj)
 
 # Return the modifier defined on the primary object of the clause given
-def parse_modifier(clause, modifier):
+def parse_modifier(first_obj, modifier,second_obj):
     print("Evaluating modifier '{}'".format(modifier))
-    words = clause.split()
 
-    obj = None
+    # modifier_json = meta[second_obj]["Modifiers"][modifier]
+    second_meta = meta[second_obj]
+    second_mod = second_meta["Modifiers"]
+    mod_json = second_mod[modifier]
+    parent_props = mod_json["Parent"]
+    second_props = mod_json["This"]
+    first_props = mod_json["Other"]
 
-    for word in words:
-        if word in objects:
-            obj = word
+    first_prog = parse_object(first_obj)
+    for key in first_props:
+        first_prog[key] = first_props[key]
 
-    return meta[obj]["Modifiers"][modifier]
+    second_prog = parse_object(second_obj)
+    for key in second_props:
+        second_prog[key] = second_props[key]
+
+    parent_prog = dict()
+    for key in parent_props:
+        parent_prog[key] = parent_props[key]
+
+    parent_prog["Union"] = [first_prog, second_prog]
+    return parent_prog
 
 
 # Return the program for the object with the given descriptors
 def parse_object(text):
+    print("Parsing object: '{}'".format(text))
     words = text.split()
 
     desc = []
@@ -156,7 +246,8 @@ def parse_object(text):
     if current_object == None:
         raise ValueError("Object description '{}' does not contain an object type.".format(text))
 
-    return eval_object(current_object, desc)
+    return current_object, desc
+
 
 def eval_attributes(object_name, object_attributes):
     meta_attributes = meta[object_name]["Attributes"]
@@ -192,10 +283,9 @@ def eval_object(object_name, object_attributes):
 
 
 # Checking Files
-check_files()
+verify_files()
 
-# print("Obj: {}".format(objects))
-# print("Meta: {}".format(meta))
+print("Objects:", objects)
 
 # Reading Input
 fileName = sys.argv[1]
@@ -207,7 +297,9 @@ text = f.read()
 f.close()
 
 # TOKENISE
-prog = parse_paragraph(text)
+tokens = tokenise(text)
+
+sys.exit(0)
 
 # Write to 'Prog.json'
 f = open('Prog.json', 'w')

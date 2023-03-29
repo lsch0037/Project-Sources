@@ -1,5 +1,5 @@
 {
-    "Attributes":{
+    "Descriptors":{
         "Default":{
             "HouseHeight":10,
             "HouseLength":10,
@@ -7,11 +7,22 @@
             "WallMaterial":"Oak Planks",
             "FloorMaterial":"Stone",
             "RoofMaterial":"Bricks"
+        },
+        "Brick":{
+            "WallMaterial":"Bricks"
         }
     },
     "Modifiers":{
-        "on":{
-            "Relative":[0, "$HouseHeight", 0]
+        "On":{
+            "Parent":{
+                "FinalHeight":10
+            },
+            "This":{
+                "HouseHeight":"$FinalHeight"
+            },
+            "Other":{
+                "Relative":[0, "!add($FinalHeight, 1)", 0]
+            }
         }
     }
 }
