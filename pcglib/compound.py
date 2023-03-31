@@ -47,6 +47,7 @@ class unionNode(compound):
 
         newBuf.write(buf)
 
+
     def unset(self, buf):
         newBuf = buffer()
 
@@ -54,6 +55,7 @@ class unionNode(compound):
             child.unset(newBuf)
 
         newBuf.write(buf)
+
 
 class differenceNode(compound):
     def set(self,buf):
@@ -78,3 +80,7 @@ class differenceNode(compound):
 class intersectionNode(compound):
     # TODO: IMPLEMENT
     pass
+
+class onNode(compound):
+    def set(self,buf):
+        bufBottom = buffer()

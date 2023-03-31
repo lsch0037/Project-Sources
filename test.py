@@ -19,12 +19,12 @@ game = Game(offset_pc)
 position = np.array([0.0,63.0,0.0])
 orientation = np.identity(3)
 
-mat = material([1,3,16,15,56],selector='perlin', weights=[0.5,0.2,0.15, 0.1, 0.05], octaves=12)
-mat2 = material([20,49],selector='perlin', weights=[0.5,0.5], octaves=8, seed=random.randint(100,10000))
+buf = buffer()
 
-mat3 = material([0],selector='rand')
+mat = random_material(["Stone"])
 
-# sp = sphere(position, mat2,10)
-cb = cuboid(position, orientation, mat3,[20,20,20])
+cb = cuboid(position, orientation, mat,[10,10,10])
 
-cb.set(game)
+bounding_box = cb.set(buf)
+# print("Bounding_box", bounding_box.max, bounding_box.min)
+print("Bounding Box:", bounding_box)

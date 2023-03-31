@@ -1,7 +1,7 @@
 from pcglib.compound import compound
+from pcglib.boundingBox import *
 
 import numpy as np
-import math
 
 class primitive(compound):
     def __init__(self, pos, rot, material):
@@ -16,8 +16,17 @@ class primitive(compound):
     def set(self, buf):
         self._set_internal(buf, "set")
 
+        b = boundingBox()
+        b.calculate(buf)
+        return b
+
     def unset(self, buf):
         self._set_internal(buf, "unset")
+
+        b = boundingBox()
+        b.calculate(buf)
+        return b
+
 
 class cube(primitive):
     def __init__(self, pos, rot,material, size):
@@ -121,4 +130,3 @@ class cylinder(primitive):
                             buffer.set(current_pos, self.material.get(current_pos))
                         elif op == "unset":
                             buffer.unset(current_pos)
-

@@ -106,3 +106,21 @@ class buffer():
                 for k in self.d[i][j]:
                     pos = np.array([i,j,k])
                     other.set(pos, self.get(pos))
+
+
+    def getBoundingBox(self):
+        min, max = np.array([[np.inf, np.inf, np.inf]]), np.array([-np.inf, -np.inf, -np.inf])
+
+        for i in self.d:
+            for j in self.d[i]:
+                for k in self.d[i][j]:
+                    pos = np.array(i,j,k)
+
+                    for dim in range(0,3):
+                        if pos[dim] < min[dim]:
+                            min[dim] = pos[dim]
+
+                        if pos[dim] > max[dim]:
+                            max[dim] = pos[dim]
+
+        return min, max
