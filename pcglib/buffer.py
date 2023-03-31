@@ -1,6 +1,7 @@
 import numpy as np
-
 import math
+
+from pcglib.boundingBox import *
 
 class buffer():
     def __init__(self):
@@ -99,22 +100,36 @@ class buffer():
         return np.array(bestPos)
 
 
-
-    def write(self, other):
+    def write(self, other, offset=np.array([0,0,0])):
         for i in self.d:
             for j in self.d[i]:
                 for k in self.d[i][j]:
                     pos = np.array([i,j,k])
-                    other.set(pos, self.get(pos))
+
+                    other.set(pos + offset, self.get(pos))
 
 
-    def getBoundingBox(self):
-        min, max = np.array([[np.inf, np.inf, np.inf]]), np.array([-np.inf, -np.inf, -np.inf])
+    def unwrite(self, other, offset=np.array([0,0,0])):
+        for i in self.d:
+            for j in self.d[i]:
+                for k in self.d[i][j]:
+                    pos = np.array([i,j,k])
+
+                    id1 = self.get(pos)
+                    id2 = other.get(pos)
+
+                    if id1 == id2:
+                        other.unset(pos)
+
+
+    def getBounds(self):
+        min = np.array([np.inf, np.inf, np.inf])
+        max = np.array([-np.inf, -np.inf, -np.inf])
 
         for i in self.d:
             for j in self.d[i]:
                 for k in self.d[i][j]:
-                    pos = np.array(i,j,k)
+                    pos = np.array([i,j,k])
 
                     for dim in range(0,3):
                         if pos[dim] < min[dim]:
@@ -123,4 +138,12 @@ class buffer():
                         if pos[dim] > max[dim]:
                             max[dim] = pos[dim]
 
-        return min, max
+        mid = np.array([max[0] - min[0], max[1] - min[1], max[2] - min[2]])
+
+        return min,mid,max
+
+
+    def getTop(self,other):
+        min,mid,max = self.getBounds()
+
+        return np.array([mid[0], max[1], mid[2]])

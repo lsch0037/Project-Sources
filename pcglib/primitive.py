@@ -1,5 +1,6 @@
 from pcglib.compound import compound
 from pcglib.boundingBox import *
+from pcglib.buffer import *
 
 import numpy as np
 
@@ -10,22 +11,14 @@ class primitive(compound):
         self.rot = rot
         self.material = material
 
-    def _set_internal(self, buf, operator):
+    def _set_internal(self, operator):
         raise ValueError("Cannot call _set_internal on generic primitive")
 
-    def set(self, buf):
-        self._set_internal(buf, "set")
+    def set(self):
+        return self._set_internal("set")
 
-        b = boundingBox()
-        b.calculate(buf)
-        return b
-
-    def unset(self, buf):
-        self._set_internal(buf, "unset")
-
-        b = boundingBox()
-        b.calculate(buf)
-        return b
+    def unset(self):
+        return self._set_internal("unset")
 
 
 class cube(primitive):
@@ -33,7 +26,9 @@ class cube(primitive):
         super().__init__(pos, rot, material)
         self.size = size
 
-    def _set_internal(self,buffer, op):
+    def _set_internal(self, op):
+        buf = buffer()
+
         x_d = np.dot(self.rot,np.array([1,0,0]))
         y_d = np.dot(self.rot,np.array([0,1,0]))
         z_d = np.dot(self.rot,np.array([0,0,1]))
@@ -44,9 +39,12 @@ class cube(primitive):
                     current_pos = self.pos + x_d*(i/2) + y_d*(j/2) + z_d*(k/2)
 
                     if op == "set":
-                        buffer.set(current_pos, self.material.get(current_pos))
+                        buf.set(current_pos, self.material.get(current_pos))
+
                     elif op == "unset":
-                        buffer.unset(current_pos)
+                        buf.unset(current_pos)
+        
+        return buf
 
 class cuboid(primitive):
     # Constructor for a cuboid primitive
@@ -55,7 +53,8 @@ class cuboid(primitive):
         super().__init__(pos, rot, material)
         self.dim = dim
 
-    def _set_internal(self, buffer, op):
+    def _set_internal(self, op):
+        buf = buffer()
 
         x_d = np.dot(self.rot,np.array([1,0,0]))
         y_d = np.dot(self.rot,np.array([0,1,0]))
@@ -67,17 +66,19 @@ class cuboid(primitive):
                     current_pos = self.pos + x_d*(i/2) + y_d*(j/2) + z_d*(k/2)
 
                     if op == "set":
-                        buffer.set(current_pos, self.material.get(current_pos))
+                        buf.set(current_pos, self.material.get(current_pos))
                     elif op == "unset":
-                        buffer.unset(current_pos)
+                        buf.unset(current_pos)
 
+        return buf
 
 class sphere(primitive):
     def __init__(self, pos, material, rad):
         super().__init__(pos, np.identity(3), material)
         self.rad = rad
 
-    def _set_internal(self, buffer, op):
+    def _set_internal(self, op):
+        buf = buffer()
         print("Pos:{p}, Rad:{r}".format(p=self.pos, r=self.rad))
 
         pos0 = self.pos - np.array([self.rad, self.rad, self.rad])
@@ -91,9 +92,11 @@ class sphere(primitive):
                     if dist <= self.rad:
                         if op == "set":
                             # buffer.set(current_pos, self.material)
-                            buffer.set(current_pos, self.material.get(current_pos))
+                            buf.set(current_pos, self.material.get(current_pos))
                         elif op == "unset":
-                            buffer.unset(current_pos)
+                            buf.unset(current_pos)
+        
+        return buf
 
     # !Rotating a sphere does nothing
     def rotateX(self, theta):
@@ -112,7 +115,8 @@ class cylinder(primitive):
         self.rad = rad
         self.len = len
 
-    def _set_internal(self, buffer, op):
+    def _set_internal(self, op):
+        buf = buffer()
 
         x_d = np.dot(self.rot,np.array([1,0,0]))
         y_d = np.dot(self.rot,np.array([0,1,0]))
@@ -127,6 +131,8 @@ class cylinder(primitive):
 
                     if dist <= self.rad:
                         if op == "set":
-                            buffer.set(current_pos, self.material.get(current_pos))
+                            buf.set(current_pos, self.material.get(current_pos))
                         elif op == "unset":
-                            buffer.unset(current_pos)
+                            buf.unset(current_pos)
+        
+        return buf

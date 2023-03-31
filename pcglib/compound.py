@@ -39,42 +39,50 @@ class compound():
 
 class unionNode(compound):
 
-    def set(self, buf):
+    def set(self):
         newBuf = buffer()
 
         for child in self.children:
-            child.set(newBuf)
+            buf = child.set()
+            buf.write(newBuf)
 
-        newBuf.write(buf)
+        return newBuf
 
 
-    def unset(self, buf):
+    def unset(self):
         newBuf = buffer()
 
         for child in self.children:
-            child.unset(newBuf)
+            buf = child.unset()
+            buf.write(newBuf)
 
-        newBuf.write(buf)
+        return newBuf
 
 
 class differenceNode(compound):
-    def set(self,buf):
+    def set(self):
         newBuf = buffer()
-        self.children[0].set(newBuf)
+        buf = self.children[0].set()
+        newBuf.write(buf)
+
+        for i in range(1,len(self.children)):
+            buf = self.children[i].unset()
+            newBuf.unwrite(buf)
+
+        return newBuf
+
+    
+    def unset(self):
+        newBuf = buffer()
+
+        buf = self.children[0].unset()
+        newBuf.unwrite(buf)
     
         for i in range(1,len(self.children)):
-            self.children[i].unset(newBuf)
+            buf = self.children[i].set()
+            newBuf.write(buf)
 
-        newBuf.write(buf)
-    
-    def unset(self,buf):
-        newBuf = buffer()
-        self.children[0].unset(newBuf)
-    
-        for i in range(1,len(self.children)):
-            self.children[i].set(newBuf)
-
-        newBuf.write(buf)
+        return newBuf
 
 
 class intersectionNode(compound):
@@ -83,4 +91,6 @@ class intersectionNode(compound):
 
 class onNode(compound):
     def set(self,buf):
-        bufBottom = buffer()
+        first_buffer = buffer()
+        second_buffer = buffer()
+
