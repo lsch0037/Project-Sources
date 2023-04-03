@@ -37,7 +37,7 @@ class random_material(material):
 
         if weights == None:
 
-            w = 1.0/len(ids)
+            w = 1.0 / len(ids)
             self.weights = [w for i in range(len(ids))]
         else:
             if not len(weights) == len(ids):
