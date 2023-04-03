@@ -1,0 +1,19 @@
+{
+    "On Ground":{
+        "On":[
+            {
+                "Sphere":{
+                    "Radius":"$CrownSize",
+                    "Material":"$CrownMaterial"
+                }
+            },
+            {
+                "Cylinder":{
+                    "Radius":"$TrunkThickness",
+                    "Length":"$TreeHeight",
+                    "Material":"$TrunkMaterial"
+                }
+            }
+        ]
+    }
+}

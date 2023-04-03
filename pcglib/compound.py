@@ -108,9 +108,11 @@ class intersectionNode(compound):
     # TODO: IMPLEMENT
     pass
 
-class onGroundNode(compound):
-    pass
+# class onGroundNode(compound):
+    # def set(self, pos,rot):
+    #     groundPos = 
 
+    #     for child in self.children:
 
 class prepositionNode(compound):
     def __init__(self, f1, f2, children=[]):
@@ -131,12 +133,15 @@ class prepositionNode(compound):
         # Get anchor point of second object
         pos2 = self.f2(second_buffer)
 
+        # Calculate difference between anchor points
         offset = pos2 - pos1
 
+        # Shift to lign up anchor points
         first_buffer.shift(offset)
 
-        second_buffer.write(buf)
+        # Write to final buffer
         first_buffer.write(buf)
+        second_buffer.write(buf)
 
         return buf
 

@@ -1,0 +1,15 @@
+{
+    "NewTree":{
+        "CrownSize":4,
+        "CrownMaterial":{
+            "Selector":"Random",
+            "Ids":["Oak Leaves"]
+        },
+        "TreeHeight":10,
+        "TrunkThickness":3,
+        "TrunkMaterial":{
+            "Selector":"Random",
+            "Ids":["Oak Wood"]
+        }
+    }
+}

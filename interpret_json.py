@@ -14,11 +14,21 @@ from pcglib.compound import *
 from pcglib.material import *
 
 # !GLOBAL CONSTANTS
-operators = ["Union", "Intersection", "Difference","Primitive","Compound","Loop","If"]
-
+operators = ["Union", "Intersection", "Difference",
+             "Loop","If",
+             "On Ground", "On"]
 primitiveNames = ["Cube", "Sphere", "Cuboid", "Cylinder"]
 materialSelectorTypes = ["Random", "Perlin"]
 reservedProperties = ["Relative"]
+customShapes = []
+
+def verify_files():
+    global customShapes
+
+    # For each file in the 'obj' directory
+    for fileName in os.listdir("obj"):
+        object_name = fileName.removesuffix(".json")
+        customShapes.append(object_name)
 
 # ! LANGUAGE CONSTRUCTS
 
@@ -30,75 +40,61 @@ def parse_program(prog):
     props["Orientation"] = np.identity(3)
 
     # Parse an expression
-    node = parse_expression(prog,props)
-    tree.addChild(node)
-        
-    return tree
-
+    return parse_expression(prog,props)
 
 def parse_expression(prog, parent_props):
 
-    props = parse_properties(prog,parent_props)
+    props = parse_properties(prog, parent_props)
 
     for key in prog:
+        if key in primitiveNames:
+            print("{k} is a primitive.".format(k=key))
+            return parse_primitive(prog[key],key, props)
 
-        if key == "Primitive":
-            return parse_primitive(prog[key],props)
-        
-        elif key == "Compound":
-            return parse_custom_shape(prog[key],props)
+        elif key in customShapes:
+            print("{k} is a compound.".format(k=key))
+            return parse_custom_shape(prog[key], key, props)
 
         elif key in operators:
-            return parse_operator(prog, props, key)
+            print("{k} is an operator.".format(k=key))
+            return parse_operator(prog, key, props)
 
-        else:
-            pass
 
-def parse_primitive(prog, parent_props):
+def parse_primitive(prog, shapeName, parent_props):
     print("Primitive:{}".format(prog))
 
     props = parse_properties(prog,parent_props)
 
-    if not "Shape" in prog:
-        raise ValueError("Property '{p}' expected in '{s}' shape".format(p="Shape",s="Primitive"))
+    # if not "Shape" in prog:
+    #     raise ValueError("Property '{p}' expected in '{s}' shape".format(p="Shape",s="Primitive"))
 
     if not "Material" in prog:
         raise ValueError("Property '{p}' expected in '{s}' shape".format(p="Material",s="Primitive"))
 
-    shape = prog["Shape"]
 
-
-    if shape == "Cube":
+    if shapeName == "Cube":
         return parse_cube(prog, props)
 
-    elif shape == "Sphere":
+    elif shapeName == "Sphere":
         return parse_sphere(prog, props)
 
-    elif shape == "Cylinder":
+    elif shapeName == "Cylinder":
         return parse_cylinder(prog, props)
 
-    elif shape == "Cuboid":
+    elif shapeName == "Cuboid":
         return parse_cuboid(prog, props)
 
     # TODO FOR OTHER SHAPES
 
     else:
-        raise ValueError("Primitive '{}' does not exist".format(shape))
+        raise ValueError("Primitive '{}' does not exist".format(shapeName))
 
 
-def parse_custom_shape(prog, parent_props):
-    print("Compound:{}".format(prog))
+def parse_custom_shape(prog,shapeName, parent_props):
 
     props = parse_properties(prog, parent_props)
 
-    if not "Shape" in prog:
-        raise ValueError("Property '{p}' expected in '{s}' shape".format(p="Shape",s="Compound"))
-
-    shape = prog["Shape"]
-
-    # TODO CHECK METADATA FOR THE NECESSARY 
-
-    json_path = 'json\\'+shape+'.json'
+    json_path = 'obj\\'+shapeName+'.json'
 
     if path.exists(json_path):
         f = open(json_path)
@@ -111,53 +107,59 @@ def parse_custom_shape(prog, parent_props):
 
         return parse_expression(shape, props)
     else:
-        raise ValueError("Custom shape '{}' not found.".format(shape))
+        raise ValueError("Custom shape '{}' not found.".format(shapeName))
 
 
-def parse_operator(prog, props, op):
+def parse_operator(prog, op, props):
 
-    if "Union" in prog:
-        return parse_union(prog["Union"], props)
+    # 'Set' operators
+    if op == "Union":
+        return parse_union(prog[op], props)
 
-    elif "Intersection" in prog:
-        pass
+    elif op == "Intersection":
+        return parse_intersection(prog[op], props)
 
-    elif "Difference" in prog:
-        return parse_difference(prog["Difference"],props)
+    elif op == "Difference":
+        return parse_difference(prog[op],props)
 
-    elif "Loop" in prog:
-        return parse_loop(prog["Loop"], props)
+    # Language Constructs
+    elif op == "Loop":
+        return parse_loop(prog[op], props)
 
-    elif "If" in prog:
-        return parse_if(prog["If"],props)
+    elif op == "If":
+        return parse_if(prog[op],props)
+
+    # Positional Operators
+    elif op == "On Ground":
+        return parse_on_ground(prog[op], props)
+
+    elif op == "On":
+        return parse_on(prog[op], props)
 
     else:
         raise ValueError("Invalid Operator: {}".format(prog))
 
 
-def parse_properties(json_prog, props):
+def parse_properties(prog, props):
     new_props = props.copy()
 
-    for key in json_prog:
-        # if isinstance(json_prog[key], dict):
-        #     continue
-        if key in operators:
+    for key in prog:
+        if key in operators or key in primitiveNames or key in customShapes:
             continue
 
         elif key == "Relative":
             abs_pos = new_props["Position"]
             orientation = new_props["Orientation"]
 
-            rel_pos = parse_property(json_prog["Relative"], new_props)
+            rel_pos = parse_property(prog["Relative"], new_props)
 
             new_pos = abs_pos + np.dot(orientation,rel_pos)
-            # print("New Position: {n}".format(n=new_pos))
             new_props["Position"] = new_pos
             continue
 
-
-        new_props[key] = parse_property(json_prog[key], new_props)
-        print("{key} -> {val}".format(key=key, val= new_props[key]))
+        else:
+            new_props[key] = parse_property(prog[key], new_props)
+            print("{key} -> {val}".format(key=key, val= new_props[key]))
 
     # print("New Props:", new_props)
 
@@ -311,12 +313,11 @@ def parse_arguments(arguments, props):
 
 # !GEOMETRIC OPERATORS
 def parse_union(prog, props):
-    print("Union:",prog)
     union_node = unionNode()
 
     for item in prog:
-        node = parse_expression(item, props)
-        union_node.addChild(node)
+        child_node = parse_expression(item, props)
+        union_node.addChild(child_node)
 
     return union_node
 
@@ -325,12 +326,22 @@ def parse_difference(prog, props):
     diff_node = differenceNode()
 
     for item in prog:
-        node = parse_expression(item, props)
-        diff_node.addChild(node)
+        child_node = parse_expression(item, props)
+        diff_node.addChild(child_node)
 
     return diff_node
-    
 
+
+def parse_intersection(prog, props):
+    inter_node = intersectionNode()
+
+    for item in prog:
+        child_node = parse_expression(item, props)
+        inter_node.addChild(child_node)
+    
+    return inter_node
+
+# !Language Operations
 def parse_loop(prog, parent_props):
 
     # Checking that variables exist
@@ -414,7 +425,35 @@ def parse_if(prog, parent_props):
     elif not else_block == None and not result:
         return parse_expression(else_block, parent_props)
 
+# !Positional Operators
+def parse_on_ground(prog, parent_props):
+    print("Parsing on ground")
+    if not len(prog) == 1:
+        raise ValueError("Prepositional operator '{o}' requires exactly {n} operands.".format(o="On Ground", n=1))
 
+    pos = parent_props["Position"]
+    newPos = [pos[0], game.getHeight(pos[0], pos[2]), pos[2]]
+
+    props = parent_props.copy()
+    props["Position"] = newPos
+
+    return parse_expression(prog, props)
+
+def parse_on(prog, props):
+    if not len(prog) == 2:
+        raise ValueError("Prepositional operator '{o}' requires exactly {n} operands.".format(o="On", n=2))
+
+    operands = []
+    for item in prog:
+        child_node = parse_expression(item, props)
+        operands.append(child_node)
+
+    on = operands[0].onTopOf(operands[1])
+
+    return on
+
+
+# !Materials
 def parse_material(mat,props):
     print("Material:",mat)
 
@@ -470,7 +509,6 @@ def parse_material(mat,props):
 
 # !PRIMITIVE SHAPES
 def parse_cube(prog,props):
-    # props = parse_properties(prog,parent_props)
 
     size = props["Size"]
     material = parse_material(props["Material"])
@@ -491,7 +529,7 @@ def parse_sphere(prog,props):
 
     print("Sphere(pos:",pos,", Material:", material, ",Radius:", rad,")")
 
-    return sphere(pos, material, rad)
+    return sphere(material, rad)
 
 
 def parse_cylinder(prog, props):
@@ -504,7 +542,7 @@ def parse_cylinder(prog, props):
 
     print("Cylinder(pos:{pos}, rot:{rot}, mat:{material}, rad:{rad}, len{len})".format(pos=pos, rot=orientation, material=material, rad=rad, len=len))
 
-    return cylinder(pos, orientation, material, rad, len)
+    return cylinder(material, rad, len)
 
 
 def parse_cuboid(prog,props):
@@ -608,6 +646,11 @@ def perlin(pos, seed=random.randint(0,10000), oct=1):
 
 
 # !PARSING PROGRAM
+# CHECKING FILES
+verify_files()
+print("Custom Shapes:", customShapes)
+
+
 # INTERPRETING ARGUMENT
 fileName = sys.argv[1]
 
@@ -631,4 +674,9 @@ tree = parse_program(prog)
 
 print("Finished")
 
-tree.set(game)
+pos = [0, game.getHeight(0,0), 0]
+rot = np.identity(3)
+
+buf = tree.set(pos, rot)
+
+buf.write(game)
