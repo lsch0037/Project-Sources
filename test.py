@@ -25,7 +25,8 @@ mat = random_material(["Stone"])
 cb = cylinder(mat,5, 10)
 sp = sphere(mat, 5)
 
-prog = prepositionNode(buffer.getEast, [cb,sp])
+
+prog = prepositionNode(buffer.getCenter, buffer.getTop, [sp, cb])
 
 buf = prog.set(pos1, orientation)
 

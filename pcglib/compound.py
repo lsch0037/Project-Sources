@@ -12,98 +12,50 @@ class compound():
 
     # Adds addition node as parent and node as sibling
     def union(self, other):
-        # addNode = unionNode()
-        # addNode.addChild(self)
-        # addNode.addChild(other)
-        
-        # return addNode
-
         return unionNode([self,other])
 
     # Adds subtraction node as parent and node as sibling
     def difference(self, other):
-        # subNode = differenceNode()
-        # subNode.addChild(self)
-        # subNode.addChild(other)
-        
-        # return subNode
         return differenceNode([self,other])
 
     def intersection(self, other):
-        subNode = differenceNode()
-        # subNode.addChild(self)
-        # subNode.addChild(other)
-        
-        return subNode
+        return intersectionNode([self,other])
 
 
-    def top(self,other):
-        node = prepositionNode(buffer.getTop)
-        node.addChild(self)
-        node.addChild(other)
-
-        return node
+    def onTopOf(self,other):
+        return prepositionNode(buffer.getBottom,buffer.getTop, [self,other])
 
     def under(self,other):
-        node = prepositionNode(buffer.getBottom)
-        node.addChild(self)
-        node.addChild(other)
+        return prepositionNode(buffer.getTop, buffer.getBottom, [self,other])
 
-        return node
+    def insideOf(self,other):
+        return prepositionNode(buffer.getCenter, buffer.getCenter, [self,other])
 
-    def inside(self,other):
-        node = prepositionNode(buffer.getCenter)
-        node.addChild(self)
-        node.addChild(other)
+    def eastOf(self,other):
+        return prepositionNode(buffer.getWest, buffer.getEast, [self,other])
 
-        return node
+    def southOf(self,other):
+        return prepositionNode(buffer.getNorth,buffer.getSouth, [self,other])
 
-    def east(self,other):
-        node = prepositionNode(buffer.getEast)
-        node.addChild(self)
-        node.addChild(other)
+    def westOf(self,other):
+        return prepositionNode(buffer.getEast, buffer.getWest, [self,other])
 
-        return node
+    def northOf(self,other):
+        return prepositionNode(buffer.getSouth, buffer.getNorth, [self,other])
 
-    def south(self,other):
-        node = prepositionNode(buffer.getSouth)
-        node.addChild(self)
-        node.addChild(other)
-
-        return node
-
-    def west(self,other):
-        node = prepositionNode(buffer.getWest)
-        node.addChild(self)
-        node.addChild(other)
-
-        return node
-
-    def north(self,other):
-        node = prepositionNode(buffer.getNorth)
-        node.addChild(self)
-        node.addChild(other)
-
-        return node
-
-    def offset(self,other, offset):
-        node = offsetNode(offset)
-        node.addChild(self)
-        node.addChild(other)
-
-        return node
-
+    def offsetBy(self,other, offset):
+        return offsetNode(offset, [self,other])
 
 
     def set(self,pos,rot, buf):
-        # raise ValueError("Cannot call 'set' on generic node")
-        for child in self.children:
-            child.set(buf,pos,rot)
+        raise ValueError("Cannot call 'set' on generic node")
+        # for child in self.children:
+        #     child.set(buf,pos,rot)
 
     def unset(self,pos,rot,buf):
-        # raise ValueError("Cannot call 'unset' on generic node")
-        for child in self.children:
-            child.unset(buf,pos,rot)
+        raise ValueError("Cannot call 'unset' on generic node")
+        # for child in self.children:
+        #     child.unset(buf,pos,rot)
 
 
 class unionNode(compound):
@@ -115,7 +67,6 @@ class unionNode(compound):
             buf.write(newBuf)
 
         return newBuf
-
 
     def unset(self,pos,rot):
         newBuf = buffer()
@@ -162,23 +113,29 @@ class onGroundNode(compound):
 
 
 class prepositionNode(compound):
-    def __init__(self, f, children=[]):
+    def __init__(self, f1, f2, children=[]):
         super().__init__(children)
-        self.f = f
+        self.f1 = f1
+        self.f2 = f2
 
     def set(self,pos,rot):
         buf = buffer()
 
+        # Write first object to buffer
+        first_buffer = self.children[0].set(pos,rot)
+        # Get anchor point of second object
+        pos1 = self.f1(first_buffer)
+
         # Write second object to buffer
         second_buffer = self.children[1].set(pos,rot)
+        # Get anchor point of second object
+        pos2 = self.f2(second_buffer)
+
+        offset = pos2 - pos1
+
+        first_buffer.shift(offset)
+
         second_buffer.write(buf)
-
-        # Get top of second object
-        offset = self.f(second_buffer)
-
-        # self.children[0].pos = top
-        first_buffer = self.children[0].set(offset,rot)
-
         first_buffer.write(buf)
 
         return buf
@@ -211,4 +168,3 @@ class offsetNode(compound):
         buf2.write(newBuf)
 
         return newBuf
-

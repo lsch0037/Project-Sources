@@ -42,7 +42,7 @@ class buffer():
         
         return -1
 
-    def matchSquare(self,center_x,center_z,max_off, size):
+    # def matchSquare(self,center_x,center_z,max_off, size):
 
         # TODO: MAKE MONTE CARLO
 
@@ -57,45 +57,45 @@ class buffer():
 
         # !ELSE STOP
 
-        searchAreaSize = max_off*2
-        searchAreaPosX = center_x - max_off
-        searchAreaPosZ = center_z - max_off
+        # searchAreaSize = max_off*2
+        # searchAreaPosX = center_x - max_off
+        # searchAreaPosZ = center_z - max_off
 
-        bestPos = None
-        minUnfitScore = float('inf')
+        # bestPos = None
+        # minUnfitScore = float('inf')
 
-        for x in range(searchAreaPosX, searchAreaPosX+searchAreaSize - size):
-            for z in range(searchAreaPosZ, searchAreaPosZ+searchAreaSize - size):
-                print("pos:",x,z)
+        # for x in range(searchAreaPosX, searchAreaPosX+searchAreaSize - size):
+        #     for z in range(searchAreaPosZ, searchAreaPosZ+searchAreaSize - size):
+        #         print("pos:",x,z)
 
-                dist = math.dist([x,z], [center_x, center_z])
+        #         dist = math.dist([x,z], [center_x, center_z])
 
-                # print("Distance from center:", dist)
+        #         # print("Distance from center:", dist)
 
-                y = self.getHeight(x,z) + 1
+        #         y = self.getHeight(x,z) + 1
 
-                blocksChanged = 0
-                airUnder = 0
-                for i in range(size):
-                    for j in range(size):
+        #         blocksChanged = 0
+        #         airUnder = 0
+        #         for i in range(size):
+        #             for j in range(size):
 
-                        if self.get([x+i, y, z+j]) != 0:
-                            blocksChanged +=1
+        #                 if self.get([x+i, y, z+j]) != 0:
+        #                     blocksChanged +=1
 
-                        elif self.get([x+i, y-1, z+j]) == 0:
-                            airUnder += 1
+        #                 elif self.get([x+i, y-1, z+j]) == 0:
+        #                     airUnder += 1
 
-                # print("BlocksChagned:", blocksChanged)
-                # print("AirUnder:", airUnder)
+        #         # print("BlocksChagned:", blocksChanged)
+        #         # print("AirUnder:", airUnder)
 
-                unfitScore = (1+dist) * (1 + blocksChanged) * (1 + airUnder)
-                # print("unfitScore:", unfitScore)
+        #         unfitScore = (1+dist) * (1 + blocksChanged) * (1 + airUnder)
+        #         # print("unfitScore:", unfitScore)
 
-                if unfitScore < minUnfitScore:
-                    minUnfitScore = unfitScore
-                    bestPos = [x,y,z]
+        #         if unfitScore < minUnfitScore:
+        #             minUnfitScore = unfitScore
+        #             bestPos = [x,y,z]
 
-        return np.array(bestPos)
+        # return np.array(bestPos)
 
 
     def write(self, other, offset=np.array([0,0,0])):
@@ -107,17 +107,17 @@ class buffer():
                     other.set(pos + offset, self.get(pos))
 
 
-    def unwrite(self, other, offset=np.array([0,0,0])):
-        for i in self.d:
-            for j in self.d[i]:
-                for k in self.d[i][j]:
-                    pos = np.array([i,j,k])
+    # def unwrite(self, other, offset=np.array([0,0,0])):
+    #     for i in self.d:
+    #         for j in self.d[i]:
+    #             for k in self.d[i][j]:
+    #                 pos = np.array([i,j,k])
 
-                    id1 = self.get(pos)
-                    id2 = other.get(pos)
+    #                 id1 = self.get(pos)
+    #                 id2 = other.get(pos)
 
-                    if id1 == id2:
-                        other.unset(pos)
+    #                 if id1 == id2:
+    #                     other.unset(pos)
 
 
     def getBounds(self):
@@ -152,23 +152,29 @@ class buffer():
         return np.array([mid[0], min[1], mid[2]])
 
     def getCenter(self):
-        min, mid,max = self.getBounds()
+        min,mid,max = self.getBounds()
 
         return mid
 
-    def getNorth(self):
-        pass
-
-    def getSouth(self):
-        pass
-
     def getEast(self):
-        min, mid,max = self.getBounds()
+        min,mid,max = self.getBounds()
 
         return np.array([max[0],mid[1],mid[2]])
 
+    def getSouth(self):
+        min,mid,max = self.getBounds()
+
+        return np.array([mid[0],mid[1],max[2]])
+
     def getWest(self):
-        pass
+        min,mid,max = self.getBounds()
+
+        return np.array([min[0],mid[1],mid[2]])
+
+    def getNorth(self):
+        min, mid,max = self.getBounds()
+
+        return np.array([mid[0],mid[1],min[2]])
 
     def shift(self, offset):
         newBuf = buffer()
@@ -180,4 +186,4 @@ class buffer():
 
                     newBuf.set(pos + offset, self.get(pos))
 
-        return newBuf
+        self.d = newBuf.d
