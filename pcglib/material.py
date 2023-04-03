@@ -27,8 +27,6 @@ class material():
         for id in materials:
             self.ids.append(id_map[id])
 
-        print("Upon init ids:", self.ids)
-
 
     def get(self,pos) -> None:
         pass

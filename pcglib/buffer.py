@@ -1,8 +1,6 @@
 import numpy as np
 import math
 
-from pcglib.boundingBox import *
-
 class buffer():
     def __init__(self):
         self.d = dict()
@@ -133,17 +131,53 @@ class buffer():
 
                     for dim in range(0,3):
                         if pos[dim] < min[dim]:
-                            min[dim] = pos[dim]
+                            min[dim] = math.floor(pos[dim])
 
                         if pos[dim] > max[dim]:
-                            max[dim] = pos[dim]
+                            max[dim] = math.ceil(pos[dim])
 
-        mid = np.array([max[0] - min[0], max[1] - min[1], max[2] - min[2]])
+        mid = np.array([min[0] + (max[0] - min[0]) / 2, min[1] + (max[1] - min[1]) / 2, min[2] + (max[2] - min[2]) / 2])
 
         return min,mid,max
 
 
-    def getTop(self,other):
+    def getTop(self):
         min,mid,max = self.getBounds()
 
         return np.array([mid[0], max[1], mid[2]])
+
+    def getBottom(self):
+        min,mid,max = self.getBounds()
+
+        return np.array([mid[0], min[1], mid[2]])
+
+    def getCenter(self):
+        min, mid,max = self.getBounds()
+
+        return mid
+
+    def getNorth(self):
+        pass
+
+    def getSouth(self):
+        pass
+
+    def getEast(self):
+        min, mid,max = self.getBounds()
+
+        return np.array([max[0],mid[1],mid[2]])
+
+    def getWest(self):
+        pass
+
+    def shift(self, offset):
+        newBuf = buffer()
+
+        for i in self.d:
+            for j in self.d[i]:
+                for k in self.d[i][j]:
+                    pos = np.array([i,j,k])
+
+                    newBuf.set(pos + offset, self.get(pos))
+
+        return newBuf

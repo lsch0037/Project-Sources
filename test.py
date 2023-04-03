@@ -17,18 +17,16 @@ offset_laptop = [-95.0, -65.0, -63.0]
 # Initiating game object
 game = Game(offset_pc)
 
-pos1 = np.array([0.0,63.0,0.0])
-pos2 = np.array([10.0,63.0,10.0])
+pos1 = np.array([0.0,80.0,0.0])
 orientation = np.identity(3)
 
 mat = random_material(["Stone"])
 
-cb = cuboid(pos1, orientation, mat,[10,10,10])
-cb2 = cuboid(pos2, orientation, mat, [10,10,10])
+cb = cylinder(mat,5, 10)
+sp = sphere(mat, 5)
 
-union = cb + cb2
-buf = union.set()
+prog = prepositionNode(buffer.getEast, [cb,sp])
+
+buf = prog.set(pos1, orientation)
 
 buf.write(game)
-
-print("Bounding Box:", buf)
