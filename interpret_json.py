@@ -16,7 +16,7 @@ from pcglib.material import *
 # !GLOBAL CONSTANTS
 operators = ["Union", "Intersection", "Difference",
              "Loop","If",
-             "On Ground","Offset", "On"]
+             "On Ground","Offset","Rotation", "On"]
 primitiveNames = ["Cube", "Sphere", "Cuboid", "Cylinder"]
 materialSelectorTypes = ["Random", "Perlin"]
 reservedProperties = ["Relative"]
@@ -33,7 +33,6 @@ def verify_files():
 # ! LANGUAGE CONSTRUCTS
 
 def parse_program(prog):
-    tree = compound()
     props = dict()
 
     props["Position"] = np.array([0.0, 100.0, 0.0])
@@ -64,9 +63,6 @@ def parse_primitive(prog, shapeName, parent_props):
     print("Primitive:{}".format(prog))
 
     props = parse_properties(prog,parent_props)
-
-    # if not "Shape" in prog:
-    #     raise ValueError("Property '{p}' expected in '{s}' shape".format(p="Shape",s="Primitive"))
 
     if not "Material" in prog:
         raise ValueError("Property '{p}' expected in '{s}' shape".format(p="Material",s="Primitive"))
@@ -138,6 +134,9 @@ def parse_operator(prog, op, props):
 
     elif op == "Offset":
         return parse_offset(prog[op], props)
+
+    elif op == "Rotation":
+        return parse_rotation(prog[op], props)
 
     else:
         raise ValueError("Invalid Operator: {}".format(prog))
@@ -457,17 +456,44 @@ def parse_on(prog, props):
 
 def parse_offset(prog, props):
     if len(prog) > 2:
-        raise ValueError("Offset operator requires exactly {n} operands.".format(n=2))
-
+        raise ValueError("{o} operator requires exactly {n} operands.".format(o="Offset", n=2))
 
     vec = prog[0]
 
     if not isinstance(vec, list) or not len(vec) == 3:
-        raise TypeError("First property of Offset operator must be a vector of length 3")
+        raise TypeError("{p} must be of length {l}.".format(p="Vector",l=3))
 
     child_prog = parse_expression(prog[1], props)
 
     return offsetNode(vec, [child_prog])
+
+def parse_rotation(prog, props):
+    if not "Axis" in prog:
+        raise ValueError("{p} property expected in {o} operation".format(p="Axis", o="Rotation"))
+
+    elif not isinstance(prog["Axis"], str):
+        raise TypeError("Type {t} expected for {p} property.".format(t="String", p="Axis"))
+    
+    axes = ["x", "y", "z"]
+
+    axis = axes.index(prog["Axis"].lower())
+
+    if axis == None:
+        raise ValueError("{p} property must be one of {a}".format(p="Axis", a=axes))
+
+
+    if not "Degrees" in prog:
+        raise ValueError("{p} property expected in {o} operation".format(p="Degrees", o="Rotation"))
+
+    deg = parse_property(prog["Degrees"], props)
+
+    if not isinstance(deg, (float, int)):
+        raise TypeError("Type {t} expected for {p} property.".format(t="Float or Int", p="Degrees"))
+
+
+    child_prog = parse_expression(prog["Body"], props)
+
+    return rotationNode(axis, deg, [child_prog])
 
 # !Materials
 def parse_material(mat,props):
@@ -528,12 +554,10 @@ def parse_cube(prog,props):
 
     size = props["Size"]
     material = parse_material(props["Material"])
-    pos = props["Position"]
-    orientation = props["Orientation"]
 
-    print("Cube(pos:{p}, rot:{r}, mat:{m}, size:{s}".format(p=pos,r=orientation,m=material,s=size))
+    print("Cube(mat:{m}, size:{s}".format(m=material,s=size))
 
-    return cube(pos, orientation, material, size)
+    return cube(material, size)
 
 
 def parse_sphere(prog,props):
@@ -541,7 +565,6 @@ def parse_sphere(prog,props):
 
     rad = props["Radius"]
     material = parse_material(props["Material"],props)
-    # pos = props["Position"]
 
     print("Sphere(Material:", material, ",Radius:", rad,")")
 
@@ -553,22 +576,18 @@ def parse_cylinder(prog, props):
     rad = props["Radius"]
     len = props["Length"]
     material = parse_material(props["Material"],props)
-    pos = props["Position"]
-    orientation = props["Orientation"]
 
-    print("Cylinder(pos:{pos}, rot:{rot}, mat:{material}, rad:{rad}, len{len})".format(pos=pos, rot=orientation, material=material, rad=rad, len=len))
+    print("Cylinder(mat:{material}, rad:{rad}, len{len})".format(material=material, rad=rad, len=len))
 
     return cylinder(material, rad, len)
 
 
 def parse_cuboid(prog,props):
 
-    # pos = props["Position"]
-    # orientation = props["Orientation"]
     material = parse_material(props["Material"],props)
     dim = props["Dimensions"]
 
-    # print("Cuboid(pos:{pos}, rot:{rot}, material:{material}, dim:{dim})".format(pos=pos, rot=orientation, material=material, dim=dim))
+    print("Cuboid(material:{material}, dim:{dim})".format(material=material, dim=dim))
 
     return cuboid(material, dim)
 
@@ -690,7 +709,7 @@ tree = parse_program(prog)
 
 print("Finished")
 
-pos = [0, game.getHeight(0,0), 0]
+pos = [0, game.getHeight(0,0) + 10, 0]
 rot = np.identity(3)
 
 buf = tree.set(pos, rot)

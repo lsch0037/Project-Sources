@@ -1,6 +1,7 @@
 from pcglib.buffer import buffer
 
 import numpy as np
+import math
 
 class compound():
     def __init__(self,children = []):
@@ -173,16 +174,20 @@ class offsetNode(compound):
 
 
 class rotationNode(compound):
-    def __init__(self,rotation, children=[]):
+    def __init__(self,axis, deg, children=[]):
         super().__init__(children)
-        self.rotation = rotation
+
+        functions = [rotateX, rotateY, rotateZ]
+
+        self.f = functions[axis]
+        self.deg = deg
 
 
     def set(self,pos,prev_rot):
-        new_rot = np.matmul(self.rotation, prev_rot)
-        print("Previous Rotation: {p}, New Rotation: {n}".format(p=prev_rot, n=new_rot))
 
         newBuf = buffer()
+
+        new_rot = self.f(prev_rot, self.deg)
 
         for child in self.children:
             buf = child.set(pos, new_rot)
@@ -192,13 +197,81 @@ class rotationNode(compound):
 
 
     def unset(self,pos, prev_rot):
-        new_rot = np.matmul(self.rotation, prev_rot)
-        print("Previous Rotation: {p}, New Rotation: {n}".format(p=prev_rot, n=new_rot))
-
         newBuf = buffer()
+
+        new_rot = self.f(prev_rot, self.deg)
 
         for child in self.children:
             buf = child.set(pos, new_rot)
             buf.unwrite(newBuf)
 
         return newBuf
+
+
+def rotateX(mat, deg):
+
+    # Type Checking
+    if not isinstance(mat, (list, np.ndarray)):
+        raise TypeError("Argument 'mat' is of invalid type: {t}".format(t=type(mat)))
+
+    elif not np.shape(mat) == (3,3):
+        raise ValueError("Argument 'mat' must have dimensions '(3,3)', not {d}".format(d=np.shape(mat)))
+
+    elif not isinstance(deg, (int,float)):
+        raise TypeError("Argument 'deg' must be of types 'int' or 'float', not {t}".format(t=type(deg)))
+
+    theta = deg* math.pi / 180
+
+    rotation = np.array(
+        [1.0,0.0,0.0,
+        0.0, math.cos(theta), -math.sin(theta),
+        0.0, math.sin(theta), math.cos(theta)]
+    ).reshape(3,3)
+
+    return np.matmul(mat, rotation)
+
+
+def rotateY(mat, deg):
+
+    # Type Checking
+    if not isinstance(mat, (list, np.ndarray)):
+        raise TypeError("Argument 'mat' is of invalid type: {t}".format(t=type(mat)))
+
+    elif not np.shape(mat) == (3,3):
+        raise ValueError("Argument 'mat' must have dimensions '(3,3)', not {d}".format(d=np.shape(mat)))
+
+    elif not isinstance(deg, (int,float)):
+        raise TypeError("Argument 'deg' must be of types 'int' or 'float', not {t}".format(t=type(deg)))
+
+    theta = deg* math.pi / 180
+
+    rotation = np.array(
+        [math.cos(theta), 0.0, math.sin(theta),
+        0.0, 1.0, 0.0,
+        -math.sin(theta), 0, math.cos(theta)]
+    ).reshape(3,3)
+
+    return np.matmul(mat, rotation)
+
+
+def rotateZ(mat, deg):
+
+    # Type Checking
+    if not isinstance(mat, (list, np.ndarray)):
+        raise TypeError("Argument 'mat' is of invalid type: {t}".format(t=type(mat)))
+
+    elif not np.shape(mat) == (3,3):
+        raise ValueError("Argument 'mat' must have dimensions '(3,3)', not {d}".format(d=np.shape(mat)))
+
+    elif not isinstance(deg, (int,float)):
+        raise TypeError("Argument 'deg' must be of types 'int' or 'float', not {t}".format(t=type(deg)))
+
+    theta = deg* math.pi / 180
+
+    rotation = np.array(
+        [math.cos(theta), -math.sin(theta), 0.0,
+        math.sin(theta), math.cos(theta), 0.0,
+        0.0, 0.0, 1.0]
+    ).reshape(3,3)
+
+    return np.matmul(mat, rotation)
