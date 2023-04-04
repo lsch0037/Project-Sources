@@ -173,3 +173,6 @@ class offsetNode(compound):
         buf2.write(newBuf)
 
         return newBuf
+
+def rotationNode(compound):
+    pass

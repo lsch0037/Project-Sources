@@ -107,17 +107,17 @@ class buffer():
                     other.set(pos + offset, self.get(pos))
 
 
-    # def unwrite(self, other, offset=np.array([0,0,0])):
-    #     for i in self.d:
-    #         for j in self.d[i]:
-    #             for k in self.d[i][j]:
-    #                 pos = np.array([i,j,k])
+    def unwrite(self, other, offset=np.array([0,0,0])):
+        for i in self.d:
+            for j in self.d[i]:
+                for k in self.d[i][j]:
+                    pos = np.array([i,j,k])
 
-    #                 id1 = self.get(pos)
-    #                 id2 = other.get(pos)
+                    id1 = self.get(pos)
+                    id2 = other.get(pos)
 
-    #                 if id1 == id2:
-    #                     other.unset(pos)
+                    if id1 == id2:
+                        other.unset(pos)
 
 
     def getBounds(self):

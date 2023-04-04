@@ -547,14 +547,14 @@ def parse_cylinder(prog, props):
 
 def parse_cuboid(prog,props):
 
-    pos = props["Position"]
-    orientation = props["Orientation"]
+    # pos = props["Position"]
+    # orientation = props["Orientation"]
     material = parse_material(props["Material"],props)
     dim = props["Dimensions"]
 
-    print("Cuboid(pos:{pos}, rot:{rot}, material:{material}, dim:{dim})".format(pos=pos, rot=orientation, material=material, dim=dim))
+    # print("Cuboid(pos:{pos}, rot:{rot}, material:{material}, dim:{dim})".format(pos=pos, rot=orientation, material=material, dim=dim))
 
-    return cuboid(pos, orientation, material, dim)
+    return cuboid(material, dim)
 
 
 # ! ROTATING THE MATRIX

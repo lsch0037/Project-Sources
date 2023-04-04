@@ -1,10 +1,8 @@
 import sys
 import os
-from os import path
 import json
 import re
 
-# TODO LOAD LIST OF DESCRIPTORS AND MODIFIERS FROM THOSE USED IN THE FILES ITSELF
 
 objects = dict()
 
@@ -149,31 +147,6 @@ def parse_clause(tokens):
 
         return obj1Name, prog
     
-    return None
-
-
-    for i in range(len(tokens)):
-        token = tokens[i]
-
-        if token[1] == "Modifier":
-            obj1Name, obj1 = parse_description(tokens[0:i])
-            obj2Name, obj2 = parse_clause(tokens[i+1:])
-
-            print("obj1:{o1}, obj2:{o2}".format(o1=obj1,o2=obj2))
-
-            modifier = tokens[i][0]
-
-            meta2 = readFile("meta/{}.json".format(obj2Name))
-            mod_name = meta2["Modifiers"][modifier]
-            
-            
-            prog = dict()
-            prog[mod_name] = [obj1, obj2]
-
-            return obj1Name, prog
-
-    # If no modifier was found
-    return parse_description(tokens)
 
 def find_next_of_type(tokens, type):
     for token in tokens:
@@ -182,56 +155,6 @@ def find_next_of_type(tokens, type):
     
     return -1
     
-
-# def parse_paragraph(paragraph):
-#     print("Parsing paragraph: '{}'".format(paragraph))
-#     sentences = paragraph.split(".")
-
-#     if len(sentences) < 3:
-#         return parse_sentence(sentences[0])
-
-#     sentence_progs = []
-#     for sentence in sentences:
-#         sentence_prog = parse_sentence(sentence)
-#         sentence_progs.append(sentence_prog)
-
-#     prog = dict()
-
-#     prog["Union"] = sentence_progs
-
-#     return prog
-
-
-# def parse_sentence(sentence):
-#     print("Parsing sentence: '{}'".format(sentence))
-
-#     clauses = sentence.split(',')
-
-#     if len(clauses) == 1:
-#         return parse_clause(clauses[0])
-
-#     clause_progs = []
-#     for clause in clauses:
-#         clause_prog = parse_clause(clause)
-#         clause_progs.append(clause_prog)
-
-#     prog = dict()
-#     prog["Union"] = clause_progs
-#     return prog
-
-
-# def parse_clause(clause):
-#     print("Parsing clause: '{}'".format(clause))
-
-#     words = clause.split()
-
-
-#     for i in len(words):
-#         if words[i] in objects:
-#             current_description = clause.split()
-#             parse_description(current_description, object_name) 
-#             pass
-
 
 def parse_description(tokens):
     print("Description:{}".format(tokens))
@@ -268,135 +191,33 @@ def parse_description(tokens):
 
     return objName, prog
 
-def parse_clause_old(clause):
-    print("Parsing clause: '{}'".format(clause))
-
-    first_mod_index = len(clause)
-    first_mod = None
-    
-    for m in modifiers:
-        index = clause.rfind(m)
-        if not index == -1 and index < first_mod_index:
-            first_mod_index = index
-            first_mod = m
-
-    if first_mod == None:
-        obj, desc = parse_object(clause)
-        return eval_object(obj, desc)
-
-    else:
-        first_clause,mod, other_clause = clause.partition(first_mod)
-        parse_clause(other_clause)
-        
-        print("First Obj Desc:", first_obj)
-        print("Other:", other_clause)
-        
-        return parse_modifier(first_obj, first_mod, scnd_obj)
 
 
-# Return the modifier defined on the primary object of the clause given
-def parse_modifier(first_obj, modifier,second_obj):
-    print("Evaluating modifier '{}'".format(modifier))
-
-    # modifier_json = meta[second_obj]["Prepositions"][modifier]
-    second_meta = meta[second_obj]
-    second_mod = second_meta["Prepositions"]
-    mod_json = second_mod[modifier]
-    parent_props = mod_json["Parent"]
-    second_props = mod_json["This"]
-    first_props = mod_json["Other"]
-
-    first_prog = parse_object(first_obj)
-    for key in first_props:
-        first_prog[key] = first_props[key]
-
-    second_prog = parse_object(second_obj)
-    for key in second_props:
-        second_prog[key] = second_props[key]
-
-    parent_prog = dict()
-    for key in parent_props:
-        parent_prog[key] = parent_props[key]
-
-    parent_prog["Union"] = [first_prog, second_prog]
-    return parent_prog
-
-
-# Return the program for the object with the given descriptors
-def parse_object(text):
-    print("Parsing object: '{}'".format(text))
-    words = text.split()
-
-    desc = []
-    current_object = None
-    for word in words:
-        if word.lower() in descriptors:
-            desc.append(word.lower())
-
-        elif word.title() in objects:
-            current_object = word.title()
-            break
-
-    if current_object == None:
-        raise ValueError("Object description '{}' does not contain an object type.".format(text))
-
-    return current_object, desc
-
-
-def eval_attributes(object_name, object_attributes):
-    meta_attributes = meta[object_name]["Attributes"]
-    props = meta_attributes["Default"]
-
-    for attrib in object_attributes:
-        if attrib not in meta_attributes:
-            raise ValueError("'{a}' is not a valid descriptor for '{o}' object".format(a=attrib,o=object_name))
-        
-        current_attribute = meta_attributes[attrib]
-
-        for key in current_attribute:
-            props[key] = current_attribute[key]
-
-    return props
-
-
-
-def eval_object(object_name, object_attributes):
-
-    props = eval_attributes(object_name, object_attributes)
-    obj_prog = objects[object_name]
-
-    prog = dict()
-
-    for key in props:
-        prog[key] = props[key]
-    
-    for key in obj_prog:
-        prog[key] = obj_prog[key]
-
-    print("Final Program:", prog)
-    return prog
-
-
-# Checking Files
+# VERIFYING FILES
 verify_files()
 
-print("Objects:", objects)
 
-# Reading Input
+# ARGUMENTS
 fileName = sys.argv[1]
 
+
+# READING INPUT
 f = open(fileName, "r")
 
 text = f.read()
 
 f.close()
 
+
 # TOKENISE
 tokens = tokenise(text)
 
+
+# PARSE
 name,prog = parse_clause(tokens)
 
-# Write to 'Prog.json'
+
+# WRITING PROGRAM
 f = open('Prog.json', 'w')
 
 f.write(json.dumps(prog, indent=4))

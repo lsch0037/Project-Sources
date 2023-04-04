@@ -1,17 +1,59 @@
 {
-    "Union":[
+    "On":[
         {
-            "Shape":"HollowRoom",
             "RoomHeight":"$HouseHeight",
             "RoomLength":"$HouseLength",
-            "RoomWidth":"$HouseWidth"
+            "RoomWidth":"$HouseWidth",
+            "HalfRoomLength":"!div($RoomLength,2)",
+            "HalfRoomWidth":"!div($RoomWidth,2)",
+
+            "Relative":["!sub(0,$HalfRoomLength)",0, "!sub(0,$HalfRoomWidth)"],
+            "Difference":[
+                {
+                    "Cuboid":{
+                        "Dimensions":["$RoomLength","$RoomHeight","$RoomWidth"],
+                        "Material":"$WallMaterial"
+                    }
+                },
+                {
+                    "InnerLength":"!sub($RoomLength,!mul($WallThickness,2))",
+                    "InnerWidth":"!sub($RoomWidth,!mul($WallThickness,2))",
+
+                    "Relative":["$WallThickness",1, "$WallThickness"],
+                    
+                    "Cuboid":{
+                        "Dimensions":["$InnerLength","!sub($RoomHeight,2)","$InnerWidth"],
+                        "Material":"$WallMaterial"
+                    }
+                }
+            ]
         },
         {
-            "Relative":[0,"$HouseHeight",0],
-            "Shape":"Roof",
             "RoofWidth":"$HouseWidth",
             "RoofHeight":"!div($HouseWidth,2)",
-            "RoofLength":"$HouseLength"
+            "RoofLength":"$HouseLength",
+            "HalfRoofLength":"!div($RoofLength,2)",
+            "HalfRoofWidth":"!div($RoofLength,2)",
+
+            "Relative":["!sub(0,$HalfRoofLength)","$RoofHeight",0],
+            "2SideSquared":"!add(!pow($RoofHeight,2),!pow($HalfRoofWidth,2))",
+            "Hypotenuse":"!sqrt($2SideSquared)",
+            "Union":[
+                {
+                    "Orientation":"!rotateX($Orientation,45)",
+                    "Cuboid":{
+                        "Dimensions":["$RoofLength",1,"$Hypotenuse"],
+                        "Material":"$RoofMaterial"
+                    }
+                },
+                {
+                    "Orientation":"!rotateX($Orientation,135)",
+                    "Cuboid":{
+                        "Dimensions":["$RoofLength",1,"$Hypotenuse"],
+                        "Material":"$RoofMaterial"
+                    }
+                }
+            ]
         }
     ]
 }
