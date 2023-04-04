@@ -155,8 +155,9 @@ class offsetNode(compound):
         self.offset = offset
 
     def set(self,pos,rot):
-        print("Pos:{p}, Offset:{o}".format(p=pos,o=self.offset))
-        return self.children[0].set(np.add(pos,self.offset), rot)
+        new_pos = np.add(pos , np.dot(rot, self.offset))
+
+        return self.children[0].set(new_pos, rot)
 
 
     def unset(self,pos,rot):
