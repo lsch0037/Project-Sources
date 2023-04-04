@@ -80,9 +80,9 @@ class sphere(primitive):
 
         pos0 = pos - np.array([self.rad, self.rad, self.rad])
 
-        for x in range(0,2*self.rad):
-            for y in range(0,2*self.rad):
-                for z in range(0,2*self.rad):
+        for x in range(int(2*self.rad)):
+            for y in range(int(2*self.rad)):
+                for z in range(int(2*self.rad)):
                     current_pos = pos0 + np.array([x,y,z])
                     dist = np.linalg.norm(pos - current_pos)  
 

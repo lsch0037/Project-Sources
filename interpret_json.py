@@ -16,7 +16,7 @@ from pcglib.material import *
 # !GLOBAL CONSTANTS
 operators = ["Union", "Intersection", "Difference",
              "Loop","If",
-             "On Ground", "On"]
+             "On Ground","Offset", "On"]
 primitiveNames = ["Cube", "Sphere", "Cuboid", "Cylinder"]
 materialSelectorTypes = ["Random", "Perlin"]
 reservedProperties = ["Relative"]
@@ -135,6 +135,9 @@ def parse_operator(prog, op, props):
 
     elif op == "On":
         return parse_on(prog[op], props)
+
+    elif op == "Offset":
+        return parse_offset(prog[op], props)
 
     else:
         raise ValueError("Invalid Operator: {}".format(prog))
@@ -452,6 +455,19 @@ def parse_on(prog, props):
 
     return on
 
+def parse_offset(prog, props):
+    if len(prog) > 2:
+        raise ValueError("Offset operator requires exactly {n} operands.".format(n=2))
+
+
+    vec = prog[0]
+
+    if not isinstance(vec, list) or not len(vec) == 3:
+        raise TypeError("First property of Offset operator must be a vector of length 3")
+
+    child_prog = parse_expression(prog[1], props)
+
+    return offsetNode(vec, [child_prog])
 
 # !Materials
 def parse_material(mat,props):
@@ -525,9 +541,9 @@ def parse_sphere(prog,props):
 
     rad = props["Radius"]
     material = parse_material(props["Material"],props)
-    pos = props["Position"]
+    # pos = props["Position"]
 
-    print("Sphere(pos:",pos,", Material:", material, ",Radius:", rad,")")
+    print("Sphere(Material:", material, ",Radius:", rad,")")
 
     return sphere(material, rad)
 

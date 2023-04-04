@@ -1,5 +1,7 @@
 from pcglib.buffer import buffer
 
+import numpy as np
+
 class compound():
     def __init__(self,children = []):
         self.children = children
@@ -152,15 +154,8 @@ class offsetNode(compound):
         self.offset = offset
 
     def set(self,pos,rot):
-        newBuf = buffer()
-
-        buf = self.children[0].set(pos,rot)
-        buf.write(newBuf)
-
-        buf2 = self.children[1].set(pos + self.offset, rot)
-        buf2.write(newBuf)
-
-        return newBuf
+        print("Pos:{p}, Offset:{o}".format(p=pos,o=self.offset))
+        return self.children[0].set(np.add(pos,self.offset), rot)
 
 
     def unset(self,pos,rot):
@@ -169,10 +164,41 @@ class offsetNode(compound):
         buf = self.children[0].unset(pos,rot)
         buf.write(newBuf)
 
+        # todo rotate offset by 'rot'
+
         buf2 = self.children[1].unset(pos + self.offset, rot)
         buf2.write(newBuf)
 
         return newBuf
 
-def rotationNode(compound):
-    pass
+
+class rotationNode(compound):
+    def __init__(self,rotation, children=[]):
+        super().__init__(children)
+        self.rotation = rotation
+
+
+    def set(self,pos,prev_rot):
+        new_rot = np.matmul(self.rotation, prev_rot)
+        print("Previous Rotation: {p}, New Rotation: {n}".format(p=prev_rot, n=new_rot))
+
+        newBuf = buffer()
+
+        for child in self.children:
+            buf = child.set(pos, new_rot)
+            buf.write(newBuf)
+
+        return newBuf
+
+
+    def unset(self,pos, prev_rot):
+        new_rot = np.matmul(self.rotation, prev_rot)
+        print("Previous Rotation: {p}, New Rotation: {n}".format(p=prev_rot, n=new_rot))
+
+        newBuf = buffer()
+
+        for child in self.children:
+            buf = child.set(pos, new_rot)
+            buf.unwrite(newBuf)
+
+        return newBuf
