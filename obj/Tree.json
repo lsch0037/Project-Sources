@@ -4,14 +4,14 @@
             {
                 "Sphere":{
                     "Radius":"$CrownSize",
-                    "Material":"$CrownMaterial"
+                    "Material":"$LeavesType"
                 }
             },
             {
                 "Cylinder":{
                     "Radius":"$TrunkThickness",
                     "Length":"$TreeHeight",
-                    "Material":"$TrunkMaterial"
+                    "Material":"$WoodType"
                 }
             }
         ]

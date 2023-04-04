@@ -8,21 +8,14 @@
             "FloorMaterial":"Stone",
             "RoofMaterial":"Bricks"
         },
+        "Tall":{
+            "HouseHeight":20
+        },
         "Brick":{
             "WallMaterial":"Bricks"
         }
     },
     "Modifiers":{
-        "On":{
-            "Parent":{
-                "FinalHeight":10
-            },
-            "This":{
-                "HouseHeight":"$FinalHeight"
-            },
-            "Other":{
-                "Relative":[0, "!add($FinalHeight, 1)", 0]
-            }
-        }
+        "On":"On"
     }
 }

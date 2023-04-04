@@ -1,0 +1,69 @@
+{
+    "On": [
+        {
+            "TreeHeight": 20,
+            "TrunkThickness": 3,
+            "CrownSize": 5,
+            "WoodType": {
+                "Selector": "Random",
+                "Ids": [
+                    "Oak Wood"
+                ]
+            },
+            "LeavesType": {
+                "Selector": "Random",
+                "Ids": [
+                    "Oak Leaves"
+                ]
+            },
+            "Tree": {
+                "On Ground": {
+                    "On": [
+                        {
+                            "Sphere": {
+                                "Radius": "$CrownSize",
+                                "Material": "$LeavesType"
+                            }
+                        },
+                        {
+                            "Cylinder": {
+                                "Radius": "$TrunkThickness",
+                                "Length": "$TreeHeight",
+                                "Material": "$WoodType"
+                            }
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "HouseHeight": 10,
+            "HouseLength": 10,
+            "HouseWidth": 10,
+            "WallMaterial": "Bricks",
+            "FloorMaterial": "Stone",
+            "RoofMaterial": "Bricks",
+            "House": {
+                "Union": [
+                    {
+                        "Shape": "HollowRoom",
+                        "RoomHeight": "$HouseHeight",
+                        "RoomLength": "$HouseLength",
+                        "RoomWidth": "$HouseWidth"
+                    },
+                    {
+                        "Relative": [
+                            0,
+                            "$HouseHeight",
+                            0
+                        ],
+                        "Shape": "Roof",
+                        "RoofWidth": "$HouseWidth",
+                        "RoofHeight": "!div($HouseWidth,2)",
+                        "RoofLength": "$HouseLength"
+                    }
+                ]
+            }
+        }
+    ]
+}

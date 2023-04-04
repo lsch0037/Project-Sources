@@ -1,23 +1,27 @@
 {
     "Descriptors":{
         "Default":{
-            "Height":10,
-            "TrunkSize":3,
+            "TreeHeight":10,
+            "TrunkThickness":3,
             "CrownSize":5,
-            "WoodType":"Oak Wood",
-            "LeavesType":"Oak Leaves"
+            "WoodType":{
+                "Selector":"Random",
+                "Ids":["Oak Wood"]
+            },
+            "LeavesType":{
+                "Selector":"Random",
+                "Ids":["Oak Leaves"]
+            }
         },
         "Tall":{
-            "Height":20
+            "TreeHeight":20
         },
         "Short":{
-            "Height":5
+            "TreeHeight":5
         }
     },
     "Modifiers":{
-        "on":{
-            "Relative":[0,"$Height",0]
-        }
+        "on":"On"
     },
 
     "Plural":{

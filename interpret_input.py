@@ -122,25 +122,65 @@ def tokenise(text):
     return final_tokens
 
 def parse_clause(tokens):
+    print("Parsing Clause: {}".format(tokens))
     obj1 = None
     obj2 = None
     modifier = None
 
-    j = 0
+    i = find_next_of_type(tokens,"Modifier")
+
+    if i == -1:
+        # If no modifier was found
+        return parse_description(tokens)
+    else:
+        obj1Name, obj1 = parse_description(tokens[0:i])
+        obj2Name, obj2 = parse_clause(tokens[i+1:])
+        modifier = tokens[i][0]
+
+        print("obj1:{o1}, mod:{m}, obj2:{o2}".format(o1=obj1,m=modifier,o2=obj2))
+
+
+        meta2 = readFile("meta/{}.json".format(obj2Name))
+        mod_name = meta2["Modifiers"][modifier]
+        
+        
+        prog = dict()
+        prog[mod_name] = [obj1, obj2]
+
+        return obj1Name, prog
+    
+    return None
+
+
     for i in range(len(tokens)):
         token = tokens[i]
 
         if token[1] == "Modifier":
-            obj1 = parse_description(tokens[0:i])
-            obj2 = parse_clause(tokens[i:])
+            obj1Name, obj1 = parse_description(tokens[0:i])
+            obj2Name, obj2 = parse_clause(tokens[i+1:])
 
-            modifier = tokens[i]
+            print("obj1:{o1}, obj2:{o2}".format(o1=obj1,o2=obj2))
 
-            return eval_modifier(obj1, modifier, obj2)
+            modifier = tokens[i][0]
+
+            meta2 = readFile("meta/{}.json".format(obj2Name))
+            mod_name = meta2["Modifiers"][modifier]
+            
+            
+            prog = dict()
+            prog[mod_name] = [obj1, obj2]
+
+            return obj1Name, prog
 
     # If no modifier was found
-
     return parse_description(tokens)
+
+def find_next_of_type(tokens, type):
+    for token in tokens:
+        if token[1] == type:
+            return tokens.index(token)
+    
+    return -1
     
 
 # def parse_paragraph(paragraph):
@@ -194,25 +234,39 @@ def parse_clause(tokens):
 
 
 def parse_description(tokens):
+    print("Description:{}".format(tokens))
     desc = []
     objName = None
 
     for token in tokens:
-        if token[2] == "Descriptor":
-            desc.append(token)
+        if token[1] == "Descriptor":
+            desc.append(token[0])
 
-        elif token[2] == "Object":
-            objName = token[1]
+        elif token[1] == "Object":
+            objName = token[0]
         
-        elif token[2] == "Modifier":
+        elif token[1] == "Modifier":
             raise ValueError("Modifier with unclear object.")
+
+    print("ObjName:{}".format(objName))
+    print("Desc:{}".format(desc))
         
-    prog = readFile("obj/{}.json".format(objName))
+    obj = readFile("obj/{}.json".format(objName))
     meta = readFile("meta/{}.json".format(objName))
 
+    prog = meta["Descriptors"]["Default"]
 
-    # !CONTINUE HERE
+    for token in desc:
+        desc_json = meta["Descriptors"][token]
+        
+        for key in desc_json:
+            prog[key] = desc_json[key]
 
+    prog[objName] = obj
+
+    print("Prog:{}".format(prog))
+
+    return objName, prog
 
 def parse_clause_old(clause):
     print("Parsing clause: '{}'".format(clause))
@@ -305,6 +359,7 @@ def eval_attributes(object_name, object_attributes):
     return props
 
 
+
 def eval_object(object_name, object_attributes):
 
     props = eval_attributes(object_name, object_attributes)
@@ -339,7 +394,7 @@ f.close()
 # TOKENISE
 tokens = tokenise(text)
 
-prog = parse_program(tokens)
+name,prog = parse_clause(tokens)
 
 # Write to 'Prog.json'
 f = open('Prog.json', 'w')
