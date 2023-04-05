@@ -428,7 +428,15 @@ def parse_if(prog, parent_props):
         return parse_expression(else_block, parent_props)
 
 # !Positional Operators
-def parse_on_ground(prog, parent_props):
+def parse_on_ground(prog, props):
+    print("Parsing on ground")
+
+    child_prog = parse_expression(prog, props)
+
+    return onGroundNode(game, [child_prog])
+
+
+def parse_on_ground_old(prog, parent_props):
     # TODO CHANGE THIS TO USE THE ONGROUND NODE
 
     print("Parsing on ground")

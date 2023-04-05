@@ -1,7 +1,11 @@
 {
     "On Ground":{
-        "Tree":{
-            
+        "Sphere":{
+            "Radius":4,
+            "Material":{
+                "Selector":"Random",
+                "Ids":["Stone"]
+            }
         }
     }
 }

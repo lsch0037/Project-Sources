@@ -114,10 +114,18 @@ class onGroundNode(compound):
         self.game = game
 
     def set(self, pos,rot):
-        height = self.game.getHeight(pos[0],pos[2])
-        new_pos = np.array([pos[0], height + 1, pos[2]])
+        groundHeight = self.game.getHeight(pos[0],pos[2])
+        new_pos = np.array([pos[0], groundHeight + 1, pos[2]])
 
-        return self.children[0].set(new_pos, rot)
+        child_buf = self.children[0].set(pos, rot)
+
+        bottom = child_buf.getBottom()
+
+        offset = new_pos - bottom
+
+        child_buf.shift(offset)
+
+        return child_buf
 
 
 class prepositionNode(compound):
