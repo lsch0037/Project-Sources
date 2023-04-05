@@ -95,7 +95,6 @@ class buffer():
 
         # return np.array(bestPos)
 
-
     def write(self, other, offset=np.array([0,0,0])):
         for i in self.d:
             for j in self.d[i]:
@@ -116,6 +115,23 @@ class buffer():
 
                     if id1 == id2:
                         other.unset(pos)
+
+
+    def intersection(self,other, offset=np.array([0,0,0])):
+        newBuf = buffer()
+
+        for i in self.d:
+            for j in self.d[i]:
+                for k in self.d[i][j]:
+                    pos = np.array([i,j,k])
+
+                    id1 = self.get(pos)
+                    id2 = other.get(pos)
+
+                    if id1 == id2:
+                        newBuf.set(pos, id1)
+
+        return newBuf
 
 
     def getBounds(self):

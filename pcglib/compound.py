@@ -105,8 +105,18 @@ class differenceNode(compound):
 
 
 class intersectionNode(compound):
-    # TODO: IMPLEMENT
-    pass
+    def set(self,pos,rot):
+        # newBuf = buffer()
+
+        interBuf = self.children[0].set(pos, rot) 
+
+        for i in range(1, len(self.children)):
+            child = self.children[i]
+
+            buf = child.set(pos,rot)
+            interBuf = buf.intersection(interBuf)
+
+        return interBuf
 
 
 class onGroundNode(compound):

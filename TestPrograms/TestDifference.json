@@ -3,10 +3,6 @@
         "Selector":"Random",
         "Ids":["Stone"]
     },
-    "Mat2":{
-        "Selector":"Random",
-        "Ids":["Oak Wood"]
-    },
     "Difference":[
         {
             "Sphere":{
@@ -17,7 +13,7 @@
         {
             "Cube":{
                 "Size":10,
-                "Material":"$Mat2"
+                "Material":"$Mat1"
             }
         }
     ]
