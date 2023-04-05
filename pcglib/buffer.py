@@ -16,7 +16,6 @@ class buffer():
             self.d[pos[0]][pos[1]][pos[2]] = dict()
 
         self.d[pos[0]][pos[1]][pos[2]] = id
-        # print("Set ",pos)
 
     def get(self, pos):
         try:
@@ -26,7 +25,6 @@ class buffer():
 
     # REMOVES THE THE ENTRY AT THAT POSITION (UNDOES CHANGES)
     def unset(self, pos):
-        # print("Unset ", pos)
         try:
             self.d[pos[0]][pos[1]].pop(pos[2])
         except KeyError:
@@ -124,6 +122,7 @@ class buffer():
         min = np.array([np.inf, np.inf, np.inf])
         max = np.array([-np.inf, -np.inf, -np.inf])
 
+
         for i in self.d:
             for j in self.d[i]:
                 for k in self.d[i][j]:
@@ -135,6 +134,8 @@ class buffer():
 
                         if pos[dim] > max[dim]:
                             max[dim] = math.ceil(pos[dim])
+
+        print("Bounds - Max:{x}, Min:{n}".format(x=max, n=min))
 
         mid = np.array([min[0] + (max[0] - min[0]) / 2, min[1] + (max[1] - min[1]) / 2, min[2] + (max[2] - min[2]) / 2])
 

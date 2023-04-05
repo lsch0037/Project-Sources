@@ -80,12 +80,13 @@ class unionNode(compound):
 class differenceNode(compound):
     def set(self,pos,rot):
         newBuf = buffer()
-        buf = self.children[0].set(pos,rot)
-        newBuf.write(buf)
+
+        buf1 = self.children[0].set(pos,rot)
+        buf1.write(newBuf)
 
         for i in range(1,len(self.children)):
-            buf = self.children[i].set(pos,rot)
-            newBuf.unwrite(buf)
+            buf2 = self.children[i].set(pos,rot)
+            buf2.unwrite(newBuf)
 
         return newBuf
 
@@ -93,12 +94,12 @@ class differenceNode(compound):
     def unset(self,pos,rot):
         newBuf = buffer()
 
-        buf = self.children[0].set(pos,rot)
-        newBuf.unwrite(buf)
-    
+        buf1 = self.children[0].set(pos,rot)
+        buf1.unwrite(newBuf)
+
         for i in range(1,len(self.children)):
-            buf = self.children[i].set(pos,rot)
-            newBuf.write(buf)
+            buf2 = self.children[i].set(pos,rot)
+            buf2.write(newBuf)
 
         return newBuf
 

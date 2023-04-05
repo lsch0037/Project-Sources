@@ -7,6 +7,7 @@ import unittest
 
 from random import randint
 
+# GLOBALS
 Zero = [-144, -81, -224]
 
 game = Game(Zero)

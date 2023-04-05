@@ -325,13 +325,12 @@ def parse_union(prog, props):
 
 
 def parse_difference(prog, props):
-    diff_node = differenceNode()
-
+    child_progs = []
     for item in prog:
         child_node = parse_expression(item, props)
-        diff_node.addChild(child_node)
+        child_progs.append(child_node)
 
-    return diff_node
+    return differenceNode(child_progs)
 
 
 def parse_intersection(prog, props):
@@ -436,21 +435,6 @@ def parse_on_ground(prog, props):
     return onGroundNode(game, [child_prog])
 
 
-def parse_on_ground_old(prog, parent_props):
-    # TODO CHANGE THIS TO USE THE ONGROUND NODE
-
-    print("Parsing on ground")
-    if not len(prog) == 1:
-        raise ValueError("Prepositional operator '{o}' requires exactly {n} operands.".format(o="On Ground", n=1))
-
-    pos = parent_props["Position"]
-    newPos = [pos[0], game.getHeight(pos[0], pos[2]), pos[2]]
-
-    props = parent_props.copy()
-    props["Position"] = newPos
-
-    return parse_expression(prog, props)
-
 def parse_on(prog, props):
     if not len(prog) == 2:
         raise ValueError("Prepositional operator '{o}' requires exactly {n} operands.".format(o="On", n=2))
@@ -464,6 +448,7 @@ def parse_on(prog, props):
 
     return on
 
+
 def parse_offset(prog, props):
     if len(prog) > 2:
         raise ValueError("{o} operator requires exactly {n} operands.".format(o="Offset", n=2))
@@ -476,6 +461,7 @@ def parse_offset(prog, props):
     child_prog = parse_expression(prog[1], props)
 
     return offsetNode(vec, [child_prog])
+
 
 def parse_rotation(prog, props):
     if not "Axis" in prog:
