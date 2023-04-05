@@ -429,6 +429,8 @@ def parse_if(prog, parent_props):
 
 # !Positional Operators
 def parse_on_ground(prog, parent_props):
+    # TODO CHANGE THIS TO USE THE ONGROUND NODE
+
     print("Parsing on ground")
     if not len(prog) == 1:
         raise ValueError("Prepositional operator '{o}' requires exactly {n} operands.".format(o="On Ground", n=1))
@@ -553,7 +555,7 @@ def parse_material(mat,props):
 def parse_cube(prog,props):
 
     size = props["Size"]
-    material = parse_material(props["Material"])
+    material = parse_material(props["Material"], props)
 
     print("Cube(mat:{m}, size:{s}".format(m=material,s=size))
 

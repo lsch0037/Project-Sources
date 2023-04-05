@@ -3,30 +3,57 @@
         "Selector":"Random",
         "Ids":["Stone"]
     },
-    "Rotation":{
-        "Axis":"x",
-        "Degrees":45.0,
-
-        "Body":{
-            "Union":[
+    "Union":[
+        {
+            "Offset":[
+                [0,10,0],
                 {
-                    "Cuboid":{
-                        "Dimensions":[5, 10, 5],
-                        "Material":"$Mat1"
-                    }
-                },
-                {
-                "Offset":[
-                    [0,10,0],
-                    {
-                        "Sphere":{
-                            "Radius":"3",
-                            "Material":"$Mat1"
+                    "Rotation":{
+                        "Axis" : "x",
+                        "Degrees": 45,
+                        "Body":{
+                            "Cube":{
+                                "Size":4,
+                                "Material":"$Mat1"
+                            }
                         }
                     }
-                ]
+                }
+            ]
+        },
+        {
+            "Offset":[
+                [10, 10, 0],
+                {
+                    "Rotation":{
+                        "Axis":"y",
+                        "Degrees":45,
+                        "Body":{
+                            "Cube":{
+                                "Size":4,
+                                "Material":"$Mat1"
+                            }
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "Offset":[
+                [20, 10, 0],
+                {
+                    "Rotation":{
+                        "Axis":"z",
+                        "Degrees":45,
+                        "Body":{
+                            "Cube":{
+                                "Size":4,
+                                "Material":"$Mat1"
+                            }
+                        }
+                    }
                 }
             ]
         }
-    }
+    ]
 }

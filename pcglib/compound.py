@@ -52,13 +52,9 @@ class compound():
 
     def set(self,pos,rot, buf):
         raise ValueError("Cannot call 'set' on generic node")
-        # for child in self.children:
-        #     child.set(buf,pos,rot)
 
     def unset(self,pos,rot,buf):
         raise ValueError("Cannot call 'unset' on generic node")
-        # for child in self.children:
-        #     child.unset(buf,pos,rot)
 
 
 class unionNode(compound):
@@ -111,11 +107,18 @@ class intersectionNode(compound):
     # TODO: IMPLEMENT
     pass
 
-# class onGroundNode(compound):
-    # def set(self, pos,rot):
-    #     groundPos = 
 
-    #     for child in self.children:
+class onGroundNode(compound):
+    def __init__(self,game, children=[]):
+        super().__init__(children)
+        self.game = game
+
+    def set(self, pos,rot):
+        height = self.game.getHeight(pos[0],pos[2])
+        new_pos = np.array([pos[0], height + 1, pos[2]])
+
+        return self.children[0].set(new_pos, rot)
+
 
 class prepositionNode(compound):
     def __init__(self, f1, f2, children=[]):
@@ -159,19 +162,10 @@ class offsetNode(compound):
 
         return self.children[0].set(new_pos, rot)
 
-
     def unset(self,pos,rot):
-        newBuf = buffer()
+        new_pos = np.add(pos , np.dot(rot, self.offset))
 
-        buf = self.children[0].unset(pos,rot)
-        buf.write(newBuf)
-
-        # todo rotate offset by 'rot'
-
-        buf2 = self.children[1].unset(pos + self.offset, rot)
-        buf2.write(newBuf)
-
-        return newBuf
+        return self.children[0].unset(new_pos, rot)
 
 
 class rotationNode(compound):
