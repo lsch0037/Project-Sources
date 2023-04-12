@@ -1,0 +1,29 @@
+{
+    "Loop":{
+        "loop_var":"x_iter",
+        "loop_range":10,
+        "loop_body":{
+        "Loop":{
+            "loop_var":"z_iter",
+            "loop_range":10,
+            "loop_body":{
+
+                "Pos":["$x_iter", "0", "$z_iter"],
+
+                "Offset":[
+                    ["$x_iter","!perlin($Pos, $Seed, $Oct)","$z_iter"],
+                    {
+                        "Cube":{
+                            "Size":1,
+                            "Material":{
+                                "Selector":"Random",
+                                "Ids":["Grass Block"]
+                                }
+                            }
+                        }
+                    ]
+                }
+            }
+        }
+    }
+}

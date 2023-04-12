@@ -370,16 +370,17 @@ def parse_loop(prog, parent_props):
     elif not isinstance(body, dict):
         raise TypeError("Loop variable {varname} is of invalid type {type}".format(varname="loop_body",type = type(body)))
 
-    uNode = unionNode()
+
+    childrenProgs =[]
 
     for i in range(0, loop_range):
         props = copy.copy(parent_props)
         props[loop_var] = i
 
         node = parse_expression(body, props)
-        uNode.addChild(node)
+        childrenProgs.append(node)
 
-    return uNode
+    return unionNode(childrenProgs)
 
 
 def parse_if(prog, parent_props):
@@ -398,7 +399,6 @@ def parse_if(prog, parent_props):
 
     if "else_block" in prog:
         else_block = prog["else_block"]
-
 
 
     # Type checking
@@ -425,6 +425,7 @@ def parse_if(prog, parent_props):
 
     elif not else_block == None and not result:
         return parse_expression(else_block, parent_props)
+
 
 # !Positional Operators
 def parse_on_ground(prog, props):

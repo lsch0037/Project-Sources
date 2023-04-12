@@ -1,0 +1,27 @@
+{
+    "Loop":{
+        "loop_var":"x_iter",
+        "loop_range":10,
+        "loop_body":{
+            "Loop":{
+                "loop_var":"z_iter",
+                "loop_range":10,
+                "loop_body":{
+                    "Offset":[
+                        ["$x_iter",1,"$z_iter"],
+                        {
+                            "Cube":{
+                                "Size":1,
+                                "Material":{
+                                    "Selector":"Random",
+                                    "Ids":["Grass Block"]
+                                }
+                            }
+                        }
+                    ]
+
+                }
+            }
+        }
+    }
+}

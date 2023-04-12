@@ -1,0 +1,7 @@
+{
+    "Position":[0, "!add(!getHeight(0,0),1)", 0],
+    "Mountain":{
+        "Seed":1000,
+        "Oct":12
+    }
+}
