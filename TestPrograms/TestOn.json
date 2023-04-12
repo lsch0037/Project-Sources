@@ -1,0 +1,20 @@
+{
+    "Mat1":{
+        "Selector":"Random",
+        "Ids":["Stone"]
+    },
+    "On":[
+        {
+            "Sphere":{
+                "Radius":6,
+                "Material":"$Mat1"
+            }
+        },
+        {
+            "Cube":{
+                "Size":10,
+                "Material":"$Mat1"
+            }
+        }
+    ]
+}

@@ -1,0 +1,45 @@
+\documentclass[11pt, a4paper]{article}
+
+\usepackage{hyperref}
+\usepackage{url}
+\usepackage{graphicx}
+\graphicspath{{./images/}}
+
+\begin{document}
+\begin{flushleft}
+
+% Title
+Procedurally Generating Interesting Structures in 3D Video Games\linebreak
+
+% Overview
+%? What is level design.
+%? Simplify level design.
+%?Allows the process to be automated.
+
+\paragraph*{}
+The level design phase in video games is laborious process, requiring designers to place object manually within a 3D environment.
+This work seeks to automate this process by providing a solution that uses procedural generation methods to populate game levels with structures in a cohesive and interesting manner.
+
+
+% Implementation
+%? DSL and PCG Library were created.
+%? Explain the four layers and give a justification for each.
+%? The input indentifies the object and their relations to each other and composites a program in the DSL.
+%? The Lanugage Layer uses language constructs such as loops, if-statements and functions which are finally evaluated into a complex expression of primitive geometry and operations between them defining all the structures.
+%? The PCG Tree is then evaluated using a set of algorithms to create a buffer representation of each blocks position in the final game.
+%? Finally the buffer can be written to the game world using an interface for minecraft provided by the [] python server and [] plugin.
+
+\paragraph*{}
+Minecraft was chosen to be the target 3D environment of this project on account of its widespread popularity and its voxel-based graphics allowing expressive manipulation of the scenery.
+A custom tool was developed to parse an input paragraph describing a scene, such as "A tall oak tree near a brick house, on top of a mountain," and generate the appropriate geometry accordingly.
+To this end, a Domain Specific Lanugage was created to define structures in terms of geometric primitives, other structures, and operations on and between them.
+A dedicated library was then implemented to enable to computation of geometry in terms of the positions and materials of individual voxels.
+Finally, the Spigot Server application [1] was employed, in combination with the MCPI Python Plugin [2], to generate the final scene in the game's 3D environment.
+
+% Evaluation
+\paragraph*{}
+The system was tested given a number of diverse and complex prompts and the resulting output was evaluated according to a number of objective and subjective criteria.
+% The system was able to generate levels that were accurate interpretations of the given input and that corresponded to the user's expectations.
+
+\end{flushleft}
+\end{document}

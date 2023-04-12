@@ -444,23 +444,23 @@ def parse_on(prog, props):
         child_node = parse_expression(item, props)
         operands.append(child_node)
 
-    on = operands[0].onTopOf(operands[1])
-
-    return on
+    return operands[0].onTopOf(operands[1])
 
 
 def parse_offset(prog, props):
     if len(prog) > 2:
         raise ValueError("{o} operator requires exactly {n} operands.".format(o="Offset", n=2))
 
-    vec = prog[0]
+    # vec = prog[0]
+    vec = parse_property(prog[0], props)
+    print("Vec:",vec)
 
     if not isinstance(vec, list) or not len(vec) == 3:
         raise TypeError("{p} must be of length {l}.".format(p="Vector",l=3))
 
     child_prog = parse_expression(prog[1], props)
 
-    return offsetNode(vec, [child_prog])
+    return offsetNode(vec,[child_prog])
 
 
 def parse_rotation(prog, props):
@@ -705,7 +705,7 @@ tree = parse_program(prog)
 
 print("Finished")
 
-pos = [0, game.getHeight(0,0) + 10, 0]
+pos = [0, game.getHeight(0,0), 0]
 rot = np.identity(3)
 
 buf = tree.set(pos, rot)

@@ -7,7 +7,6 @@
             "HalfRoofLength":"!div($RoofLength,2)",
             "HalfRoofWidth":"!div($RoofLength,2)",
 
-
             "2SideSquared":"!add(!pow($RoofHeight,2),!pow($HalfRoofWidth,2))",
             "Hypotenuse":"!sqrt($2SideSquared)",
 
@@ -78,7 +77,6 @@
                     ]
                 }
             ]
-
         }
     ]
 }

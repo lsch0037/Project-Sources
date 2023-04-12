@@ -146,6 +146,8 @@ class prepositionNode(compound):
         self.f2 = f2
 
     def set(self,pos,rot):
+        print("Pos:{p}, Rot:{r}".format(p=pos,r=rot))
+
         buf = buffer()
 
         # Write first object to buffer
@@ -177,7 +179,13 @@ class offsetNode(compound):
         self.offset = offset
 
     def set(self,pos,rot):
-        new_pos = np.add(pos , np.dot(rot, self.offset))
+        print("Pos:{p}, Rot:{r}".format(p=type(pos),r=type(rot)))
+
+        offset_rot = np.dot(rot, self.offset)
+        print("Offset Rotated:{}".format(offset_rot))
+
+        new_pos = np.add(pos , offset_rot)
+        print("New pos:{}".format(new_pos))
 
         return self.children[0].set(new_pos, rot)
 
