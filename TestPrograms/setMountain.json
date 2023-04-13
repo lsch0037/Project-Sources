@@ -1,7 +1,6 @@
 {
-    "Position":[0, "!add(!getHeight(0,0),1)", 0],
     "Mountain":{
-        "Seed":1000,
-        "Oct":12
+        "Seed":"!randInt(0, 10000)",
+        "Oct":32
     }
 }

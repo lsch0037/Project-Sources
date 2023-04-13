@@ -4,6 +4,7 @@ import os
 import copy
 import random
 from os import path
+import re
 
 import numpy as np
 from perlin_noise import PerlinNoise
@@ -12,6 +13,8 @@ from pcglib.Game import Game
 from pcglib.primitive import *
 from pcglib.compound import *
 from pcglib.material import *
+
+punct = r'\w+|[^\s\w]'
 
 # !GLOBAL CONSTANTS
 operators = ["Union", "Intersection", "Difference",
@@ -208,7 +211,7 @@ def variable_expansion(var_exp, props):
     return props[varName]
 
 
-def function_call(fn_call,props):
+def function_call(fn_call, props):
 
     # Extract funciton name
     funName = fn_call.split('!')[1].split('(')[0]
@@ -216,6 +219,8 @@ def function_call(fn_call,props):
     args_raw = fn_call.split('(', 1)[1].rsplit(')',1)[0]
 
     args = parse_arguments(args_raw,props)
+
+    print("Args:{}".format(args))
 
     if funName == "getHeight":
         return getHeight(args[0], args[1])
@@ -265,8 +270,10 @@ def function_call(fn_call,props):
 
 
 def parse_arguments(arguments, props):
-    # Replace all spaces
-    text = arguments.replace(' ','')
+
+    words = re.findall(punct, arguments)
+
+    print("Words:{}".format(words))
 
     # Check that scopes are correct
     if text.count('(') > text.count(')'):
@@ -275,36 +282,64 @@ def parse_arguments(arguments, props):
     elif text.count('(') < text.count(')'):
         raise ValueError("Expected ')' at {text}".format(text=text))
 
+    finalArgs = []
 
-    splits = text.split(',')
-
-    # print("splits:", splits)
-    tokens = []
+    current_arg = ""
 
     i = 0
-    while i < len(splits):
-        token = splits[i]
+    while i < len(words):
+        print("Word:{}".format(words[i]))
+        if words[i] == ",":
+            finalArgs.append(current_arg)
+            current_arg = ""
 
-        if token[0] == '!' and token.find(')') == -1:
-            
-            j = i + 1
-            while splits[j].find(')') == -1:
-                token += splits[j]
-                j += 1
-            else:
-                target_token = splits[j]
+        elif words[i] == "(":
+            # Forward to close bracket
+            while True:
+                current_arg += words[i]
 
-                token = token + ','+ target_token.split(')')[0] + ')'
+                if words[i] == ")":
+                    break
 
-                i = j
-        
-        tokens.append(token)
+                i += 1
+
+        else:
+            current_arg += words[i]
+
         i += 1
+
+    finalArgs.append(current_arg)
+
+
+    # splits = text.split(',')
+
+    # print("splits:", splits)
+    # tokens = []
+
+    # i = 0
+    # while i < len(splits):
+    #     token = splits[i]
+
+    #     if token[0] == '!' and token.find(')') == -1:
+            
+    #         j = i + 1
+    #         while splits[j].find(')') == -1:
+    #             token += splits[j]
+    #             j += 1
+    #         else:
+    #             target_token = splits[j]
+
+    #             token = token + ','+ target_token.split(')')[0] + ')'
+
+    #             i = j
+        
+    #     tokens.append(token)
+    #     i += 1
 
     # print("Tokens:", tokens)
                 
     args = []
-    for token in tokens:
+    for token in finalArgs:
         value = parse_property(token, props)
         args.append(value)
 
@@ -674,8 +709,10 @@ def getBlock(pos):
 
 def perlin(pos, seed=random.randint(0,10000), oct=1):
     noise = PerlinNoise(seed, oct)
-    return noise.noise(pos)
-
+    pos_scaled = [(pos[0]/100.0)%1.0,(pos[1]/100.0)%1.0,(pos[2]/100.0)%1.0]
+    noise_val = (noise.noise(pos_scaled)+1.0)/2
+    print("Pos: {p},Noise Value:{v}".format(p=pos_scaled, v=noise_val))
+    return noise_val
 
 # !PARSING PROGRAM
 # CHECKING FILES
