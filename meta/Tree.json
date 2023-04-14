@@ -21,7 +21,8 @@
         }
     },
     "Modifiers":{
-        "on":"On"
+        "on":"On",
+        "next":"south"
     },
 
     "Plural":{

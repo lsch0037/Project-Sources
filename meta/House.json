@@ -1,9 +1,9 @@
 {
     "Descriptors":{
         "Default":{
-            "HouseHeight":10,
-            "HouseLength":10,
-            "HouseWidth":10,
+            "HouseHeight":7,
+            "HouseLength":7,
+            "HouseWidth":7,
             "WallThickness":1,
             "WallMaterial":{
                 "Selector":"Random",
@@ -19,16 +19,20 @@
             }
         },
         "Tall":{
-            "HouseHeight":20
         },
         "Brick":{
-            "WallMaterial":{
+            "RoofMaterial":{
                 "Selector":"Random",
                 "Ids":["Bricks"]
+            },
+            "WallMaterial":{
+                "Selector":"Random",
+                "Ids":["Stone Bricks"]
             }
         }
     },
     "Modifiers":{
-        "On":"On"
+        "On":"On",
+        "next":"South"
     }
 }

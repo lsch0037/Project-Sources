@@ -13,6 +13,14 @@ class compound():
     def getChild(self, index):
         return self.children[index]
 
+    def __str__(self):
+        for child in self.children:
+            print("{a} -> {b}".format(a="GenericNode", b=""))
+
+        for child in self.children:
+            print(child)
+
+
     # Adds addition node as parent and node as sibling
     def union(self, other):
         return unionNode([self,other])
@@ -59,6 +67,7 @@ class compound():
 
 class unionNode(compound):
     def set(self,pos,rot):
+        print("Evaluating {}".format("union"))
         newBuf = buffer()
 
         for child in self.children:
@@ -68,6 +77,7 @@ class unionNode(compound):
         return newBuf
 
     def unset(self,pos,rot):
+        print("Evaluating {}".format("union"))
         newBuf = buffer()
 
         for child in self.children:
@@ -79,6 +89,7 @@ class unionNode(compound):
 
 class differenceNode(compound):
     def set(self,pos,rot):
+        print("Evaluating {}".format("difference"))
         newBuf = buffer()
 
         buf1 = self.children[0].set(pos,rot)
@@ -92,6 +103,7 @@ class differenceNode(compound):
 
     
     def unset(self,pos,rot):
+        print("Evaluating {}".format("difference"))
         newBuf = buffer()
 
         buf1 = self.children[0].set(pos,rot)
@@ -106,6 +118,7 @@ class differenceNode(compound):
 
 class intersectionNode(compound):
     def set(self,pos,rot):
+        print("Evaluating {}".format("intersection"))
         # newBuf = buffer()
 
         interBuf = self.children[0].set(pos, rot) 
@@ -125,6 +138,7 @@ class onGroundNode(compound):
         self.game = game
 
     def set(self, pos,rot):
+        print("Evaluating {}".format("On Ground"))
         groundHeight = self.game.getHeight(pos[0],pos[2])
         new_pos = np.array([pos[0], groundHeight + 1, pos[2]])
 
@@ -146,6 +160,7 @@ class prepositionNode(compound):
         self.f2 = f2
 
     def set(self,pos,rot):
+        print("Evaluating {}".format("Preposition"))
         print("Pos:{p}, Rot:{r}".format(p=pos,r=rot))
 
         buf = buffer()
@@ -179,6 +194,7 @@ class offsetNode(compound):
         self.offset = offset
 
     def set(self,pos,rot):
+        print("Evaluating {}".format("Offset Node"))
         print("Pos:{p}, Rot:{r}".format(p=type(pos),r=type(rot)))
 
         offset_rot = np.dot(rot, self.offset)
@@ -190,6 +206,7 @@ class offsetNode(compound):
         return self.children[0].set(new_pos, rot)
 
     def unset(self,pos,rot):
+        print("Evaluating {}".format("Offset Node"))
         new_pos = np.add(pos , np.dot(rot, self.offset))
 
         return self.children[0].unset(new_pos, rot)
@@ -206,6 +223,7 @@ class rotationNode(compound):
 
 
     def set(self,pos,prev_rot):
+        print("Evaluating {}".format("Rotation"))
 
         newBuf = buffer()
 
@@ -219,6 +237,7 @@ class rotationNode(compound):
 
 
     def unset(self,pos, prev_rot):
+        print("Evaluating {}".format("Rotation"))
         newBuf = buffer()
 
         new_rot = self.f(prev_rot, self.deg)

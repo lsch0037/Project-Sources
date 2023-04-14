@@ -1,10 +1,12 @@
 {
     "Descriptors":{
         "Default":{
-            "BaseWidth":20
+            "BaseWidth":20,
+            "Gradient":0.15
         },
         "Wide":{
-            "BaseWidth":50
+            "BaseWidth":60,
+            "Gradient":0.02
         }
     },
     "Modifiers":{

@@ -174,18 +174,20 @@ def parse_description(tokens):
     print("ObjName:{}".format(objName))
     print("Desc:{}".format(desc))
         
-    obj = readFile("obj/{}.json".format(objName))
+    # obj = readFile("obj/{}.json".format(objName))
     meta = readFile("meta/{}.json".format(objName))
 
-    prog = meta["Descriptors"]["Default"]
+    prog = dict()
+
+    prog[objName] = meta["Descriptors"]["Default"]
 
     for token in desc:
         desc_json = meta["Descriptors"][token]
         
         for key in desc_json:
-            prog[key] = desc_json[key]
+            prog[objName][key] = desc_json[key]
 
-    prog[objName] = obj
+    # prog[objName] = obj
 
     print("Prog:{}".format(prog))
 

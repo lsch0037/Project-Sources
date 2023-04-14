@@ -1,132 +1,36 @@
 {
-    "HouseHeight": 10,
-    "HouseLength": 10,
-    "HouseWidth": 10,
-    "WallThickness": 1,
-    "WallMaterial": {
-        "Selector": "Random",
-        "Ids": [
-            "Oak Planks"
-        ]
-    },
-    "FloorMaterial": {
-        "Selector": "Random",
-        "Ids": [
-            "Stone"
-        ]
-    },
-    "RoofMaterial": {
-        "Selector": "Random",
-        "Ids": [
-            "Bricks"
-        ]
-    },
-    "House": {
-        "HalfRoofWidth": "!div($HouseWidth,2)",
-        "Union": [
-            {
-                "HalfRoofLength": "!div($HouseLength,2)",
-                "2SideSquared": "!mul(!pow($HalfRoofWidth,2), 2)",
-                "Hypotenuse": "!sqrt($2SideSquared)",
-                "Offset": [
-                    [
-                        "!sub(0,$HalfRoofLength)",
-                        "$HalfRoofWidth",
-                        0
-                    ],
-                    {
-                        "Union": [
-                            {
-                                "Rotation": {
-                                    "Axis": "x",
-                                    "Degrees": 45.0,
-                                    "Body": {
-                                        "Cuboid": {
-                                            "Dimensions": [
-                                                "$HouseLength",
-                                                1,
-                                                "$Hypotenuse"
-                                            ],
-                                            "Material": "$RoofMaterial"
-                                        }
-                                    }
-                                }
-                            },
-                            {
-                                "Rotation": {
-                                    "Axis": "x",
-                                    "Degrees": 135.0,
-                                    "Body": {
-                                        "Cuboid": {
-                                            "Dimensions": [
-                                                "$HouseLength",
-                                                1,
-                                                "$Hypotenuse"
-                                            ],
-                                            "Material": "$RoofMaterial"
-                                        }
-                                    }
-                                }
-                            }
-                        ]
-                    }
-                ]
-            },
-            {
-                "Offset": [
-                    [
-                        0,
-                        "$HalfRoofWidth",
-                        0
-                    ],
-                    {
-                        "HalfRoomLength": "!div($HouseLength,2)",
-                        "HalfRoomWidth": "!div($HouseWidth,2)",
-                        "Offset": [
-                            [
-                                "!sub(0,$HalfRoomLength)",
-                                0,
-                                "!sub(0,$HalfRoomWidth)"
-                            ],
-                            {
-                                "Difference": [
-                                    {
-                                        "Cuboid": {
-                                            "Dimensions": [
-                                                "$HouseLength",
-                                                "$HouseHeight",
-                                                "$HouseWidth"
-                                            ],
-                                            "Material": "$WallMaterial"
-                                        }
-                                    },
-                                    {
-                                        "InnerLength": "!sub($HouseLength,!mul($WallThickness,2))",
-                                        "InnerWidth": "!sub($HouseWidth,!mul($WallThickness,2))",
-                                        "Offset": [
-                                            [
-                                                "$WallThickness",
-                                                1,
-                                                "$WallThickness"
-                                            ],
-                                            {
-                                                "Cuboid": {
-                                                    "Dimensions": [
-                                                        "$InnerLength",
-                                                        "!sub($HouseHeight,2)",
-                                                        "$InnerWidth"
-                                                    ],
-                                                    "Material": "$WallMaterial"
-                                                }
-                                            }
-                                        ]
-                                    }
-                                ]
-                            }
-                        ]
-                    }
-                ]
+    "On": [
+        {
+            "House": {
+                "HouseHeight": 7,
+                "HouseLength": 7,
+                "HouseWidth": 7,
+                "WallThickness": 1,
+                "WallMaterial": {
+                    "Selector": "Random",
+                    "Ids": [
+                        "Stone Bricks"
+                    ]
+                },
+                "FloorMaterial": {
+                    "Selector": "Random",
+                    "Ids": [
+                        "Stone"
+                    ]
+                },
+                "RoofMaterial": {
+                    "Selector": "Random",
+                    "Ids": [
+                        "Bricks"
+                    ]
+                }
             }
-        ]
-    }
+        },
+        {
+            "Hill": {
+                "BaseWidth": 60,
+                "Gradient": 0.02
+            }
+        }
+    ]
 }

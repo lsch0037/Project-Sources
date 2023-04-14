@@ -288,7 +288,7 @@ def parse_arguments(arguments, props):
 
     words = re.findall(punct, arguments)
 
-    print("Raw:{}".format(words))
+    # print("Raw:{}".format(words))
 
     # Check that scopes are correct
     if text.count('(') > text.count(')'):
@@ -303,13 +303,13 @@ def parse_arguments(arguments, props):
 
     i = 0
     while i < len(words):
-        print("Word:{}".format(words[i]))
+        # print("Word:{}".format(words[i]))
         if words[i] == ",":
             finalArgs.append(current_arg)
             current_arg = ""
 
         elif words[i] == "(":
-            print("Forwarding to ')'")
+            # print("Forwarding to ')'")
             # Forward to close bracket
 
             openBracket = 0
@@ -351,13 +351,14 @@ def parse_arguments(arguments, props):
 
 # !GEOMETRIC OPERATORS
 def parse_union(prog, props):
-    union_node = unionNode()
+    print("Parsing union:", prog)
 
+    children = []
     for item in prog:
         child_node = parse_expression(item, props)
-        union_node.addChild(child_node)
+        children.append(child_node)
 
-    return union_node
+    return unionNode(children)
 
 
 def parse_difference(prog, props):
