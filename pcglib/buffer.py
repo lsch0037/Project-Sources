@@ -23,6 +23,19 @@ class buffer():
         except KeyError:
             return -1
 
+    def __str__(self):
+        s = ""
+
+        for i in self.d:
+            for j in self.d[i]:
+                for k in self.d[i][j]:
+                    pos = np.array([i,j,k])
+
+                    s += "{pos}: {id}\n".format(pos=pos, id=self.get(pos))
+
+        return s
+
+
     # REMOVES THE THE ENTRY AT THAT POSITION (UNDOES CHANGES)
     def unset(self, pos):
         try:

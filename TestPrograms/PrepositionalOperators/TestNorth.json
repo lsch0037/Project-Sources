@@ -1,0 +1,24 @@
+{
+    "Mat1":{
+        "Selector":"Random",
+        "Ids":["Stone"]
+    },
+    "Mat2":{
+        "Selector":"Random",
+        "Ids":["Bricks"]
+    },
+    "North":[
+        {
+            "Cube":{
+                "Size":4,
+                "Material":"$Mat1"
+            }
+        },
+        {
+            "Sphere":{
+                "Radius":5,
+                "Material":"$Mat2"
+            }
+        }
+    ]
+}

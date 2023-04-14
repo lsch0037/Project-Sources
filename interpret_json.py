@@ -19,7 +19,7 @@ punct = r'\w+|[^\s\w]'
 # !GLOBAL CONSTANTS
 operators = ["Union", "Intersection", "Difference",
              "Loop","If",
-             "On Ground","Offset","Rotation", "On"]
+             "On Ground","Offset","Rotation", "On", "North", "South", "East", "West"]
 primitiveNames = ["Cube", "Sphere", "Cuboid", "Cylinder"]
 materialSelectorTypes = ["Random", "Perlin"]
 reservedProperties = ["Relative"]
@@ -132,14 +132,26 @@ def parse_operator(prog, op, props):
     elif op == "On Ground":
         return parse_on_ground(prog[op], props)
 
-    elif op == "On":
-        return parse_on(prog[op], props)
-
     elif op == "Offset":
         return parse_offset(prog[op], props)
 
     elif op == "Rotation":
         return parse_rotation(prog[op], props)
+
+    elif op == "On":
+        return parse_preposition_operator(prog[op], props, compound.onTopOf)
+
+    elif op == "North":
+        return parse_preposition_operator(prog[op], props, compound.northOf)
+
+    elif op == "South":
+        return parse_preposition_operator(prog[op], props, compound.southOf)
+
+    elif op == "East":
+        return parse_preposition_operator(prog[op], props, compound.eastOf)
+
+    elif op == "West":
+        return parse_preposition_operator(prog[op], props, compound.westOf)
 
     else:
         raise ValueError("Invalid Operator: {}".format(prog))
@@ -220,7 +232,7 @@ def function_call(fn_call, props):
 
     args = parse_arguments(args_raw,props)
 
-    print("Args:{}".format(args))
+    print("Fun: {f}, Args:{a}".format(f=funName, a=args))
 
     if funName == "getHeight":
         return getHeight(args[0], args[1])
@@ -242,6 +254,9 @@ def function_call(fn_call, props):
 
     elif funName == "sqrt":
         return math.sqrt(args[0])
+
+    elif funName == "abs":
+        return abs(args[0])
 
     elif funName == "randInt":
         return randomInt(int(args[0]),int(args[1]))
@@ -273,7 +288,7 @@ def parse_arguments(arguments, props):
 
     words = re.findall(punct, arguments)
 
-    print("Words:{}".format(words))
+    print("Raw:{}".format(words))
 
     # Check that scopes are correct
     if text.count('(') > text.count(')'):
@@ -294,11 +309,23 @@ def parse_arguments(arguments, props):
             current_arg = ""
 
         elif words[i] == "(":
+            print("Forwarding to ')'")
             # Forward to close bracket
+
+            openBracket = 0
+            closeBracket = 0
+
             while True:
                 current_arg += words[i]
 
-                if words[i] == ")":
+                if words[i] == "(":
+                    openBracket += 1
+
+                elif words[i] == ")":
+                    closeBracket += 1
+
+                
+                if openBracket == closeBracket:
                     break
 
                 i += 1
@@ -310,40 +337,14 @@ def parse_arguments(arguments, props):
 
     finalArgs.append(current_arg)
 
-
-    # splits = text.split(',')
-
-    # print("splits:", splits)
-    # tokens = []
-
-    # i = 0
-    # while i < len(splits):
-    #     token = splits[i]
-
-    #     if token[0] == '!' and token.find(')') == -1:
-            
-    #         j = i + 1
-    #         while splits[j].find(')') == -1:
-    #             token += splits[j]
-    #             j += 1
-    #         else:
-    #             target_token = splits[j]
-
-    #             token = token + ','+ target_token.split(')')[0] + ')'
-
-    #             i = j
-        
-    #     tokens.append(token)
-    #     i += 1
-
-    # print("Tokens:", tokens)
+    print("Split:{}".format(finalArgs))
                 
     args = []
     for token in finalArgs:
         value = parse_property(token, props)
         args.append(value)
 
-    print("Final evaluated arguments:", args)
+    print("Evaluated:", args)
 
     return args
 
@@ -471,16 +472,29 @@ def parse_on_ground(prog, props):
     return onGroundNode(game, [child_prog])
 
 
-def parse_on(prog, props):
+def parse_preposition_operator(prog, props, f):
+    print("Parsing prepostion Operator")
     if not len(prog) == 2:
-        raise ValueError("Prepositional operator '{o}' requires exactly {n} operands.".format(o="On", n=2))
+        raise ValueError("Prepositional operator requires exactly {n} operands.".format(n=2))
 
     operands = []
     for item in prog:
         child_node = parse_expression(item, props)
         operands.append(child_node)
 
-    return operands[0].onTopOf(operands[1])
+    return f(operands[0], operands[1])
+
+
+# def parse_on(prog, props):
+#     if not len(prog) == 2:
+#         raise ValueError("Prepositional operator '{o}' requires exactly {n} operands.".format(o="On", n=2))
+
+#     operands = []
+#     for item in prog:
+#         child_node = parse_expression(item, props)
+#         operands.append(child_node)
+
+#     return operands[0].onTopOf(operands[1])
 
 
 def parse_offset(prog, props):
@@ -497,6 +511,22 @@ def parse_offset(prog, props):
     child_prog = parse_expression(prog[1], props)
 
     return offsetNode(vec,[child_prog])
+
+
+# def parse_north(prog, props):
+#     if not len(prog) == 2:
+#         raise ValueError("Prepositional operator '{o}' requires exactly {n} operands.".format(o="On", n=2))
+
+#     operands = []
+#     for item in prog:
+#         child_node = parse_expression(item, props)
+#         operands.append(child_node)
+
+#     return operands[0].northOf(operands[1])
+    
+
+# def parse_north(prog, props):
+#     pass
 
 
 def parse_rotation(prog, props):
@@ -743,7 +773,7 @@ tree = parse_program(prog)
 
 print("Finished")
 
-pos = [0, game.getHeight(0,0), 0]
+pos = [0, 63, 0]
 rot = np.identity(3)
 
 buf = tree.set(pos, rot)

@@ -1,19 +1,20 @@
 {
     "Loop":{
         "loop_var":"x_iter",
-        "loop_range":20,
+        "loop_range":"$BaseWidth",
         "loop_body":{
             "Loop":{
                 "loop_var":"z_iter",
-                "loop_range":30,
+                "loop_range":"$BaseWidth",
                 "loop_body":{
-                    "Pos":["$x_iter",100,"$z_iter"],
-                    "MountainHeight":"!perlin($Pos, $Seed, $Oct)",
+                    "x_pos":"!sub(!div($BaseWidth, 2),$x_iter)",
+                    "z_pos":"!sub(!div($BaseWidth, 2),$z_iter)",
+                    "BaseHeight":"!sub(10,!mul(0.17,!add(!pow($x_pos, 2), !pow($z_pos, 2))))",
                     "Offset":[
-                        ["$x_iter",1,"$z_iter"],
+                        ["$x_iter",0,"$z_iter"],
                         {
                             "Cuboid":{
-                                "Dimensions":[1, "!mul(3,$MountainHeight)",1],
+                                "Dimensions":[1, "$BaseHeight",1],
                                 "Material":{
                                     "Selector":"Random",
                                     "Ids":["Grass Block"]

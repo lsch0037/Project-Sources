@@ -14,6 +14,7 @@ id_map = {
     "Coal Ore":16,
     "Oak Wood" : 17,
     "Oak Leaves" : 18,
+    "Glass":20,
     "Bricks":45,
     "Diamond Ore":56,
     "Diamond Block": 57,

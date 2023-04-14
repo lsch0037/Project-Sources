@@ -1,0 +1,22 @@
+{
+    "Mat1":{
+        "Selector":"Random",
+        "Ids":["Stone"]
+    },
+    "South":[
+        {
+            "Cube":{
+                "Size":4,
+                "Material":"$Mat1" 
+            }
+        },
+        {
+            "On Ground":{
+                "Cube":{
+                    "Size":5,
+                    "Material":"$Mat1" 
+                }
+            }
+        }
+    ]
+}

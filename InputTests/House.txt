@@ -1,1 +1,1 @@
-A SimpleHouse.
+A house.

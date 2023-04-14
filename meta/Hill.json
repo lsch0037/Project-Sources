@@ -1,0 +1,13 @@
+{
+    "Descriptors":{
+        "Default":{
+            "BaseWidth":20
+        },
+        "Wide":{
+            "BaseWidth":50
+        }
+    },
+    "Modifiers":{
+        "On":"On"
+    }
+}

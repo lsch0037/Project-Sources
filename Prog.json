@@ -1,124 +1,87 @@
 {
-    "On": [
-        {
-            "TreeHeight": 20,
-            "TrunkThickness": 3,
-            "CrownSize": 5,
-            "WoodType": {
-                "Selector": "Random",
-                "Ids": [
-                    "Oak Wood"
-                ]
-            },
-            "LeavesType": {
-                "Selector": "Random",
-                "Ids": [
-                    "Oak Leaves"
-                ]
-            },
-            "Tree": {
-                "On Ground": {
-                    "On": [
-                        {
-                            "Sphere": {
-                                "Radius": "$CrownSize",
-                                "Material": "$LeavesType"
-                            }
-                        },
-                        {
-                            "Cylinder": {
-                                "Radius": "$TrunkThickness",
-                                "Length": "$TreeHeight",
-                                "Material": "$WoodType"
-                            }
-                        }
-                    ]
-                }
-            }
-        },
-        {
-            "HouseHeight": 10,
-            "HouseLength": 10,
-            "HouseWidth": 10,
-            "WallThickness": 1,
-            "WallMaterial": {
-                "Selector": "Random",
-                "Ids": [
-                    "Bricks"
-                ]
-            },
-            "FloorMaterial": {
-                "Selector": "Random",
-                "Ids": [
-                    "Stone"
-                ]
-            },
-            "RoofMaterial": {
-                "Selector": "Random",
-                "Ids": [
-                    "Bricks"
-                ]
-            },
-            "House": {
-                "On": [
+    "HouseHeight": 10,
+    "HouseLength": 10,
+    "HouseWidth": 10,
+    "WallThickness": 1,
+    "WallMaterial": {
+        "Selector": "Random",
+        "Ids": [
+            "Oak Planks"
+        ]
+    },
+    "FloorMaterial": {
+        "Selector": "Random",
+        "Ids": [
+            "Stone"
+        ]
+    },
+    "RoofMaterial": {
+        "Selector": "Random",
+        "Ids": [
+            "Bricks"
+        ]
+    },
+    "House": {
+        "HalfRoofWidth": "!div($HouseWidth,2)",
+        "Union": [
+            {
+                "HalfRoofLength": "!div($HouseLength,2)",
+                "2SideSquared": "!mul(!pow($HalfRoofWidth,2), 2)",
+                "Hypotenuse": "!sqrt($2SideSquared)",
+                "Offset": [
+                    [
+                        "!sub(0,$HalfRoofLength)",
+                        "$HalfRoofWidth",
+                        0
+                    ],
                     {
-                        "RoofWidth": "$HouseWidth",
-                        "RoofHeight": "!div($HouseWidth,2)",
-                        "RoofLength": "$HouseLength",
-                        "HalfRoofLength": "!div($RoofLength,2)",
-                        "HalfRoofWidth": "!div($RoofLength,2)",
-                        "2SideSquared": "!add(!pow($RoofHeight,2),!pow($HalfRoofWidth,2))",
-                        "Hypotenuse": "!sqrt($2SideSquared)",
-                        "Offset": [
-                            [
-                                "!sub(0,$HalfRoofLength)",
-                                "$RoofHeight",
-                                0
-                            ],
+                        "Union": [
                             {
-                                "Union": [
-                                    {
-                                        "Rotation": {
-                                            "Axis": "x",
-                                            "Degrees": 45.0,
-                                            "Body": {
-                                                "Cuboid": {
-                                                    "Dimensions": [
-                                                        "$RoofLength",
-                                                        1,
-                                                        "$Hypotenuse"
-                                                    ],
-                                                    "Material": "$RoofMaterial"
-                                                }
-                                            }
-                                        }
-                                    },
-                                    {
-                                        "Rotation": {
-                                            "Axis": "x",
-                                            "Degrees": 135.0,
-                                            "Body": {
-                                                "Cuboid": {
-                                                    "Dimensions": [
-                                                        "$RoofLength",
-                                                        1,
-                                                        "$Hypotenuse"
-                                                    ],
-                                                    "Material": "$RoofMaterial"
-                                                }
-                                            }
+                                "Rotation": {
+                                    "Axis": "x",
+                                    "Degrees": 45.0,
+                                    "Body": {
+                                        "Cuboid": {
+                                            "Dimensions": [
+                                                "$HouseLength",
+                                                1,
+                                                "$Hypotenuse"
+                                            ],
+                                            "Material": "$RoofMaterial"
                                         }
                                     }
-                                ]
+                                }
+                            },
+                            {
+                                "Rotation": {
+                                    "Axis": "x",
+                                    "Degrees": 135.0,
+                                    "Body": {
+                                        "Cuboid": {
+                                            "Dimensions": [
+                                                "$HouseLength",
+                                                1,
+                                                "$Hypotenuse"
+                                            ],
+                                            "Material": "$RoofMaterial"
+                                        }
+                                    }
+                                }
                             }
                         ]
-                    },
+                    }
+                ]
+            },
+            {
+                "Offset": [
+                    [
+                        0,
+                        "$HalfRoofWidth",
+                        0
+                    ],
                     {
-                        "RoomHeight": "$HouseHeight",
-                        "RoomLength": "$HouseLength",
-                        "RoomWidth": "$HouseWidth",
-                        "HalfRoomLength": "!div($RoomLength,2)",
-                        "HalfRoomWidth": "!div($RoomWidth,2)",
+                        "HalfRoomLength": "!div($HouseLength,2)",
+                        "HalfRoomWidth": "!div($HouseWidth,2)",
                         "Offset": [
                             [
                                 "!sub(0,$HalfRoomLength)",
@@ -130,16 +93,16 @@
                                     {
                                         "Cuboid": {
                                             "Dimensions": [
-                                                "$RoomLength",
-                                                "$RoomHeight",
-                                                "$RoomWidth"
+                                                "$HouseLength",
+                                                "$HouseHeight",
+                                                "$HouseWidth"
                                             ],
                                             "Material": "$WallMaterial"
                                         }
                                     },
                                     {
-                                        "InnerLength": "!sub($RoomLength,!mul($WallThickness,2))",
-                                        "InnerWidth": "!sub($RoomWidth,!mul($WallThickness,2))",
+                                        "InnerLength": "!sub($HouseLength,!mul($WallThickness,2))",
+                                        "InnerWidth": "!sub($HouseWidth,!mul($WallThickness,2))",
                                         "Offset": [
                                             [
                                                 "$WallThickness",
@@ -150,7 +113,7 @@
                                                 "Cuboid": {
                                                     "Dimensions": [
                                                         "$InnerLength",
-                                                        "!sub($RoomHeight,2)",
+                                                        "!sub($HouseHeight,2)",
                                                         "$InnerWidth"
                                                     ],
                                                     "Material": "$WallMaterial"
@@ -164,6 +127,6 @@
                     }
                 ]
             }
-        }
-    ]
+        ]
+    }
 }

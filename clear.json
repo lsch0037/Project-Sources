@@ -1,0 +1,9 @@
+{
+    "Cuboid":{
+        "Dimensions":[100, 20, 100],
+        "Material":{
+            "Selector":"Random",
+            "Ids":["Air"]
+        }
+    }
+}

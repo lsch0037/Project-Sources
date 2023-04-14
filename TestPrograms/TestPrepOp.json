@@ -1,0 +1,41 @@
+{
+    "Mat1":{
+        "Selector":"Random",
+        "Ids":["Stone"]
+    },
+    "North":[
+        {
+            "East":[
+                {
+                    "Cube":{
+                        "Size":4,
+                        "Material":"$Mat1"
+                    }
+                },
+                {
+                    "Cube":{
+                        "Size":4,
+                        "Material":"$Mat1"
+                    }
+                }
+            ]
+        },
+        {
+            "West":[
+                {
+                    "Cube":{
+                        "Size":4,
+                        "Material":"$Mat1"
+                    }
+                },
+                {
+                    "Cube":{
+                        "Size":4,
+                        "Material":"$Mat1"
+                    }
+
+                }
+            ]
+        }
+    ]
+}

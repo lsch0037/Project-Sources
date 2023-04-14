@@ -18,14 +18,25 @@ game = Game(offset_pc)
 pos1 = np.array([0.0,80.0,0.0])
 orientation = np.identity(3)
 
-mat = random_material(["Stone"])
+mat = random_material(["Glass"])
 
-cb = cylinder(mat,5, 10)
+cb = cube(mat, 10)
 sp = sphere(mat, 5)
 
+buf = cb.set(pos1, orientation)
 
-prog = prepositionNode(buffer.getCenter, buffer.getTop, [sp, cb])
+north = buf.getNorth()
+south = buf.getSouth()
+east = buf.getEast()
+west = buf.getWest()
 
-buf = prog.set(pos1, orientation)
+buf.set(north, 133)
+buf.set(south, 57)
+buf.set(east, 133)
+buf.set(west, 133)
+
+# print("Buf:{}".format(buf))
+
+print("North:{n}, South:{s}, East:{e}, West:{w}".format(n=north, s=south, e= east, w=west))
 
 buf.write(game)
