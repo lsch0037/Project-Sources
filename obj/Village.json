@@ -1,12 +1,14 @@
 {
     "Loop":{
-        "loop_var":"x_iter",
-        "loop_range":"$VlgSize",
-        "loop_body":{
+        "Var":"x_iter",
+        "Start":0,
+        "End":"$VlgSize",
+        "Body":{
             "Loop":{
-                "loop_var":"z_iter",
-                "loop_range":"$VlgSize",
-                "loop_body":{
+                "Var":"z_iter",
+                "Start":0,
+                "End":"$VlgSize",
+                "Body":{
                     "x_pos": "!mul($x_iter, 20)",
                     "z_pos": "!mul($z_iter, 20)",
                     "x_rand_off":"!randInt(!sub(0,5), 5)",

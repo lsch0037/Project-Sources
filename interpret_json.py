@@ -823,7 +823,7 @@ tree = parse_program(prog)
 
 print("Finished")
 
-pos = [0, 63, 0]
+pos = [50, 63, 50]
 rot = np.identity(3)
 
 buf = tree.set(pos, rot)

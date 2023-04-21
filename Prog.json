@@ -1,58 +1,9 @@
 {
-    "On": [
-        {
-            "South":[
-                {
-                    "On Ground":{
-                    "House": {
-                        "HouseHeight": 7,
-                        "HouseLength": 7,
-                        "HouseWidth": 7,
-                        "WallThickness": 1,
-                        "WallMaterial": {
-                            "Selector": "Random",
-                            "Ids": [
-                                "Stone Bricks"
-                            ]
-                        },
-                        "FloorMaterial": {
-                            "Selector": "Random",
-                            "Ids": [
-                                "Stone"
-                            ]
-                        },
-                        "RoofMaterial": {
-                            "Selector": "Random",
-                            "Ids": [
-                                "Bricks"
-                            ]
-                        }
-                    }
-                }
-                },
-                {
-                    "Tree":{
-                        "TreeHeight":20,
-                        "TrunkThickness":3,
-                        "CrownSize":5,
-                        "WoodType":{
-                            "Selector":"Random",
-                            "Ids":["Oak Wood"]
-                        },
-                        "LeavesType":{
-                            "Selector":"Random",
-                            "Ids":["Oak Leaves"]
-                        }
-                    }
-
-                }
-            ]
-        },
-        {
-            "Hill": {
-                "BaseWidth": 60,
-                "Gradient": 0.02
-            }
-        }
-    ]
+    "Hill": {
+        "BaseWidth": 20,
+        "MaxHeight": 10,
+        "Oct": 8,
+        "Seed": "!randInt(1,100)",
+        "RandomNess": 1
+    }
 }
