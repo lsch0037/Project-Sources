@@ -1,4 +1,6 @@
 import random
+import math
+
 from perlin_noise import PerlinNoise
 
 id_map = {
@@ -15,10 +17,13 @@ id_map = {
     "Oak Wood" : 17,
     "Oak Leaves" : 18,
     "Glass":20,
+    "Gold Block":41,
     "Bricks":45,
+    "Obsidian":49,
     "Diamond Ore":56,
     "Diamond Block": 57,
-    "Stone Bricks":98
+    "Stone Bricks":98,
+    "Emerald Block":133
 }
 
 class material():
@@ -60,10 +65,13 @@ class perlin_material(material):
 
     def get(self,pos):
         # Scaling coordinates to be between 0 and 1
-        pos_scaled = [(pos[0]/100.0)%1.0,(pos[1]/100.0)%1.0,(pos[2]/100.0)%1.0]
+        pos_scaled = [1.0/(round(pos[0])+0.5), 1.0/(round(pos[1])+0.5), 1.0/(round(pos[2])+0.5)]
 
         # Calculate perlin noise and scale to be between 0.0 and 1.0
-        noise_val = (self.noise.noise(pos_scaled)+1.0)/2
+        noise_val = (self.noise.noise(pos_scaled) + 1)/2
+
+        if noise_val > 1.0:
+            raise ValueError("Perlin noise value greater than 1.0: {}".format(noise_val))
         
         bracket = 0
 
@@ -72,6 +80,6 @@ class perlin_material(material):
                 bracket = i
                 break
 
-        # print("Pos Scaled:{p}, Noise: {n} -> Id:{id} ".format(p=pos_scaled, n=noise_val,id=self.ids[bracket]))
+        print("Pos Scaled:{p}, Noise: {n} -> Id:{id} ".format(p=pos_scaled, n=noise_val,id=self.ids[bracket]))
 
         return self.ids[bracket]

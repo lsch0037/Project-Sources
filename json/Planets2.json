@@ -1,44 +1,64 @@
 {
     "Union":[
         {
-            "Position":[20,80,20],
-            "Shape":"Sphere",
-            "Radius":10,
-            "Material":{
-                "Selector":"Random",
-                "Ids":["Stone"]
-            }
-        },
-        {
-            "Position":[20,80,50],
-            "Shape":"Sphere",
-            "Radius":10,
-            "Material":{
-                "Selector":"Perlin",
-                "Octaves":10,
-                "Ids":["Air","Stone","Grass Block"],
-                "Thresholds":[0.4,0.5,1.0]
-            }
-        },
-        {
-            "Position":[50,80,20],
-            "Shape":"Sphere",
-            "Radius":10,
+            "Offset":[
+                [20, 20, 20],
+                {
+                    "Sphere":{
+                        "Radius":10,
+                        "Material":{
+                            "Selector":"Random",
+                            "Ids":["Stone"]
+                        }
 
-            "Material":{
-                "Selector":"Random",
-                "Ids":["Air","Stone","Grass Block"]
-            }
+                    }
+                }
+            ]
         },
         {
-            "Position":[50, 80, 50],
-            "Shape":"Sphere",
-            "Radius":10,
-            "Material":{
-                "Selector":"Random",
-                "Ids":["Stone","Grass Block"],
-                "Weights":[0.2,0.8]
-            }
+            "Offset":[
+                [20, 20, 50],
+                {
+                    "Sphere":{
+                        "Radius":10,
+                        "Material":{
+                            "Selector":"Perlin",
+                            "Octaves":16,
+                            "Ids":["Air","Stone","Grass Block"],
+                            "Thresholds":[0.3,0.6,1.0]
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "Offset":[
+                [50, 20, 20],
+                {
+                    "Sphere":{
+                        "Radius":10,
+                        "Material":{
+                            "Selector":"Random",
+                            "Ids":["Air","Stone","Grass Block"]
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "Offset":[
+                [50, 20, 50],
+                {
+                    "Sphere":{
+                        "Radius":10,
+                        "Material":{
+                            "Selector":"Random",
+                            "Ids":["Stone","Grass Block"],
+                            "Weights":[0.2,0.8]
+                        }
+                    }
+                }
+            ]
         }
     ]
 

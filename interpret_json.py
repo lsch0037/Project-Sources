@@ -45,25 +45,26 @@ def parse_program(prog):
     return parse_expression(prog,props)
 
 def parse_expression(prog, parent_props):
+    print("Parsing expression: {}".format(prog))
 
     props = parse_properties(prog, parent_props)
 
     for key in prog:
         if key in primitiveNames:
-            print("{k} is a primitive.".format(k=key))
+            # print("{k} is a primitive.".format(k=key))
             return parse_primitive(prog[key],key, props)
 
         elif key in customShapes:
-            print("{k} is a compound.".format(k=key))
+            # print("{k} is a compound.".format(k=key))
             return parse_custom_shape(prog[key], key, props)
 
         elif key in operators:
-            print("{k} is an operator.".format(k=key))
+            # print("{k} is an operator.".format(k=key))
             return parse_operator(prog, key, props)
 
 
 def parse_primitive(prog, shapeName, parent_props):
-    print("Primitive:{}".format(prog))
+    print("Parsing Primitive:{}".format(prog))
 
     props = parse_properties(prog,parent_props)
 
@@ -90,6 +91,7 @@ def parse_primitive(prog, shapeName, parent_props):
 
 
 def parse_custom_shape(prog,shapeName, parent_props):
+    print("Parsing Custom Shape: {}".format(shapeName))
 
     props = parse_properties(prog, parent_props)
 
@@ -499,12 +501,12 @@ def parse_preposition_operator(prog, props, f):
 
 
 def parse_offset(prog, props):
+    print("Parsing offset: {}".format(prog))
+
     if len(prog) > 2:
         raise ValueError("{o} operator requires exactly {n} operands.".format(o="Offset", n=2))
 
-    # vec = prog[0]
     vec = parse_property(prog[0], props)
-    print("Vec:",vec)
 
     if not isinstance(vec, list) or not len(vec) == 3:
         raise TypeError("{p} must be of length {l}.".format(p="Vector",l=3))
@@ -560,7 +562,7 @@ def parse_rotation(prog, props):
 
 # !Materials
 def parse_material(mat,props):
-    print("Material:",mat)
+    # print("Material:",mat)
 
     # 'Selector' type checking
     if not "Selector" in mat:
@@ -624,7 +626,7 @@ def parse_cube(prog,props):
 
 
 def parse_sphere(prog,props):
-    print("Props:",props)
+    # print("Props:",props)
 
     rad = props["Radius"]
     material = parse_material(props["Material"],props)
@@ -740,7 +742,7 @@ def getBlock(pos):
 
 def perlin(pos, seed=random.randint(0,10000), oct=1):
     noise = PerlinNoise(seed, oct)
-    pos_scaled = [(pos[0]/100.0)%1.0,(pos[1]/100.0)%1.0,(pos[2]/100.0)%1.0]
+    pos_scaled = [1.0/(round(pos[0])+0.5), 1.0/(round(pos[1])+0.5), 1.0/(round(pos[2])+0.5)]
     noise_val = (noise.noise(pos_scaled)+1.0)/2
     print("Pos: {p},Noise Value:{v}".format(p=pos_scaled, v=noise_val))
     return noise_val

@@ -1,0 +1,12 @@
+{
+    "Cuboid":{
+        "Dimensions":[100,1,100],
+        "Material":{
+            "Selector":"Perlin",
+            "Seed":1234,
+            "Octaves":64,
+            "Ids":["Obsidian", "Gold Block", "Diamond Block", "Emerald Block"],
+            "Thresholds":[0.25, 0.5, 0.75, 1.0]
+        }
+    }
+}
