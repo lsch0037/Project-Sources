@@ -211,6 +211,16 @@ class offsetNode(compound):
 
         return self.children[0].unset(new_pos, rot)
 
+class northNode(compound):
+    def set(self, pos, rot):
+        # ! Set obj1 at pos
+
+        # ! Pos2 is the center of the obj1 bounding box
+
+        # ! Set obj2 at pos2
+
+        # ! Shift buf2 only z coordinate to make bounding boxes match
+        pass
 
 class rotationNode(compound):
     def __init__(self,axis, deg, children=[]):

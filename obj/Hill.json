@@ -1,15 +1,14 @@
 {
-    "HalfBaseWidth":"!div($BaseWidth, 2)",
-    "Gradient":"!div($MaxHeight, !pow($HalfBaseWidth, 2))",
+    "Gradient":"!div($MaxHeight, !pow($BaseRadius, 2))",
     "Loop":{
         "Var":"x_iter",
-        "Start":"!sub(0, $HalfBaseWidth)",
-        "End":"$HalfBaseWidth",
+        "Start":"!sub(0, $BaseRadius)",
+        "End":"$BaseRadius",
         "Body":{
             "Loop":{
                 "Var":"z_iter",
-                "Start":"!sub(0, $HalfBaseWidth)",
-                "End":"$HalfBaseWidth",
+                "Start":"!sub(0, $BaseRadius)",
+                "End":"$BaseRadius",
                 "Body":{
                     "Offset":[
                         ["$x_iter",0,"$z_iter"],

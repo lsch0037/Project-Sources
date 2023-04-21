@@ -1,9 +1,9 @@
 {
     "Hill": {
-        "BaseWidth": 20,
+        "BaseRadius": 60,
         "MaxHeight": 10,
         "Oct": 8,
         "Seed": "!randInt(1,100)",
-        "RandomNess": 1
+        "RandomNess": 5
     }
 }

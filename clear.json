@@ -1,9 +1,14 @@
 {
-    "Cuboid":{
-        "Dimensions":[100, 20, 100],
-        "Material":{
-            "Selector":"Random",
-            "Ids":["Air"]
+    "Offset":[
+        [-50, 0, -50],
+        {
+            "Cuboid":{
+                "Dimensions":[100, 20, 100],
+                "Material":{
+                    "Selector":"Random",
+                    "Ids":["Air"]
+                }
+            }
         }
-    }
+    ]
 }
