@@ -1,20 +1,30 @@
 {
+    "BaseWidth":30,
+    "MaxHeight":5,
+    "Oct":12,
+    "Seed":"!randInt(1,100)",
+    "Gradient":0.15,
+
+    "HalfBaseWidth":"!div($BaseWidth, 2)",
     "Loop":{
-        "loop_var":"x_iter",
-        "loop_range":"$BaseWidth",
-        "loop_body":{
+        "Var":"x_iter",
+        "Start":"!sub(0, $HalfBaseWidth)",
+        "End":"$HalfBaseWidth",
+        "Body":{
             "Loop":{
-                "loop_var":"z_iter",
-                "loop_range":"$BaseWidth",
-                "loop_body":{
-                    "x_pos":"!sub(!div($BaseWidth, 2),$x_iter)",
-                    "z_pos":"!sub(!div($BaseWidth, 2),$z_iter)",
-                    "BaseHeight":"!sub(10,!mul($Gradient,!add(!pow($x_pos, 2), !pow($z_pos, 2))))",
+                "Var":"z_iter",
+                "Start":"!sub(0, $HalfBaseWidth)",
+                "End":"$HalfBaseWidth",
+                "Body":{
                     "Offset":[
                         ["$x_iter",0,"$z_iter"],
                         {
+                            "Pos":["$x_iter", 0, "$z_iter"],
+                            "OldBaseHeight":"!sub($MaxHeight,!mul($Gradient,!add(!pow($x_iter, 2), !pow($z_iter, 2))))",
+                            "BaseHeight":"!sub($MaxHeight, !pow($x_iter, 2))",
+                            "PerlinHeight":"!mul($MaxHeight,!perlin($Pos, $Oct, $Seed))",
                             "Cuboid":{
-                                "Dimensions":[1, "$BaseHeight",1],
+                                "Dimensions":[1, "!add($BaseHeight, 0)", 1],
                                 "Material":{
                                     "Selector":"Random",
                                     "Ids":["Grass Block"]

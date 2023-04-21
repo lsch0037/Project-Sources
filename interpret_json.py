@@ -385,6 +385,54 @@ def parse_intersection(prog, props):
 def parse_loop(prog, parent_props):
 
     # Checking that variables exist
+    if not "Var" in prog:
+        raise ValueError("No 'Var' variable in loop construct")
+
+    elif not "Start" in prog:
+        raise ValueError("No 'Start' variable in loop construct")
+
+    elif not "End" in prog:
+        raise ValueError("No 'End' variable in loop construct")
+
+    elif not "Body" in prog:
+        raise ValueError("No 'Body' variable in loop construct")
+
+    var = prog["Var"]
+    start = int(parse_property(prog["Start"], parent_props))
+    end = int(parse_property(prog["End"], parent_props))
+
+    body = prog["Body"]
+
+    # Type checking
+    if not isinstance(var, str):
+        raise TypeError("Loop variable {varname} is of invalid type {type}".format(varname="Var", type = type(var)))
+    
+    elif not isinstance(start, int):
+        raise TypeError("Loop variable {varname} is of invalid type {type}".format(varname="Start", type = type(start)))
+
+    elif not isinstance(end, int):
+        raise TypeError("Loop variable {varname} is of invalid type {type}".format(varname="End", type = type(end)))
+
+    elif not isinstance(body, dict):
+        raise TypeError("Loop variable {varname} is of invalid type {type}".format(varname="Body",type = type(body)))
+
+
+    childrenProgs =[]
+
+    for i in range(start, end):
+        props = copy.copy(parent_props)
+        props[var] = i
+
+        node = parse_expression(body, props)
+        childrenProgs.append(node)
+
+    return unionNode(childrenProgs)
+
+
+# * Old function
+def parse_loop_old(prog, parent_props):
+
+    # Checking that variables exist
     if not "loop_var" in prog:
         raise ValueError("No 'loop_var' variable in loop construct")
 
@@ -420,7 +468,6 @@ def parse_loop(prog, parent_props):
         childrenProgs.append(node)
 
     return unionNode(childrenProgs)
-
 
 def parse_if(prog, parent_props):
 
