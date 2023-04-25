@@ -1,23 +1,24 @@
 import os
 import sys
 
-from input_parser import *
-
 # * Read Arguments
 if len(sys.argv) == 1:
     raise SystemError("Args must have at least length 1")
 
 input_path = sys.argv[1]
 
+splits = input_path.split("/")
+fileName = splits[len(splits)-1].removesuffix(".txt")
+outputPath = "Prog/{}.json".format(fileName)
+
+print(outputPath)
+
 # ! Run Input Parser
-os.system("input_parser.py {}".format(input_path))
+os.system("input_parser.py {} {}".format(input_path, outputPath))
 
 # ! Read Output Program
-splits = inputPath.split("/")
-fileName = splits[len(splits)-1].removesuffix(".txt")
-programm_path = "Prog/{}.json".format(fileName)
 
-os.system("language_parser.py {}".format(programm_path))
+os.system("language_parser.py {}".format(outputPath))
 
 # ! Run Language Parser
 

@@ -48,7 +48,6 @@
             "RoomWidth":"$HouseWidth",
             "HalfRoomLength":"!div($RoomLength,2)",
             "HalfRoomWidth":"!div($RoomWidth,2)",
-
             "Shift":{
                 "Offset":["!sub(0,$HalfRoomLength)",0, "!sub(0,$HalfRoomWidth)"],
                 "Body":{
