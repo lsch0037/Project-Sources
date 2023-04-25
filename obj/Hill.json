@@ -10,9 +10,9 @@
                 "Start":"!sub(0, $BaseRadius)",
                 "End":"$BaseRadius",
                 "Body":{
-                    "Offset":[
-                        ["$x_iter",0,"$z_iter"],
-                        {
+                    "Shift":{
+                        "Offset":["$x_iter",0,"$z_iter"],
+                        "Body":{
                             "Pos":["$x_iter", 0, "$z_iter"],
                             "BaseHeight":"!sub($MaxHeight, !mul($Gradient,!add(!pow($x_iter, 2), !pow($z_iter, 2))))",
                             "PerlinHeight":"!perlin($Pos, $Oct, $Seed)",
@@ -24,7 +24,7 @@
                                 }
                             }
                         }
-                    ]
+                    }
                 }
             }
         }

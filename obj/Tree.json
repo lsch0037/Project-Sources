@@ -9,15 +9,15 @@
                 }
             },
             {
-                "Offset":[
-                    [0, "$TreeHeight", 0],
-                    {
+                "Shift":{
+                    "Offset":[0, "$TreeHeight", 0],
+                    "Body":{
                         "Sphere":{
                             "Radius":"$CrownSize",
                             "Material":"$LeavesType"
                         }
                     }
-                ]
+                }
             }
         ]
     }

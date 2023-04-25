@@ -5,9 +5,9 @@
     },
     "Union":[
         {
-            "Offset":[
-                [0,10,0],
-                {
+            "Shift":{
+                "Offset":[0,10,0],
+                "Body":{
                     "Rotation":{
                         "Axis" : "x",
                         "Degrees": 45,
@@ -19,12 +19,12 @@
                         }
                     }
                 }
-            ]
+            }
         },
         {
-            "Offset":[
-                [10, 10, 0],
-                {
+            "Shift":{
+                "Offset":[10, 10, 0],
+                "Body":{
                     "Rotation":{
                         "Axis":"y",
                         "Degrees":45,
@@ -36,12 +36,12 @@
                         }
                     }
                 }
-            ]
+            }
         },
         {
-            "Offset":[
-                [20, 10, 0],
-                {
+            "Shift":{
+                "Offset":[20, 10, 0],
+                "Body":{
                     "Rotation":{
                         "Axis":"z",
                         "Degrees":45,
@@ -53,7 +53,7 @@
                         }
                     }
                 }
-            ]
+            }
         }
     ]
 }

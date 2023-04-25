@@ -532,7 +532,8 @@ def parse_preposition_operator(prog, props, nodeType):
         child_node = parse_expression(item, props)
         operands.append(child_node)
 
-    return nodeType([operands[0], operands[1]])
+    # return nodeType([operands[0], operands[1]])
+    return nodeType(operands[0], operands[1])
 
 def parse_north(prog, props):
     print("Parsing North")

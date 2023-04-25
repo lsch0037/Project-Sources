@@ -7,9 +7,9 @@
                 "loop_var":"z_iter",
                 "loop_range":10,
                 "loop_body":{
-                    "Offset":[
-                        ["$x_iter",1,"$z_iter"],
-                        {
+                    "Shift":{
+                        "Offset":["$x_iter",1,"$z_iter"],
+                        "Body":{
                             "Cube":{
                                 "Size":1,
                                 "Material":{
@@ -18,8 +18,7 @@
                                 }
                             }
                         }
-                    ]
-
+                    }
                 }
             }
         }

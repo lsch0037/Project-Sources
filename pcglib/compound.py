@@ -13,10 +13,16 @@ class compound():
     def getChild(self, index):
         return self.children[index]
 
+
+    # https://stackoverflow.com/questions/20242479/printing-a-tree-data-structure-in-python
     def __str__(self, level=0):
         ret = "\t"*level+repr(self)+"\n"
         for child in self.children:
-            ret += child.__str__(level+1)
+            print(type(child))
+            if child == None:
+                return "None"
+            else:
+                ret += child.__str__(level+1)
         return ret
 
     def __repr__(self):

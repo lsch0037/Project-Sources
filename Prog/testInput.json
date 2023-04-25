@@ -1,0 +1,49 @@
+{
+    "On": [
+        {
+            "Tree": {
+                "TreeHeight": 20,
+                "TrunkThickness": 3,
+                "CrownSize": 5,
+                "WoodType": {
+                    "Selector": "Random",
+                    "Ids": [
+                        "Oak Wood"
+                    ]
+                },
+                "LeavesType": {
+                    "Selector": "Random",
+                    "Ids": [
+                        "Oak Leaves"
+                    ]
+                }
+            }
+        },
+        {
+            "House": {
+                "HouseHeight": 7,
+                "HouseLength": 7,
+                "HouseWidth": 7,
+                "WallThickness": 1,
+                "WallMaterial": {
+                    "Selector": "Random",
+                    "Ids": [
+                        "Stone Bricks"
+                    ]
+                },
+                "FloorMaterial": {
+                    "Selector": "Random",
+                    "Ids": [
+                        "Stone"
+                    ]
+                },
+                "RoofMaterial": {
+                    "Selector": "Random",
+                    "Ids": [
+                        "Bricks"
+                    ]
+                }
+            }
+        }
+    ]
+}

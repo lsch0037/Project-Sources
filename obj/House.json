@@ -10,9 +10,9 @@
             "2SideSquared":"!add(!pow($RoofHeight,2),!pow($HalfRoofWidth,2))",
             "Hypotenuse":"!sqrt($2SideSquared)",
 
-            "Offset":[
-                ["!sub(0,$HalfRoofLength)","$RoofHeight",0],
-                {
+            "Shift":{
+                "Offset":["!sub(0,$HalfRoofLength)","$RoofHeight",0],
+                "Body":{
                     "Union":[
                         {
                             "Rotation":{
@@ -40,7 +40,7 @@
                         }
                     ]
                 }
-            ]
+            }
         },
         {
             "RoomHeight":"$HouseHeight",
@@ -49,9 +49,9 @@
             "HalfRoomLength":"!div($RoomLength,2)",
             "HalfRoomWidth":"!div($RoomWidth,2)",
 
-            "Offset":[
-                ["!sub(0,$HalfRoomLength)",0, "!sub(0,$HalfRoomWidth)"],
-                {
+            "Shift":{
+                "Offset":["!sub(0,$HalfRoomLength)",0, "!sub(0,$HalfRoomWidth)"],
+                "Body":{
                     "Difference":[
                         {
                             "Cuboid":{
@@ -76,7 +76,7 @@
                         }
                     ]
                 }
-            ]
+            }
         }
     ]
 }

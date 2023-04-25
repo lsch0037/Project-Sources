@@ -11,15 +11,15 @@
             }
         },
         {
-        "Offset":[
-            [5,10,7],
-            {
-                "Sphere":{
-                    "Radius":"3",
-                    "Material":"$Mat1"
+            "Shift":{
+                "Offset":[5,10,7],
+                "Body":{
+                    "Sphere":{
+                        "Radius":"3",
+                        "Material":"$Mat1"
+                    }
                 }
             }
-        ]
         }
     ]
 }

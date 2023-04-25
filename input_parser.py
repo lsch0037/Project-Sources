@@ -200,11 +200,11 @@ verify_files()
 
 
 # ARGUMENTS
-fileName = sys.argv[1]
+inputPath = sys.argv[1]
 
 
 # READING INPUT
-f = open(fileName, "r")
+f = open(inputPath, "r")
 
 text = f.read()
 
@@ -218,9 +218,13 @@ tokens = tokenise(text)
 # PARSE
 name,prog = parse_clause(tokens)
 
+splits = inputPath.split("/")
+fileName = splits[len(splits)-1].removesuffix(".txt")
+programm_path = "Prog/{}.json".format(fileName)
+
 
 # WRITING PROGRAM
-f = open('Prog.json', 'w')
+f = open(programm_path, 'w+')
 
 f.write(json.dumps(prog, indent=4))
 
