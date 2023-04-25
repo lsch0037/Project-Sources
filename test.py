@@ -1,8 +1,8 @@
-from pcglib.Game import Game
-from pcglib.primitive import *
-from pcglib.buffer import *
-from pcglib.material import *
-from pcglib.compound import *
+from csglib.Game import Game
+from csglib.primitive import *
+from csglib.buffer import *
+from csglib.material import *
+from csglib.compound import *
 
 from perlin_noise import PerlinNoise
 

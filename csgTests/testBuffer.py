@@ -3,7 +3,7 @@ import os
 import unittest
 import random
 
-sys.path.append(os.path.abspath('../pcglib'))
+sys.path.append(os.path.abspath('../csglib'))
 
 from buffer import buffer
 
