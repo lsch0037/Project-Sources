@@ -7,18 +7,23 @@
         "Selector":"Random",
         "Ids":["Bricks"]
     },
-    "South":[
-        {
-            "Cube":{
-                "Size":4,
-                "Material":"$Mat1"
-            }
-        },
-        {
-            "Sphere":{
-                "Radius":5,
-                "Material":"$Mat2"
-            }
+    "Shift":{
+        "Offset":[0,20,0],
+        "Body":{
+            "South":[
+                {
+                    "Cube":{
+                        "Size":4,
+                        "Material":"$Mat1"
+                    }
+                },
+                {
+                    "Sphere":{
+                        "Radius":5,
+                        "Material":"$Mat2"
+                    }
+                }
+            ]
         }
-    ]
+    }
 }

@@ -43,6 +43,9 @@ class cube(primitive):
         
         return buf
 
+    def __repr__(self):
+        return 'Cube'
+
 class cuboid(primitive):
     # Constructor for a cuboid primitive
     # dim: a vector where the magnitude of i,j and k determine the dimensions of the cuboid in each direction
@@ -70,6 +73,9 @@ class cuboid(primitive):
 
         return buf
 
+    def __repr__(self):
+        return 'Cuboid'
+
 class sphere(primitive):
     def __init__(self, material, rad):
         super().__init__(material)
@@ -94,16 +100,8 @@ class sphere(primitive):
         
         return buf
 
-    # !Rotating a sphere does nothing
-    def rotateX(self, theta):
-        return
-    
-    def rotateY(self, theta):
-        return
-
-    def rotateZ(self, theta):
-        return
-
+    def __repr__(self):
+        return 'Sphere'
 
 class cylinder(primitive):
     def __init__(self, material, rad, len):
@@ -132,3 +130,16 @@ class cylinder(primitive):
                             buf.unset(current_pos)
         
         return buf
+
+    def __repr__(self):
+        return 'Cylinder'
+        
+
+class pyramid(primitive):
+    pass
+
+class prism(primitive):
+    pass
+
+class cone(primitive):
+    pass

@@ -19,7 +19,7 @@ punct = r'\w+|[^\s\w]'
 # !GLOBAL CONSTANTS
 operators = ["Union", "Intersection", "Difference",
              "Loop","If",
-             "On Ground","Offset","Rotation", "On", "North", "South", "East", "West"]
+             "On Ground","Shift","Rotation", "On", "North", "South", "East", "West"]
 primitiveNames = ["Cube", "Sphere", "Cuboid", "Cylinder"]
 materialSelectorTypes = ["Random", "Perlin"]
 reservedProperties = ["Relative"]
@@ -134,8 +134,8 @@ def parse_operator(prog, op, props):
     elif op == "On Ground":
         return parse_on_ground(prog[op], props)
 
-    elif op == "Offset":
-        return parse_offset(prog[op], props)
+    elif op == "Shift":
+        return parse_shift(prog[op], props)
 
     elif op == "Rotation":
         return parse_rotation(prog[op], props)
@@ -144,7 +144,7 @@ def parse_operator(prog, op, props):
         return parse_preposition_operator(prog[op], props, compound.onTopOf)
 
     elif op == "North":
-        return parse_preposition_operator(prog[op], props, compound.northOf)
+        return parse_preposition_operator(prog[op], props, northNode)
 
     elif op == "South":
         return parse_preposition_operator(prog[op], props, compound.southOf)
@@ -522,7 +522,7 @@ def parse_on_ground(prog, props):
     return onGroundNode(game, [child_prog])
 
 
-def parse_preposition_operator(prog, props, f):
+def parse_preposition_operator(prog, props, nodeType):
     print("Parsing prepostion Operator")
     if not len(prog) == 2:
         raise ValueError("Prepositional operator requires exactly {n} operands.".format(n=2))
@@ -532,8 +532,19 @@ def parse_preposition_operator(prog, props, f):
         child_node = parse_expression(item, props)
         operands.append(child_node)
 
-    return f(operands[0], operands[1])
+    return nodeType([operands[0], operands[1]])
 
+def parse_north(prog, props):
+    print("Parsing North")
+    if not len(prog) == 2:
+        raise ValueError("Prepositional operator requires exactly {n} operands.".format(n=2))
+
+    operands = []
+    for item in prog:
+        child_node = parse_expression(item, props)
+        operands.append(child_node)
+
+    return northNode(operands)
 
 # def parse_on(prog, props):
 #     if not len(prog) == 2:
@@ -547,20 +558,23 @@ def parse_preposition_operator(prog, props, f):
 #     return operands[0].onTopOf(operands[1])
 
 
-def parse_offset(prog, props):
+def parse_shift(prog, props):
     print("Parsing offset: {}".format(prog))
 
-    if len(prog) > 2:
-        raise ValueError("{o} operator requires exactly {n} operands.".format(o="Offset", n=2))
+    if not "Offset" in prog:
+        raise ValueError("No '{}' variable in loop construct".format("Offset"))
 
-    vec = parse_property(prog[0], props)
+    if not "Body" in prog:
+        raise ValueError("No '{}' variable in loop construct".format("Body"))
+
+    vec = parse_property(prog["Offset"], props)
+    child_prog = parse_expression(prog["Body"], props)
 
     if not isinstance(vec, list) or not len(vec) == 3:
         raise TypeError("{p} must be of length {l}.".format(p="Vector",l=3))
 
-    child_prog = parse_expression(prog[1], props)
 
-    return offsetNode(vec,[child_prog])
+    return shiftNode(vec, [child_prog])
 
 
 # def parse_north(prog, props):
@@ -821,7 +835,10 @@ prog = json.loads(text)
 
 tree = parse_program(prog)
 
-print("Finished")
+print("Finished Parsing:")
+print(tree)
+
+print("Evaluating Tree:")
 
 pos = [50, 63, 50]
 rot = np.identity(3)
