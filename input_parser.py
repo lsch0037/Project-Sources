@@ -219,10 +219,6 @@ tokens = tokenise(text)
 # PARSE
 name,prog = parse_clause(tokens)
 
-# splits = inputPath.split("/")
-# fileName = splits[len(splits)-1].removesuffix(".txt")
-# programm_path = "Prog/{}.json".format(fileName)
-
 
 # WRITING PROGRAM
 f = open(outputPath, 'w+')

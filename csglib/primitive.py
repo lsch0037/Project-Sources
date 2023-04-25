@@ -1,5 +1,5 @@
-from pcglib.compound import compound
-from pcglib.buffer import *
+from csglib.compound import compound
+from csglib.buffer import *
 
 import numpy as np
 

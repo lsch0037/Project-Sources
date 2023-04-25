@@ -9,10 +9,10 @@ import re
 import numpy as np
 from perlin_noise import PerlinNoise
 
-from pcglib.Game import Game
-from pcglib.primitive import *
-from pcglib.compound import *
-from pcglib.material import *
+from csglib.Game import Game
+from csglib.primitive import *
+from csglib.compound import *
+from csglib.material import *
 
 punct = r'\w+|[^\s\w]'
 

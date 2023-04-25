@@ -1,4 +1,4 @@
-from pcglib.buffer import buffer
+from csglib.buffer import buffer
 
 import numpy as np
 import math
