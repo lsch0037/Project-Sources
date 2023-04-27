@@ -88,21 +88,19 @@ class cube(primitive):
         return min, max
 
     # Returns the vertices which represent the corners of the bounding box
-    def grossVertices(self):
-        vertices = []
+    # def grossVertices(self):
+    #     vertices = []
 
-        vertices.append(np.array(0, 0, 0))
-        vertices.append(np.array(self.size, 0, 0))
-        vertices.append(np.array(0, self.size, 0))
-        vertices.append(np.array(0, 0, self.size))
-        vertices.append(np.array(self.size, self.size, 0))
-        vertices.append(np.array(self.size, 0, self.size))
-        vertices.append(np.array(0, self.size, self.size))
-        vertices.append(np.array(self.size, self.size, self.size))
+    #     vertices.append(np.array(0, 0, 0))
+    #     vertices.append(np.array(self.size, 0, 0))
+    #     vertices.append(np.array(0, self.size, 0))
+    #     vertices.append(np.array(0, 0, self.size))
+    #     vertices.append(np.array(self.size, self.size, 0))
+    #     vertices.append(np.array(self.size, 0, self.size))
+    #     vertices.append(np.array(0, self.size, self.size))
+    #     vertices.append(np.array(self.size, self.size, self.size))
 
-        return vertices
-
-
+    #     return vertices
 
     def __repr__(self):
         return 'Cube'
@@ -133,6 +131,13 @@ class cuboid(primitive):
                         buf.unset(current_pos)
 
         return buf
+
+    # Get bounds of Cube Primitive
+    def getBounds(self):
+        min = np.array([0,0,0])
+        max = self.dim
+        
+        return min, max
 
     def __repr__(self):
         return 'Cuboid'
