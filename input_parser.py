@@ -119,7 +119,7 @@ def tokenise(text):
 
     return final_tokens
 
-def parse_clause(tokens):
+def parse_clause_old(tokens):
     print("Parsing Clause: {}".format(tokens))
     obj1 = None
     obj2 = None
@@ -148,11 +148,52 @@ def parse_clause(tokens):
         return obj1Name, prog
     
 
+def parse_clause(tokens):
+    print("Parsing Clause: {}".format(tokens))
+    obj1 = None
+    obj2 = None
+    modifier = None
+
+    i = find_last_of_type(tokens, "Modifier")
+
+    if i == -1:
+        # If no modifier was found
+        return parse_description(tokens)
+    else:
+
+        obj1Name,obj1 = parse_clause(tokens[0:i])
+        obj2Name, obj2 = parse_description(tokens[i+1:])
+
+        modifier = tokens[i][0]
+
+        print("obj1:{o1}, mod:{m}, obj2:{o2}".format(o1=obj1,m=modifier,o2=obj2))
+
+
+        meta2 = readFile("meta/{}.json".format(obj2Name))
+        mod_name = meta2["Modifiers"][modifier]
+        
+        
+        prog = dict()
+        prog[mod_name] = [obj1, obj2]
+
+        return obj1Name, prog
+
 def find_next_of_type(tokens, type):
     for token in tokens:
         if token[1] == type:
             return tokens.index(token)
     
+    return -1
+
+def find_last_of_type(tokens, type):
+    tokens_len = len(tokens)
+
+    for i in range(tokens_len):
+        token = tokens[tokens_len - i - 1]
+
+        if token[1] == type:
+            return tokens.index(token)
+
     return -1
     
 
@@ -174,7 +215,6 @@ def parse_description(tokens):
     print("ObjName:{}".format(objName))
     print("Desc:{}".format(desc))
         
-    # obj = readFile("obj/{}.json".format(objName))
     meta = readFile("meta/{}.json".format(objName))
 
     prog = dict()
@@ -187,7 +227,6 @@ def parse_description(tokens):
         for key in desc_json:
             prog[objName][key] = desc_json[key]
 
-    # prog[objName] = obj
 
     print("Prog:{}".format(prog))
 

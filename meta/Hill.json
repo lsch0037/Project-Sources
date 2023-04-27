@@ -1,17 +1,17 @@
 {
     "Descriptors":{
         "Default":{
-            "BaseRadius":30,
-            "MaxHeight":10,
+            "BaseRadius":10,
+            "MaxHeight":5,
             "Oct":8,
             "Seed":"!randInt(1,100)",
             "RandomNess":5
         },
         "Wide":{
-            "BaseRadius":40
+            "BaseRadius":20
         },
         "Tall":{
-            "MaxHeight":20
+            "MaxHeight":10
         }
     },
     "Modifiers":{

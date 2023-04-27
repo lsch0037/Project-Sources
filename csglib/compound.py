@@ -236,34 +236,42 @@ class shiftNode(compound):
     def __repr__(self):
         return 'Shift Node'
 
-
-class northNode(compound):
+class onNode(compound):
     def set(self, pos, rot):
-
         buf = buffer()
 
-        # ! Set obj1 at pos
-        buf1 = self.children[0].set(pos, rot)
-
-        # ! Pos2 is the center of the obj1 bounding box
-        north = buf1.getNorth()
-
-        # ! Set obj2 at pos2
-        temp_buf = self.children[1].set(pos, rot)
-        south = temp_buf.getSouth()
-
-        difference = north - south + 0.5
-
-        # buf2 = self.children[1].set(pos + difference, rot)
-        temp_buf.shift(difference)
-
-        buf1.write(buf)
-        temp_buf.write(buf)
+        bufA = self.children[0].set(pos, rot)
+        bufB = self.children[1].set(pos, rot)
 
         return buf
 
-    def __repr__(self):
-        return 'North Node'
+# class northNode(compound):
+#     def set(self, pos, rot):
+
+#         buf = buffer()
+
+#         # ! Set obj1 at pos
+#         buf1 = self.children[0].set(pos, rot)
+
+#         # ! Pos2 is the center of the obj1 bounding box
+#         north = buf1.getNorth()
+
+#         # ! Set obj2 at pos2
+#         temp_buf = self.children[1].set(pos, rot)
+#         south = temp_buf.getSouth()
+
+#         difference = north - south + 0.5
+
+#         # buf2 = self.children[1].set(pos + difference, rot)
+#         temp_buf.shift(difference)
+
+#         buf1.write(buf)
+#         temp_buf.write(buf)
+
+#         return buf
+
+#     def __repr__(self):
+#         return 'North Node'
 
 class rotationNode(compound):
     def __init__(self,axis, deg, children=[]):

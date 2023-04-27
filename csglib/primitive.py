@@ -14,8 +14,47 @@ class primitive(compound):
     def set(self, pos, rot):
         return self._set_internal(pos,rot,"set")
 
-    def unset(self,pos,rot):
+    def unset(self, pos, rot):
         return self._set_internal(pos,rot,"unset")
+
+    # Returns the bounds relative to the implicit origin position of the algorithm (at neutral rotation)
+    def getBounds(self):
+        return None
+
+    def getTop(self):
+        min,mid,max = self.getBounds()
+
+        return np.array([mid[0], max[1], mid[2]])
+
+    def getBottom(self):
+        min,mid,max = self.getBounds()
+
+        return np.array([mid[0], min[1], mid[2]])
+
+    def getCenter(self):
+        min,mid,max = self.getBounds()
+
+        return mid
+
+    def getEast(self):
+        min,mid,max = self.getBounds()
+
+        return np.array([max[0],mid[1],mid[2]])
+
+    def getSouth(self):
+        min,mid,max = self.getBounds()
+
+        return np.array([mid[0],mid[1],max[2]])
+
+    def getWest(self):
+        min,mid,max = self.getBounds()
+
+        return np.array([min[0],mid[1],mid[2]])
+
+    def getNorth(self):
+        min, mid,max = self.getBounds()
+
+        return np.array([mid[0],mid[1],min[2]])
 
 
 class cube(primitive):
@@ -42,6 +81,15 @@ class cube(primitive):
                         buf.unset(current_pos)
         
         return buf
+
+    def getBounds(self):
+        half_size = self.size/2
+
+        min = np.array([0, 0, 0])
+        max = np.array([self.size, self.size, self.size])
+        mid = np.array([half_size, half_size, half_size])
+
+        return min, mid, max
 
     def __repr__(self):
         return 'Cube'

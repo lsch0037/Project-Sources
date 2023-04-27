@@ -1,44 +1,49 @@
 {
-    "On":[
+    "Union":[
         {
-            "RoofWidth":"$HouseWidth",
-            "RoofHeight":"!div($HouseWidth,2)",
-            "RoofLength":"$HouseLength",
-            "HalfRoofLength":"!div($RoofLength,2)",
-            "HalfRoofWidth":"!div($RoofLength,2)",
-
-            "2SideSquared":"!add(!pow($RoofHeight,2),!pow($HalfRoofWidth,2))",
-            "Hypotenuse":"!sqrt($2SideSquared)",
-
             "Shift":{
-                "Offset":["!sub(0,$HalfRoofLength)","$RoofHeight",0],
+                "Offset":[0, "$HouseHeight",0],
                 "Body":{
-                    "Union":[
-                        {
-                            "Rotation":{
-                                "Axis":"x",
-                                "Degrees":45.0,
-                                "Body":{
-                                    "Cuboid":{
-                                        "Dimensions":["$RoofLength",1,"$Hypotenuse"],
-                                        "Material":"$RoofMaterial"
+                    "RoofWidth":"$HouseWidth",
+                    "RoofHeight":"!div($HouseWidth,2)",
+                    "RoofLength":"$HouseLength",
+                    "HalfRoofLength":"!div($RoofLength,2)",
+                    "HalfRoofWidth":"!div($RoofLength,2)",
+
+                    "2SideSquared":"!add(!pow($RoofHeight,2),!pow($HalfRoofWidth,2))",
+                    "Hypotenuse":"!sqrt($2SideSquared)",
+
+                    "Shift":{
+                        "Offset":["!sub(0,$HalfRoofLength)","$RoofHeight",0],
+                        "Body":{
+                            "Union":[
+                                {
+                                    "Rotation":{
+                                        "Axis":"x",
+                                        "Degrees":45.0,
+                                        "Body":{
+                                            "Cuboid":{
+                                                "Dimensions":["$RoofLength",1,"!add($Hypotenuse,1)"],
+                                                "Material":"$RoofMaterial"
+                                            }
+                                        }
+                                    }
+                                },
+                                {
+                                    "Rotation":{
+                                        "Axis":"x",
+                                        "Degrees":135.0,
+                                        "Body":{
+                                            "Cuboid":{
+                                                "Dimensions":["$RoofLength",1,"!add($Hypotenuse,1)"],
+                                                "Material":"$RoofMaterial"
+                                            }
+                                        }
                                     }
                                 }
-                            }
-                        },
-                        {
-                            "Rotation":{
-                                "Axis":"x",
-                                "Degrees":135.0,
-                                "Body":{
-                                    "Cuboid":{
-                                        "Dimensions":["$RoofLength",1,"$Hypotenuse"],
-                                        "Material":"$RoofMaterial"
-                                    }
-                                }
-                            }
+                            ]
                         }
-                    ]
+                    }
                 }
             }
         },
@@ -62,16 +67,15 @@
                             "InnerLength":"!sub($RoomLength,!mul($WallThickness,2))",
                             "InnerWidth":"!sub($RoomWidth,!mul($WallThickness,2))",
 
-                            "Offset":[
-                                ["$WallThickness",1, "$WallThickness"],
-                                {
+                            "Shift":{
+                                "Offset":["$WallThickness",1, "$WallThickness"],
+                                "Body":{
                                     "Cuboid":{
                                         "Dimensions":["$InnerLength","!sub($RoomHeight,2)","$InnerWidth"],
                                         "Material":"$WallMaterial"
                                     }
                                 }
-                            ]
-                            
+                            }
                         }
                     ]
                 }

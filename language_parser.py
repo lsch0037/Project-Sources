@@ -234,7 +234,7 @@ def function_call(fn_call, props):
 
     args = parse_arguments(args_raw,props)
 
-    print("Fun: {f}, Args:{a}".format(f=funName, a=args))
+    # print("Fun: {f}, Args:{a}".format(f=funName, a=args))
 
     if funName == "getHeight":
         return getHeight(args[0], args[1])
@@ -339,7 +339,7 @@ def parse_arguments(arguments, props):
 
     finalArgs.append(current_arg)
 
-    print("Split:{}".format(finalArgs))
+    # print("Split:{}".format(finalArgs))
                 
     args = []
     for token in finalArgs:

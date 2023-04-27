@@ -65,7 +65,6 @@ class perlin_material(material):
 
     def get(self,pos):
         # Scaling coordinates to be between 0 and 1
-        # pos_scaled = [1.0/(round(pos[0])+0.5), 1.0/(round(pos[1])+0.5), 1.0/(round(pos[2])+0.5)]
         print("Pos:{}".format(pos))
         pos_scaled = [math.log(abs(pos[0]+1))/5,math.log(abs(pos[1]+1))/5,math.log(abs(pos[2]+1))/5]
 
