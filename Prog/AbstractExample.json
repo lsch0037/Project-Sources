@@ -51,8 +51,8 @@
         },
         {
             "Hill": {
-                "BaseRadius": 40,
-                "MaxHeight": 10,
+                "BaseRadius": 20,
+                "MaxHeight": 5,
                 "Oct": 8,
                 "Seed": "!randInt(1,100)",
                 "RandomNess": 5

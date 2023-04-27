@@ -53,61 +53,6 @@ class buffer():
         
         return -1
 
-    # def matchSquare(self,center_x,center_z,max_off, size):
-
-        # TODO: MAKE MONTE CARLO
-
-        # !CREATE BUFFER
-        # !SET SHAPE TO BUFFER
-        # !SUPERIMPOSE BUFFER ON GAME AT OFFSET 0,0
-        # !GET SCORE FOR FITNESS AT POSITION
-        # *IF LESS THAN THRESHOLD
-            # ?MAYBE MOVE IN THE DIRECTION OF BEST FITNESS
-            # ?MAYBE MOVE ONE STEP FURTHER IN ALL DIRECTIONS
-            # !REPEAT
-
-        # !ELSE STOP
-
-        # searchAreaSize = max_off*2
-        # searchAreaPosX = center_x - max_off
-        # searchAreaPosZ = center_z - max_off
-
-        # bestPos = None
-        # minUnfitScore = float('inf')
-
-        # for x in range(searchAreaPosX, searchAreaPosX+searchAreaSize - size):
-        #     for z in range(searchAreaPosZ, searchAreaPosZ+searchAreaSize - size):
-        #         print("pos:",x,z)
-
-        #         dist = math.dist([x,z], [center_x, center_z])
-
-        #         # print("Distance from center:", dist)
-
-        #         y = self.getHeight(x,z) + 1
-
-        #         blocksChanged = 0
-        #         airUnder = 0
-        #         for i in range(size):
-        #             for j in range(size):
-
-        #                 if self.get([x+i, y, z+j]) != 0:
-        #                     blocksChanged +=1
-
-        #                 elif self.get([x+i, y-1, z+j]) == 0:
-        #                     airUnder += 1
-
-        #         # print("BlocksChagned:", blocksChanged)
-        #         # print("AirUnder:", airUnder)
-
-        #         unfitScore = (1+dist) * (1 + blocksChanged) * (1 + airUnder)
-        #         # print("unfitScore:", unfitScore)
-
-        #         if unfitScore < minUnfitScore:
-        #             minUnfitScore = unfitScore
-        #             bestPos = [x,y,z]
-
-        # return np.array(bestPos)
-
     def write(self, other, offset=np.array([0,0,0])):
         for i in self.d:
             for j in self.d[i]:
@@ -129,6 +74,30 @@ class buffer():
                     if id1 == id2:
                         other.unset(pos)
 
+    def union(self, other, offset=np.array([0,0,0])):
+        buf = buffer()
+
+        self.write(buf)
+        other.write(buf)
+
+        return buf
+
+
+    def difference(self,other, offset=np.array([0,0,0])):
+        buf = buffer()
+
+        for i in self.d:
+            for j in self.d[i]:
+                for k in self.d[i][j]:
+                    pos = np.array([i,j,k])
+
+                    id1 = self.get(pos)
+                    id2 = other.get(pos)
+
+                    if not id1 == id2:
+                        other.set(pos)
+
+        return buf
 
     def intersection(self,other, offset=np.array([0,0,0])):
         newBuf = buffer()
@@ -164,7 +133,7 @@ class buffer():
                         if pos[dim] > max[dim]:
                             max[dim] = math.ceil(pos[dim])
 
-        print("Bounds - Max:{x}, Min:{n}".format(x=max, n=min))
+        # print("Bounds - Max:{x}, Min:{n}".format(x=max, n=min))
 
         mid = np.array([min[0] + (max[0] - min[0]) / 2, min[1] + (max[1] - min[1]) / 2, min[2] + (max[2] - min[2]) / 2])
 

@@ -1,7 +1,3 @@
-import sys
-import os
-sys.path.append(os.path.abspath('/csglib'))
-
 from csglib.Game import Game
 from csglib.primitive import *
 from csglib.buffer import *

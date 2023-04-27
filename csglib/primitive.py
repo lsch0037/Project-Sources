@@ -17,42 +17,40 @@ class primitive(compound):
     def unset(self, pos, rot):
         return self._set_internal(pos,rot,"unset")
 
-    # Returns the bounds relative to the implicit origin position of the algorithm (at neutral rotation)
-    def getBounds(self):
-        return None
 
-    def getTop(self):
-        min,mid,max = self.getBounds()
+
+    def getTop(self, pos, rot):
+        min,mid,max = self.getBounds(pos, rot)
 
         return np.array([mid[0], max[1], mid[2]])
 
-    def getBottom(self):
-        min,mid,max = self.getBounds()
+    def getBottom(self, pos, rot):
+        min,mid,max = self.getBounds(pos, rot)
 
         return np.array([mid[0], min[1], mid[2]])
 
-    def getCenter(self):
-        min,mid,max = self.getBounds()
+    def getCenter(self, pos, rot):
+        min,mid,max = self.getBounds(pos, rot)
 
         return mid
 
-    def getEast(self):
-        min,mid,max = self.getBounds()
+    def getEast(self, pos, rot):
+        min,mid,max = self.getBounds(pos, rot)
 
         return np.array([max[0],mid[1],mid[2]])
 
-    def getSouth(self):
-        min,mid,max = self.getBounds()
+    def getSouth(self, pos, rot):
+        min,mid,max = self.getBounds(pos, rot)
 
         return np.array([mid[0],mid[1],max[2]])
 
-    def getWest(self):
-        min,mid,max = self.getBounds()
+    def getWest(self, pos, rot):
+        min,mid,max = self.getBounds(pos, rot)
 
         return np.array([min[0],mid[1],mid[2]])
 
-    def getNorth(self):
-        min, mid,max = self.getBounds()
+    def getNorth(self, pos, rot):
+        min, mid,max = self.getBounds(pos, rot)
 
         return np.array([mid[0],mid[1],min[2]])
 
@@ -82,14 +80,29 @@ class cube(primitive):
         
         return buf
 
+    # Get bounds of Cube Primitive
     def getBounds(self):
-        half_size = self.size/2
-
-        min = np.array([0, 0, 0])
+        min = np.array([0,0,0])
         max = np.array([self.size, self.size, self.size])
-        mid = np.array([half_size, half_size, half_size])
+        
+        return min, max
 
-        return min, mid, max
+    # Returns the vertices which represent the corners of the bounding box
+    def grossVertices(self):
+        vertices = []
+
+        vertices.append(np.array(0, 0, 0))
+        vertices.append(np.array(self.size, 0, 0))
+        vertices.append(np.array(0, self.size, 0))
+        vertices.append(np.array(0, 0, self.size))
+        vertices.append(np.array(self.size, self.size, 0))
+        vertices.append(np.array(self.size, 0, self.size))
+        vertices.append(np.array(0, self.size, self.size))
+        vertices.append(np.array(self.size, self.size, self.size))
+
+        return vertices
+
+
 
     def __repr__(self):
         return 'Cube'

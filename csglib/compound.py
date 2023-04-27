@@ -13,7 +13,7 @@ class compound():
     def getChild(self, index):
         return self.children[index]
 
-
+    # !Printing Tree
     # https://stackoverflow.com/questions/20242479/printing-a-tree-data-structure-in-python
     def __str__(self, level=0):
         ret = "\t"*level+repr(self)+"\n"
@@ -29,6 +29,53 @@ class compound():
         return 'Generic Node'
 
 
+    # !Bounding Box
+    def getBounds(self):
+        raise ValueError("Cannot call 'getBounds()' on generic Node")
+
+    def getTop(self, pos, rot):
+        min,max = self.getBounds(pos, rot)
+        mid = min + max/2
+
+        return np.array([mid[0], max[1], mid[2]])
+
+    def getBottom(self, pos, rot):
+        min,max = self.getBounds(pos, rot)
+        mid = min + max/2
+
+        return np.array([mid[0], min[1], mid[2]])
+
+    def getCenter(self, pos, rot):
+        min,max = self.getBounds(pos, rot)
+        mid = min + max/2
+
+        return mid
+
+    def getEast(self, pos, rot):
+        min,max = self.getBounds(pos, rot)
+        mid = min + max/2
+
+        return np.array([max[0],mid[1],mid[2]])
+
+    def getSouth(self, pos, rot):
+        min,max = self.getBounds(pos, rot)
+        mid = min + max/2
+
+        return np.array([mid[0],mid[1],max[2]])
+
+    def getWest(self, pos, rot):
+        min,max = self.getBounds(pos, rot)
+        mid = min + max/2
+
+        return np.array([min[0],mid[1],mid[2]])
+
+    def getNorth(self, pos, rot):
+        min,max = self.getBounds(pos, rot)
+        mid = min + max/2
+
+        return np.array([mid[0],mid[1],min[2]])
+
+    # !Geometric Operations
     # Adds addition node as parent and node as sibling
     def union(self, other):
         return unionNode([self,other])
@@ -41,6 +88,7 @@ class compound():
         return intersectionNode([self,other])
 
 
+    # !Preposition Operations
     def onTopOf(self,other):
         return prepositionNode(buffer.getBottom,buffer.getTop, [self,other])
 
@@ -93,6 +141,22 @@ class unionNode(compound):
 
         return newBuf
 
+    def getBounds(self):
+        min = np.array([np.inf, np.inf, np.inf])
+        max = np.array([-np.inf, -np.inf, -np.inf])
+
+        for child in self.children:
+            child_max, child_min = child.getBounds()
+
+            for dim in range(3):
+                if child_max[dim] > max[dim]:
+                    max = child_max[dim]
+
+                elif child_min[dim] < min[dim]:
+                    min = child_min[dim]
+
+        return min, max
+
     def __repr__(self):
         return 'Union Node'
 
@@ -125,6 +189,9 @@ class differenceNode(compound):
 
         return newBuf
 
+    def getBounds(self):
+        return self.children[0].getBounds()
+
     def __repr__(self):
         return 'Difference Node'
 
@@ -142,6 +209,28 @@ class intersectionNode(compound):
             interBuf = buf.intersection(interBuf)
 
         return interBuf
+
+    def unset(self,pos, rot):
+        # TODO: IMPLEMENT
+        pass
+
+    def getBounds(self):
+        # min = np.array([np.inf, np.inf, np.inf])
+        # max = np.array([-np.inf, -np.inf, -np.inf])
+
+        min, max = self.children[0].getBounds()
+        
+        for child in self.children:
+            child_max, child_min = child.getBounds()
+
+            for dim in range(3):
+                if child_max[dim] < max[dim]:
+                    max = child_max[dim]
+
+                elif child_min[dim] > min[dim]:
+                    min = child_min[dim]
+
+        return min, max
 
     def __repr__(self):
         return 'Intersection Node'
@@ -236,15 +325,6 @@ class shiftNode(compound):
     def __repr__(self):
         return 'Shift Node'
 
-class onNode(compound):
-    def set(self, pos, rot):
-        buf = buffer()
-
-        bufA = self.children[0].set(pos, rot)
-        bufB = self.children[1].set(pos, rot)
-
-        return buf
-
 # class northNode(compound):
 #     def set(self, pos, rot):
 
@@ -308,6 +388,41 @@ class rotationNode(compound):
             buf.unwrite(newBuf)
 
         return newBuf
+
+    # Returns the bounds relative to the implicit origin position of the algorithm (at neutral rotation)
+    def getBounds(self):
+        child_min, child_mid, child_max = self.children[0].getBounds()
+
+        # Find the actual vertices of the bounding box
+        vertices = []
+        vertices.append(child_min)
+        vertices.append(np.array([child_min[0], child_min[1], child_max[2]]))
+        vertices.append(np.array([child_min[0], child_max[1], child_min[2]]))
+        vertices.append(np.array([child_max[0], child_min[1], child_min[2]]))
+        vertices.append(np.array([child_min[0], child_max[1], child_max[2]]))
+        vertices.append(np.array([child_max[0], child_min[1], child_max[2]]))
+        vertices.append(np.array([child_max[0], child_max[1], child_min[2]]))
+        vertices.append(child_max)
+
+        # Rotate all vertices
+        for vert in vertices:
+            vert = self.f(vert, self.deg)
+
+        # Find new min and max in each direction
+        max = np.array([-np.inf, -np.inf, -np.inf])
+        min = np.array([np.inf, np.inf, np.inf])
+
+        for vert in vertices:
+            for dim in range(3):
+                if vert[dim] < min[dim]:
+                    min[dim] = vert[dim]
+                elif vert[dim] > max[dim]:
+                    max[dim] = vert[dim]
+
+        # Calculate mid
+        mid = min + max/2
+
+        return min, mid, max
 
     def __repr__(self):
         return 'Rotation Node'

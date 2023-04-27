@@ -1,13 +1,9 @@
-import sys
-import os
 import unittest
-import random
 
-sys.path.append(os.path.abspath('../csglib'))
+from csglib.compound import *
+from csglib.primitive import *
+from csglib.material import *
 
-from compound import *
-from primitive import *
-from material import *
 import numpy as np
 
 # GLOBALS
@@ -30,6 +26,3 @@ class testCompound(unittest.TestCase):
         buf = diff.set(testPos, testOrientation)
 
         self.assertTrue(True)
-
-if __name__ == '__main__':
-    unittest.main()

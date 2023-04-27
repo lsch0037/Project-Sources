@@ -1,9 +1,6 @@
-import sys
-import os
-sys.path.append(os.path.abspath('../csglib/'))
-
-from Game import Game
 import unittest
+
+from csglib.Game import Game
 
 from random import randint
 
@@ -82,7 +79,3 @@ class testGamebuffer(unittest.TestCase):
             game.set([x,i,z], 0)        
 
         self.assertEqual(game.ground(x,z), height)
-
-
-if __name__ == '__main__':
-    unittest.main()

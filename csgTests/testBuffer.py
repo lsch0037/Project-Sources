@@ -1,11 +1,7 @@
-import sys
-import os
 import unittest
 import random
 
-sys.path.append(os.path.abspath('../csglib'))
-
-from buffer import buffer
+from csglib.buffer import buffer
 
 class testBuffer(unittest.TestCase):
     def testGetEmpty(self):
@@ -93,6 +89,3 @@ class testBuffer(unittest.TestCase):
                 self.assertEqual(buf1.get(pos), -1)
             else:
                 self.assertEqual(buf1.get(pos), 1)
-
-if __name__ == '__main__':
-    unittest.main()
