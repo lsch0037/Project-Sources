@@ -82,9 +82,11 @@ class cuboid(primitive):
 
     # Get bounds of Cube Primitive
     def getBounds(self):
+        print("Returning Bounds of cuboid")
         min = np.array([0,0,0])
         max = self.dim
         
+        print("min:{}, max:{}".format(min, max))
         return min, max
 
     def __repr__(self):
@@ -152,8 +154,8 @@ class cylinder(primitive):
         return buf
 
     def getBounds(self):
-        min = np.array(-self.rad, 0, -self.rad)
-        max = np.array(self.rad, self.len, self.rad)
+        min = np.array([-self.rad, 0, -self.rad])
+        max = np.array([self.rad, self.len, self.rad])
 
         return min, max
 

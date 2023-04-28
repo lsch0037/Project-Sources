@@ -30,48 +30,29 @@ class compound():
 
 
     # !Bounding Box
-    # def getBounds(self):
-    #     raise ValueError("Cannot call 'getBounds()' on generic Node")
-
-    # * Default bounding box behaviour is to return the union of the children bounding boxes
     def getBounds(self):
-        min = np.array([np.inf, np.inf, np.inf])
-        max = np.array([-np.inf, -np.inf, -np.inf])
+        raise ValueError("Cannot call 'getBounds()' on generic Node")
 
-        for child in self.children:
-            child_min, child_max = child.getBounds()
-            print("Child min: {}, Child max: {}".format(child_min, child_max))
-            print("Current min: {}, Current max: {}".format(min, max))
-
-            for dim in range(3):
-                if child_max[dim] > max[dim]:
-                    max[dim] = child_max[dim]
-
-                elif child_min[dim] < min[dim]:
-                    min[dim] = child_min[dim]
-
-        return min, max
-
-    def getTop(self, pos, rot):
-        min,max = self.getBounds(pos, rot)
+    def getTop(self):
+        min,max = self.getBounds()
         mid = min + max/2
 
         return np.array([mid[0], max[1], mid[2]])
 
-    def getBottom(self, pos, rot):
-        min,max = self.getBounds(pos, rot)
+    def getBottom(self):
+        min,max = self.getBounds()
         mid = min + max/2
 
         return np.array([mid[0], min[1], mid[2]])
 
-    def getCenter(self, pos, rot):
-        min,max = self.getBounds(pos, rot)
+    def getCenter(self):
+        min,max = self.getBounds()
         mid = min + max/2
 
         return mid
 
-    def getEast(self, pos, rot):
-        min,max = self.getBounds(pos, rot)
+    def getEast(self):
+        min,max = self.getBounds()
         mid = min + max/2
 
         return np.array([max[0],mid[1],mid[2]])
@@ -82,8 +63,8 @@ class compound():
 
         return np.array([mid[0],mid[1],max[2]])
 
-    def getWest(self, pos, rot):
-        min,max = self.getBounds(pos, rot)
+    def getWest(self):
+        min,max = self.getBounds()
         mid = min + max/2
 
         return np.array([min[0],mid[1],mid[2]])
@@ -165,14 +146,15 @@ class unionNode(compound):
         max = np.array([-np.inf, -np.inf, -np.inf])
 
         for child in self.children:
-            child_max, child_min = child.getBounds()
+            child_min, child_max = child.getBounds()
 
             for dim in range(3):
                 if child_max[dim] > max[dim]:
-                    max = child_max[dim]
+                    max[dim] = child_max[dim]
 
-                elif child_min[dim] < min[dim]:
-                    min = child_min[dim]
+
+                if child_min[dim] < min[dim]:
+                    min[dim] = child_min[dim]
 
         return min, max
 
@@ -234,9 +216,6 @@ class intersectionNode(compound):
         pass
 
     def getBounds(self):
-        # min = np.array([np.inf, np.inf, np.inf])
-        # max = np.array([-np.inf, -np.inf, -np.inf])
-
         min, max = self.children[0].getBounds()
         
         for child in self.children:
@@ -246,7 +225,7 @@ class intersectionNode(compound):
                 if child_max[dim] < max[dim]:
                     max = child_max[dim]
 
-                elif child_min[dim] > min[dim]:
+                if child_min[dim] > min[dim]:
                     min = child_min[dim]
 
         return min, max
@@ -266,6 +245,7 @@ class prepositionNode(compound):
 
         op1 = self.f1(self.children[0])
         op2 = self.f2(self.children[1])
+        print("Op1:{}, Op2:{}".format(op1,op2))
 
         diff = op1 - op2
 
@@ -279,6 +259,39 @@ class prepositionNode(compound):
 
     def unset(self,pos,rot):
         pass
+
+    def getBounds(self):
+
+        # Calculate offset
+        op1 = self.f1(self.children[0])
+        op2 = self.f2(self.children[1])
+
+        diff = op1 - op2
+
+        # getBounds of children
+        min1, max1 = self.children[0].getBounds()
+        _min2, _max2 = self.children[1].getBounds()
+
+        # Shift second node by offset
+        min2 = _min2 + diff
+        max2 = _max2 + diff
+
+        # Calculate min and max
+        min = np.array([0,0,0])
+        max = np.array([0,0,0])
+
+        for dim in range(3):
+            if min1[dim] < min2[dim]:
+                min[dim] = min1[dim]
+            else:
+                min[dim] = min2[dim]
+
+            if max1[dim] > max2[dim]:
+                max[dim] = max1[dim]
+            else:
+                max[dim] = max2[dim]
+
+        return min, max
 
     def __repr__(self):
         return 'Preposition Node'
@@ -305,7 +318,7 @@ class onGroundNode(compound):
         return child_buf
 
     def getBounds(self):
-        return self.children[0].getBounds()
+        return self.children[0].getBounds() 
 
     def __repr__(self):
         return 'On Ground Node'
@@ -330,6 +343,9 @@ class shiftNode(compound):
         new_pos = np.add(pos , np.dot(rot, self.offset))
 
         return self.children[0].unset(new_pos, rot)
+
+    def getBounds(self):
+        return self.children[0].getBounds()
 
     def __repr__(self):
         return 'Shift Node'
@@ -372,7 +388,7 @@ class rotationNode(compound):
 
     # Returns the bounds relative to the implicit origin position of the algorithm (at neutral rotation)
     def getBounds(self):
-        child_min, child_mid, child_max = self.children[0].getBounds()
+        child_min, child_max = self.children[0].getBounds()
 
         # Find the actual vertices of the bounding box
         vertices = []
@@ -385,22 +401,32 @@ class rotationNode(compound):
         vertices.append(np.array([child_max[0], child_max[1], child_min[2]]))
         vertices.append(child_max)
 
+        id = np.identity(3)
+        rot = self.f(id, self.deg)
+
+        # print("Vertices: {}".format(vertices))
+
+        rot_vertices = []
+
         # Rotate all vertices
         for vert in vertices:
-            vert = self.f(vert, self.deg)
+            rot_vertices.append(np.matmul(rot, vert))
+
+        # print("Rotated Vertices: {}".format(rot_vertices))
 
         # Find new min and max in each direction
         max = np.array([-np.inf, -np.inf, -np.inf])
         min = np.array([np.inf, np.inf, np.inf])
 
-        for vert in vertices:
+        for vert in rot_vertices:
             for dim in range(3):
                 if vert[dim] < min[dim]:
                     min[dim] = vert[dim]
+
                 elif vert[dim] > max[dim]:
                     max[dim] = vert[dim]
 
-
+        # print("Min:{}, Max:{}".format(min, max))
         return min, max
 
     def __repr__(self):
