@@ -30,8 +30,27 @@ class compound():
 
 
     # !Bounding Box
+    # def getBounds(self):
+    #     raise ValueError("Cannot call 'getBounds()' on generic Node")
+
+    # * Default bounding box behaviour is to return the union of the children bounding boxes
     def getBounds(self):
-        raise ValueError("Cannot call 'getBounds()' on generic Node")
+        min = np.array([np.inf, np.inf, np.inf])
+        max = np.array([-np.inf, -np.inf, -np.inf])
+
+        for child in self.children:
+            child_min, child_max = child.getBounds()
+            print("Child min: {}, Child max: {}".format(child_min, child_max))
+            print("Current min: {}, Current max: {}".format(min, max))
+
+            for dim in range(3):
+                if child_max[dim] > max[dim]:
+                    max[dim] = child_max[dim]
+
+                elif child_min[dim] < min[dim]:
+                    min[dim] = child_min[dim]
+
+        return min, max
 
     def getTop(self, pos, rot):
         min,max = self.getBounds(pos, rot)
@@ -235,28 +254,6 @@ class intersectionNode(compound):
     def __repr__(self):
         return 'Intersection Node'
 
-class northNode(compound):
-    def set(self,pos,rot):
-        buf = buffer()
-
-        north1 = self.children[0].getNorth()
-        south2 = self.children[1].getSouth()
-
-        diff = north1 - south2
-
-        buf1 = self.children[0].set(pos, rot)
-        buf2 = self.children[1].set(pos + diff, rot)
-
-        buf1.write(buf)
-        buf2.write(buf)
-
-        return buf
-
-    def unset(self,pos,rot):
-        pass
-
-    def __repr__(self):
-        return 'North Node'
 
 class prepositionNode(compound):
     def __init__(self, f1, f2, children=[]):
@@ -266,9 +263,6 @@ class prepositionNode(compound):
 
     def set(self,pos,rot):
         buf = buffer()
-
-        # north1 = self.children[0].getNorth()
-        # south2 = self.children[1].getSouth()
 
         op1 = self.f1(self.children[0])
         op2 = self.f2(self.children[1])
@@ -310,48 +304,12 @@ class onGroundNode(compound):
 
         return child_buf
 
+    def getBounds(self):
+        return self.children[0].getBounds()
+
     def __repr__(self):
         return 'On Ground Node'
 
-# class prepositionNode(compound):
-#     def __init__(self, f1, f2, children=[]):
-#         super().__init__(children)
-#         self.f1 = f1
-#         self.f2 = f2
-
-#     def set(self,pos,rot):
-#         print("Evaluating {}".format("Preposition"))
-#         print("Pos:{p}, Rot:{r}".format(p=pos,r=rot))
-
-#         buf = buffer()
-
-#         # Write first object to buffer
-#         first_buffer = self.children[0].set(pos,rot)
-#         # Get anchor point of second object
-#         pos1 = self.f1(first_buffer)
-
-#         # Write second object to buffer
-#         second_buffer = self.children[1].set(pos,rot)
-#         # Get anchor point of second object
-#         pos2 = self.f2(second_buffer)
-
-#         # Calculate difference between anchor points
-#         offset = pos2 - pos1
-
-#         # Shift to lign up anchor points
-#         first_buffer.shift(offset)
-
-#         # Write to final buffer
-#         first_buffer.write(buf)
-#         second_buffer.write(buf)
-
-#         return buf
-
-#     def unset(self, pos, rot):
-#         pass
-
-#     def __repr__(self):
-#         return 'Preposition Node'
 
 class shiftNode(compound):
     def __init__(self,offset, children=[]):
