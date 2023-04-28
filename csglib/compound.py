@@ -245,7 +245,6 @@ class prepositionNode(compound):
 
         op1 = self.f1(self.children[0])
         op2 = self.f2(self.children[1])
-        print("Op1:{}, Op2:{}".format(op1,op2))
 
         diff = op1 - op2
 
@@ -302,20 +301,36 @@ class onGroundNode(compound):
         super().__init__(children)
         self.game = game
 
-    def set(self, pos,rot):
+    # def set(self, pos,rot):
+    #     print("Evaluating {}".format("On Ground"))
+    #     groundHeight = self.game.getHeight(pos[0],pos[2])
+    #     new_pos = np.array([pos[0], groundHeight + 1, pos[2]])
+
+    #     child_buf = self.children[0].set(pos, rot)
+
+    #     bottom = child_buf.getBottom()
+
+    #     offset = new_pos - bottom
+
+    #     child_buf.shift(offset)
+
+    #     return child_buf
+
+    def set(self, pos, rot):
         print("Evaluating {}".format("On Ground"))
         groundHeight = self.game.getHeight(pos[0],pos[2])
-        new_pos = np.array([pos[0], groundHeight + 1, pos[2]])
 
-        child_buf = self.children[0].set(pos, rot)
+        bottom = self.children[0].getBottom()
+        print("Bottom of structure:{}".format(bottom))
 
-        bottom = child_buf.getBottom()
+        diff = groundHeight - (pos[1] + bottom[1]) + 1
+        print("Height Difference:{}".format(diff))
 
-        offset = new_pos - bottom
+        newPos = pos
+        newPos[1] += diff
+        
+        return self.children[0].set(newPos, rot)
 
-        child_buf.shift(offset)
-
-        return child_buf
 
     def getBounds(self):
         return self.children[0].getBounds() 

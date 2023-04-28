@@ -116,64 +116,64 @@ class buffer():
         return newBuf
 
 
-    def getBounds(self):
-        min = np.array([np.inf, np.inf, np.inf])
-        max = np.array([-np.inf, -np.inf, -np.inf])
+    # def getBounds(self):
+    #     min = np.array([np.inf, np.inf, np.inf])
+    #     max = np.array([-np.inf, -np.inf, -np.inf])
 
 
-        for i in self.d:
-            for j in self.d[i]:
-                for k in self.d[i][j]:
-                    pos = np.array([i,j,k])
+    #     for i in self.d:
+    #         for j in self.d[i]:
+    #             for k in self.d[i][j]:
+    #                 pos = np.array([i,j,k])
 
-                    for dim in range(0,3):
-                        if pos[dim] < min[dim]:
-                            min[dim] = math.floor(pos[dim])
+    #                 for dim in range(0,3):
+    #                     if pos[dim] < min[dim]:
+    #                         min[dim] = math.floor(pos[dim])
 
-                        if pos[dim] > max[dim]:
-                            max[dim] = math.ceil(pos[dim])
+    #                     if pos[dim] > max[dim]:
+    #                         max[dim] = math.ceil(pos[dim])
 
-        # print("Bounds - Max:{x}, Min:{n}".format(x=max, n=min))
+    #     # print("Bounds - Max:{x}, Min:{n}".format(x=max, n=min))
 
-        mid = np.array([min[0] + (max[0] - min[0]) / 2, min[1] + (max[1] - min[1]) / 2, min[2] + (max[2] - min[2]) / 2])
+    #     mid = np.array([min[0] + (max[0] - min[0]) / 2, min[1] + (max[1] - min[1]) / 2, min[2] + (max[2] - min[2]) / 2])
 
-        return min,mid,max
+    #     return min,mid,max
 
 
-    def getTop(self):
-        min,mid,max = self.getBounds()
+    # def getTop(self):
+    #     min,mid,max = self.getBounds()
 
-        return np.array([mid[0], max[1], mid[2]])
+    #     return np.array([mid[0], max[1], mid[2]])
 
-    def getBottom(self):
-        min,mid,max = self.getBounds()
+    # def getBottom(self):
+    #     min,mid,max = self.getBounds()
 
-        return np.array([mid[0], min[1], mid[2]])
+    #     return np.array([mid[0], min[1], mid[2]])
 
-    def getCenter(self):
-        min,mid,max = self.getBounds()
+    # def getCenter(self):
+    #     min,mid,max = self.getBounds()
 
-        return mid
+    #     return mid
 
-    def getEast(self):
-        min,mid,max = self.getBounds()
+    # def getEast(self):
+    #     min,mid,max = self.getBounds()
 
-        return np.array([max[0],mid[1],mid[2]])
+    #     return np.array([max[0],mid[1],mid[2]])
 
-    def getSouth(self):
-        min,mid,max = self.getBounds()
+    # def getSouth(self):
+    #     min,mid,max = self.getBounds()
 
-        return np.array([mid[0],mid[1],max[2]])
+    #     return np.array([mid[0],mid[1],max[2]])
 
-    def getWest(self):
-        min,mid,max = self.getBounds()
+    # def getWest(self):
+    #     min,mid,max = self.getBounds()
 
-        return np.array([min[0],mid[1],mid[2]])
+    #     return np.array([min[0],mid[1],mid[2]])
 
-    def getNorth(self):
-        min, mid,max = self.getBounds()
+    # def getNorth(self):
+    #     min, mid,max = self.getBounds()
 
-        return np.array([mid[0],mid[1],min[2]])
+    #     return np.array([mid[0],mid[1],min[2]])
 
     def shift(self, offset):
         newBuf = buffer()

@@ -1,0 +1,11 @@
+{
+    "On Ground":{
+        "Sphere":{
+            "Radius":10,
+            "Material":{
+                "Selector":"Random",
+                "Ids":["Stone"]
+            }
+        }
+    }
+}
