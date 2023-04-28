@@ -144,7 +144,7 @@ def parse_operator(prog, op, props):
         return parse_preposition_operator(prog[op], props, compound.onTopOf)
 
     elif op == "North":
-        return parse_preposition_operator(prog[op], props, northNode)
+        return parse_preposition_operator(prog[op], props, compound.northOf)
 
     elif op == "South":
         return parse_preposition_operator(prog[op], props, compound.southOf)
@@ -430,44 +430,44 @@ def parse_loop(prog, parent_props):
 
 
 # * Old function
-def parse_loop_old(prog, parent_props):
+# def parse_loop_old(prog, parent_props):
 
-    # Checking that variables exist
-    if not "loop_var" in prog:
-        raise ValueError("No 'loop_var' variable in loop construct")
+#     # Checking that variables exist
+#     if not "loop_var" in prog:
+#         raise ValueError("No 'loop_var' variable in loop construct")
 
-    elif not "loop_range" in prog:
-        raise ValueError("No 'loop_range' variable in loop construct")
+#     elif not "loop_range" in prog:
+#         raise ValueError("No 'loop_range' variable in loop construct")
 
-    elif not "loop_body" in prog:
-        raise ValueError("No 'loop_body' variable in loop construct")
+#     elif not "loop_body" in prog:
+#         raise ValueError("No 'loop_body' variable in loop construct")
 
-    loop_var = prog["loop_var"]
-    loop_range = int(parse_property(prog["loop_range"],parent_props))
-    body = prog["loop_body"]
+#     loop_var = prog["loop_var"]
+#     loop_range = int(parse_property(prog["loop_range"],parent_props))
+#     body = prog["loop_body"]
 
 
-    # Type checking
-    if not isinstance(loop_var, str):
-        raise TypeError("Loop variable {varname} is of invalid type {type}".format(varname="loop_var", type = type(loop_var)))
+#     # Type checking
+#     if not isinstance(loop_var, str):
+#         raise TypeError("Loop variable {varname} is of invalid type {type}".format(varname="loop_var", type = type(loop_var)))
     
-    elif not isinstance(loop_range, int):
-        raise TypeError("Loop variable {varname} is of invalid type {type}".format(varname="loop_range", type = type(loop_range)))
+#     elif not isinstance(loop_range, int):
+#         raise TypeError("Loop variable {varname} is of invalid type {type}".format(varname="loop_range", type = type(loop_range)))
 
-    elif not isinstance(body, dict):
-        raise TypeError("Loop variable {varname} is of invalid type {type}".format(varname="loop_body",type = type(body)))
+#     elif not isinstance(body, dict):
+#         raise TypeError("Loop variable {varname} is of invalid type {type}".format(varname="loop_body",type = type(body)))
 
 
-    childrenProgs =[]
+#     childrenProgs =[]
 
-    for i in range(0, loop_range):
-        props = copy.copy(parent_props)
-        props[loop_var] = i
+#     for i in range(0, loop_range):
+#         props = copy.copy(parent_props)
+#         props[loop_var] = i
 
-        node = parse_expression(body, props)
-        childrenProgs.append(node)
+#         node = parse_expression(body, props)
+#         childrenProgs.append(node)
 
-    return unionNode(childrenProgs)
+#     return unionNode(childrenProgs)
 
 def parse_if(prog, parent_props):
 
@@ -522,7 +522,7 @@ def parse_on_ground(prog, props):
     return onGroundNode(game, [child_prog])
 
 
-def parse_preposition_operator(prog, props, nodeType):
+def parse_preposition_operator(prog, props, f):
     print("Parsing prepostion Operator")
     if not len(prog) == 2:
         raise ValueError("Prepositional operator requires exactly {n} operands.".format(n=2))
@@ -532,8 +532,8 @@ def parse_preposition_operator(prog, props, nodeType):
         child_node = parse_expression(item, props)
         operands.append(child_node)
 
-    # return nodeType([operands[0], operands[1]])
-    return nodeType(operands[0], operands[1])
+    return f(operands[0], operands[1])
+
 
 def parse_north(prog, props):
     print("Parsing North")

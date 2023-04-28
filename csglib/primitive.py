@@ -18,43 +18,6 @@ class primitive(compound):
         return self._set_internal(pos,rot,"unset")
 
 
-
-    def getTop(self, pos, rot):
-        min,mid,max = self.getBounds(pos, rot)
-
-        return np.array([mid[0], max[1], mid[2]])
-
-    def getBottom(self, pos, rot):
-        min,mid,max = self.getBounds(pos, rot)
-
-        return np.array([mid[0], min[1], mid[2]])
-
-    def getCenter(self, pos, rot):
-        min,mid,max = self.getBounds(pos, rot)
-
-        return mid
-
-    def getEast(self, pos, rot):
-        min,mid,max = self.getBounds(pos, rot)
-
-        return np.array([max[0],mid[1],mid[2]])
-
-    def getSouth(self, pos, rot):
-        min,mid,max = self.getBounds(pos, rot)
-
-        return np.array([mid[0],mid[1],max[2]])
-
-    def getWest(self, pos, rot):
-        min,mid,max = self.getBounds(pos, rot)
-
-        return np.array([min[0],mid[1],mid[2]])
-
-    def getNorth(self, pos, rot):
-        min, mid,max = self.getBounds(pos, rot)
-
-        return np.array([mid[0],mid[1],min[2]])
-
-
 class cube(primitive):
     def __init__(self, material, size):
         super().__init__(material)
@@ -86,21 +49,6 @@ class cube(primitive):
         max = np.array([self.size, self.size, self.size])
         
         return min, max
-
-    # Returns the vertices which represent the corners of the bounding box
-    # def grossVertices(self):
-    #     vertices = []
-
-    #     vertices.append(np.array(0, 0, 0))
-    #     vertices.append(np.array(self.size, 0, 0))
-    #     vertices.append(np.array(0, self.size, 0))
-    #     vertices.append(np.array(0, 0, self.size))
-    #     vertices.append(np.array(self.size, self.size, 0))
-    #     vertices.append(np.array(self.size, 0, self.size))
-    #     vertices.append(np.array(0, self.size, self.size))
-    #     vertices.append(np.array(self.size, self.size, self.size))
-
-    #     return vertices
 
     def __repr__(self):
         return 'Cube'
@@ -166,6 +114,12 @@ class sphere(primitive):
         
         return buf
 
+    def getBounds(self):
+        min = np.array([-self.rad, -self.rad, -self.rad])
+        max = np.array([self.rad, self.rad, self.rad])
+
+        return min, max
+
     def __repr__(self):
         return 'Sphere'
 
@@ -175,7 +129,7 @@ class cylinder(primitive):
         self.rad = rad
         self.len = len
 
-    def _set_internal(self,pos,rot, op):
+    def _set_internal(self, pos, rot, op):
         buf = buffer()
 
         x_d = np.dot(rot, np.array([1,0,0]))
@@ -196,6 +150,12 @@ class cylinder(primitive):
                             buf.unset(current_pos)
         
         return buf
+
+    def getBounds(self):
+        min = np.array(-self.rad, 0, -self.rad)
+        max = np.array(self.rad, self.len, self.rad)
+
+        return min, max
 
     def __repr__(self):
         return 'Cylinder'

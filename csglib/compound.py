@@ -57,8 +57,8 @@ class compound():
 
         return np.array([max[0],mid[1],mid[2]])
 
-    def getSouth(self, pos, rot):
-        min,max = self.getBounds(pos, rot)
+    def getSouth(self):
+        min,max = self.getBounds()
         mid = min + max/2
 
         return np.array([mid[0],mid[1],max[2]])
@@ -69,8 +69,8 @@ class compound():
 
         return np.array([min[0],mid[1],mid[2]])
 
-    def getNorth(self, pos, rot):
-        min,max = self.getBounds(pos, rot)
+    def getNorth(self):
+        min,max = self.getBounds()
         mid = min + max/2
 
         return np.array([mid[0],mid[1],min[2]])
@@ -90,25 +90,25 @@ class compound():
 
     # !Preposition Operations
     def onTopOf(self,other):
-        return prepositionNode(buffer.getBottom,buffer.getTop, [self,other])
+        return prepositionNode(compound.getBottom,compound.getTop, [self,other])
 
     def under(self,other):
-        return prepositionNode(buffer.getTop, buffer.getBottom, [self,other])
+        return prepositionNode(compound.getTop, compound.getBottom, [self,other])
 
     def insideOf(self,other):
-        return prepositionNode(buffer.getCenter, buffer.getCenter, [self,other])
+        return prepositionNode(compound.getCenter, compound.getCenter, [self,other])
 
     def eastOf(self,other):
-        return prepositionNode(buffer.getWest, buffer.getEast, [self,other])
+        return prepositionNode(compound.getWest, compound.getEast, [self,other])
 
     def southOf(self,other):
-        return prepositionNode(buffer.getNorth,buffer.getSouth, [self,other])
+        return prepositionNode(compound.getNorth,compound.getSouth, [self,other])
 
     def westOf(self,other):
-        return prepositionNode(buffer.getEast, buffer.getWest, [self,other])
+        return prepositionNode(compound.getEast, compound.getWest, [self,other])
 
     def northOf(self,other):
-        return prepositionNode(buffer.getSouth, buffer.getNorth, [self,other])
+        return prepositionNode(compound.getSouth, compound.getNorth, [self,other])
 
     def shiftBy(self,other, offset):
         return shiftNode(offset, [self,other])
@@ -235,6 +235,61 @@ class intersectionNode(compound):
     def __repr__(self):
         return 'Intersection Node'
 
+class northNode(compound):
+    def set(self,pos,rot):
+        buf = buffer()
+
+        north1 = self.children[0].getNorth()
+        south2 = self.children[1].getSouth()
+
+        diff = north1 - south2
+
+        buf1 = self.children[0].set(pos, rot)
+        buf2 = self.children[1].set(pos + diff, rot)
+
+        buf1.write(buf)
+        buf2.write(buf)
+
+        return buf
+
+    def unset(self,pos,rot):
+        pass
+
+    def __repr__(self):
+        return 'North Node'
+
+class prepositionNode(compound):
+    def __init__(self, f1, f2, children=[]):
+        super().__init__(children)
+        self.f1 = f1
+        self.f2 = f2
+
+    def set(self,pos,rot):
+        buf = buffer()
+
+        # north1 = self.children[0].getNorth()
+        # south2 = self.children[1].getSouth()
+
+        op1 = self.f1(self.children[0])
+        op2 = self.f2(self.children[1])
+
+        diff = op1 - op2
+
+        buf1 = self.children[0].set(pos, rot)
+        buf2 = self.children[1].set(pos + diff, rot)
+
+        buf1.write(buf)
+        buf2.write(buf)
+
+        return buf
+
+    def unset(self,pos,rot):
+        pass
+
+    def __repr__(self):
+        return 'Preposition Node'
+
+
 class onGroundNode(compound):
     def __init__(self,game, children=[]):
         super().__init__(children)
@@ -258,46 +313,45 @@ class onGroundNode(compound):
     def __repr__(self):
         return 'On Ground Node'
 
-class prepositionNode(compound):
-    def __init__(self, f1, f2, children=[]):
-        super().__init__(children)
-        self.f1 = f1
-        self.f2 = f2
+# class prepositionNode(compound):
+#     def __init__(self, f1, f2, children=[]):
+#         super().__init__(children)
+#         self.f1 = f1
+#         self.f2 = f2
 
-    def set(self,pos,rot):
-        print("Evaluating {}".format("Preposition"))
-        print("Pos:{p}, Rot:{r}".format(p=pos,r=rot))
+#     def set(self,pos,rot):
+#         print("Evaluating {}".format("Preposition"))
+#         print("Pos:{p}, Rot:{r}".format(p=pos,r=rot))
 
-        buf = buffer()
+#         buf = buffer()
 
-        # Write first object to buffer
-        first_buffer = self.children[0].set(pos,rot)
-        # Get anchor point of second object
-        pos1 = self.f1(first_buffer)
+#         # Write first object to buffer
+#         first_buffer = self.children[0].set(pos,rot)
+#         # Get anchor point of second object
+#         pos1 = self.f1(first_buffer)
 
-        # Write second object to buffer
-        second_buffer = self.children[1].set(pos,rot)
-        # Get anchor point of second object
-        pos2 = self.f2(second_buffer)
+#         # Write second object to buffer
+#         second_buffer = self.children[1].set(pos,rot)
+#         # Get anchor point of second object
+#         pos2 = self.f2(second_buffer)
 
-        # Calculate difference between anchor points
-        offset = pos2 - pos1
+#         # Calculate difference between anchor points
+#         offset = pos2 - pos1
 
-        # Shift to lign up anchor points
-        first_buffer.shift(offset)
+#         # Shift to lign up anchor points
+#         first_buffer.shift(offset)
 
-        # Write to final buffer
-        first_buffer.write(buf)
-        second_buffer.write(buf)
+#         # Write to final buffer
+#         first_buffer.write(buf)
+#         second_buffer.write(buf)
 
-        return buf
+#         return buf
 
-    def unset(self, pos, rot):
-        pass
+#     def unset(self, pos, rot):
+#         pass
 
-    def __repr__(self):
-        return 'Preposition Node'
-
+#     def __repr__(self):
+#         return 'Preposition Node'
 
 class shiftNode(compound):
     def __init__(self,offset, children=[]):
@@ -306,13 +360,10 @@ class shiftNode(compound):
 
     def set(self,pos,rot):
         print("Evaluating {}".format("Shift Node"))
-        print("Pos:{p}, Rot:{r}".format(p=type(pos),r=type(rot)))
 
         offset_rot = np.dot(rot, self.offset)
-        print("Offset Rotated:{}".format(offset_rot))
 
         new_pos = np.add(pos , offset_rot)
-        print("New pos:{}".format(new_pos))
 
         return self.children[0].set(new_pos, rot)
 
@@ -324,34 +375,6 @@ class shiftNode(compound):
 
     def __repr__(self):
         return 'Shift Node'
-
-# class northNode(compound):
-#     def set(self, pos, rot):
-
-#         buf = buffer()
-
-#         # ! Set obj1 at pos
-#         buf1 = self.children[0].set(pos, rot)
-
-#         # ! Pos2 is the center of the obj1 bounding box
-#         north = buf1.getNorth()
-
-#         # ! Set obj2 at pos2
-#         temp_buf = self.children[1].set(pos, rot)
-#         south = temp_buf.getSouth()
-
-#         difference = north - south + 0.5
-
-#         # buf2 = self.children[1].set(pos + difference, rot)
-#         temp_buf.shift(difference)
-
-#         buf1.write(buf)
-#         temp_buf.write(buf)
-
-#         return buf
-
-#     def __repr__(self):
-#         return 'North Node'
 
 class rotationNode(compound):
     def __init__(self,axis, deg, children=[]):
@@ -419,10 +442,8 @@ class rotationNode(compound):
                 elif vert[dim] > max[dim]:
                     max[dim] = vert[dim]
 
-        # Calculate mid
-        mid = min + max/2
 
-        return min, mid, max
+        return min, max
 
     def __repr__(self):
         return 'Rotation Node'
