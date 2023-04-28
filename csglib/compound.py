@@ -301,24 +301,12 @@ class onGroundNode(compound):
         super().__init__(children)
         self.game = game
 
-    # def set(self, pos,rot):
-    #     print("Evaluating {}".format("On Ground"))
-    #     groundHeight = self.game.getHeight(pos[0],pos[2])
-    #     new_pos = np.array([pos[0], groundHeight + 1, pos[2]])
-
-    #     child_buf = self.children[0].set(pos, rot)
-
-    #     bottom = child_buf.getBottom()
-
-    #     offset = new_pos - bottom
-
-    #     child_buf.shift(offset)
-
-    #     return child_buf
 
     def set(self, pos, rot):
         print("Evaluating {}".format("On Ground"))
         groundHeight = self.game.getHeight(pos[0],pos[2])
+
+        print("Bounds of structure:{}".format(self.children[0].getBounds()))
 
         bottom = self.children[0].getBottom()
         print("Bottom of structure:{}".format(bottom))
@@ -360,7 +348,13 @@ class shiftNode(compound):
         return self.children[0].unset(new_pos, rot)
 
     def getBounds(self):
-        return self.children[0].getBounds()
+        _min, _max = self.children[0].getBounds()
+
+        # Shifting the bounds by the offset
+        min = _min + self.offset
+        max = _max + self.offset
+
+        return min, max
 
     def __repr__(self):
         return 'Shift Node'
