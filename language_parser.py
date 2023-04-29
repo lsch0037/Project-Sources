@@ -51,15 +51,12 @@ def parse_expression(prog, parent_props):
 
     for key in prog:
         if key in primitiveNames:
-            # print("{k} is a primitive.".format(k=key))
             return parse_primitive(prog[key],key, props)
 
         elif key in customShapes:
-            # print("{k} is a compound.".format(k=key))
             return parse_custom_shape(prog[key], key, props)
 
         elif key in operators:
-            # print("{k} is an operator.".format(k=key))
             return parse_operator(prog, key, props)
 
 
@@ -74,19 +71,15 @@ def parse_primitive(prog, shapeName, parent_props):
     f = None
 
     if shapeName == "Cube":
-        # return parse_cube(prog, props)
         f = parse_cube
 
     elif shapeName == "Sphere":
-        # return parse_sphere(prog, props)
         f = parse_sphere
 
     elif shapeName == "Cylinder":
-        # return parse_cylinder(prog, props)
         f = parse_cylinder
 
     elif shapeName == "Cuboid":
-        # return parse_cuboid(prog, props)
         f = parse_cuboid
 
     elif shapeName == "Pyramid":
@@ -154,6 +147,8 @@ def parse_operator(prog, op, props):
     elif op == "Rotation":
         return parse_rotation(prog[op], props)
 
+    
+    # 
     elif op == "On":
         return parse_preposition_operator(prog[op], props, compound.onTopOf)
 
@@ -197,19 +192,21 @@ def parse_properties(prog, props):
     return new_props
 
 
-def parse_property(var_expr, vars):
+def parse_property(var_expr, props):
     # If the expression is a string
     if isinstance(var_expr, str):
         # If expression is a function call
         if var_expr[0] == '!':
-            return function_call(var_expr, vars)
+            return function_call(var_expr, props)
 
         # If expression is a variable expansion
         elif var_expr[0] == '$':
-            return variable_expansion(var_expr, vars)
+            varName = var_expr.replace('$', '')
+            return props[varName]
 
         # If expression is a string of a number
         elif var_expr.replace(".","").replace("-","").isnumeric():
+            # TODO: ALLOW FOR - SYMBOL, MAKE NEGATIVE
             return float(var_expr)
 
         # Otherwise return literal
@@ -222,19 +219,13 @@ def parse_property(var_expr, vars):
 
         # For each list item, parse varaible expression
         for item in var_expr:
-            newList.append(parse_property(item,vars))
+            newList.append(parse_property(item,props))
 
         return newList
 
     # Otherwise, return literal
     else:
         return var_expr
-
-
-def variable_expansion(var_exp, props):
-    varName = var_exp.replace('$', '')
-
-    return props[varName]
 
 
 def function_call(fn_call, props):

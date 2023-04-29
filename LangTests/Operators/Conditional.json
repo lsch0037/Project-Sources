@@ -1,0 +1,47 @@
+{
+    "num":"!randInt(0,3)",
+    "Union":[
+        {
+            "If":{
+                "Condition":"!equals($Num, 0)",
+                "Body":{
+                    "Sphere":{
+                        "Radius":10,
+                        "Material":{
+                            "Selector":"Random",
+                            "Ids":["Diamond Block"]
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "If":{
+                "Condition":"!equals($Num, 1)",
+                "Body":{
+                    "Sphere":{
+                        "Radius":10,
+                        "Material":{
+                            "Selector":"Random",
+                            "Ids":["Emerald Block"]
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "If":{
+                "Condition":"!equals($Num, 2)",
+                "Body":{
+                    "Sphere":{
+                        "Radius":10,
+                        "Material":{
+                            "Selector":"Random",
+                            "Ids":["Coal Block"]
+                        }
+                    }
+                }
+            }
+        }
+    ]
+}

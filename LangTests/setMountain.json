@@ -1,6 +1,0 @@
-{
-    "Mountain":{
-        "Seed":"!randInt(0, 10000)",
-        "Oct":32
-    }
-}
