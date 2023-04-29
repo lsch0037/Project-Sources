@@ -23,7 +23,8 @@ id_map = {
     "Diamond Ore":56,
     "Diamond Block": 57,
     "Stone Bricks":98,
-    "Emerald Block":133
+    "Emerald Block":133,
+    "Block of Coal":173
 }
 
 class material():

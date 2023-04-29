@@ -266,20 +266,27 @@ def function_call(fn_call, props):
     elif funName == "randInt":
         return randomInt(int(args[0]),int(args[1]))
 
+    # Boolean funcitons
     elif funName == "isEqual":
         return (args[0] == args[1])
+
+    elif funName == "less":
+        pass
+
+    elif funName == "greater":
+        pass
 
     elif funName == "getBlock":
         return getBlock(args[0])
 
-    elif funName == "rotateX":
-        return rotateX(args[0], args[1])
+    # elif funName == "rotateX":
+    #     return rotateX(args[0], args[1])
 
-    elif funName == "rotateY":
-        return rotateY(args[0], args[1])
+    # elif funName == "rotateY":
+    #     return rotateY(args[0], args[1])
 
-    elif funName == "rotateZ":
-        return rotateZ(args[0], args[1])
+    # elif funName == "rotateZ":
+    #     return rotateZ(args[0], args[1])
 
     elif funName == "perlin":
         return perlin(args[0], args[1], args[2])
@@ -385,6 +392,18 @@ def parse_intersection(prog, props):
     return inter_node
 
 # !Language Operations
+def expectAttribute(attr_name, prog, props, attr_types=None):
+    if not attr_name in prog:
+        raise ValueError("Attribute '{}' expected in scope '{}'".format(attr_name, prog))
+
+    val = parse_property(prog[attr_name], props)
+    
+    if not isinstance(val, attr_types):
+        raise ValueError("Value of '{}' in scope '{}' expected to be of type(s) '{}' instead of '{}'".format(attr_name, prog, attr_types, type(val)))
+
+    return val
+
+
 def parse_loop(prog, parent_props):
 
     # Checking that variables exist
@@ -432,51 +451,15 @@ def parse_loop(prog, parent_props):
     return unionNode(childrenProgs)
 
 
-def parse_if(prog, parent_props):
+def parse_if(prog, props):
 
-    if not "Condition" in prog:
-        raise ValueError("No 'Condition' attribute in 'if' construct")
-
-    elif not "Body" in prog:
-        raise ValueError("No 'Body' attribute in 'if' construct")
+    condition = expectAttribute("Condition", prog, props, bool)
+    body = expectAttribute("Body", prog, props, dict)
     
-
-    condition = prog["Condition"]
-    if_block = prog["Body"]
-
-    else_block = None
-
-    if "Else" in prog:
-        else_block = prog["Else"]
-
-
-    # Type checking
-    if not isinstance(condition, (str, bool)):
-        raise TypeError("If variable {varname} is of invalid type {type}".format(varname="Condition", type = type(condition)))
-    
-    elif not isinstance(if_block, dict):
-        raise TypeError("If variable {varname} is of invalid type {type}".format(varname="Body", type = type(if_block)))
-
-    if not else_block == None and not isinstance(else_block, dict):
-        raise TypeError("If variable {varname} is of invalid type {type}".format(varname="Else", type = type(else_block)))
-
-
-    # Evaluating condition
-    result = parse_property(condition, parent_props)
-
-    # Type checking result
-    if not isinstance(result, bool):
-        raise TypeError("Condition must have return type 'bool' and not {type}".format(type = type(result)))
-
-    # Evaluating corresponding block
-    if result:
-        return parse_expression(if_block, parent_props)
-
-    elif not else_block == None and not result:
-        return parse_expression(else_block, parent_props)
+    if condition:
+        return parse_expression(body, props)
 
     else:
-        # TODO: FIND OUT WHAT KIND OF NODE TO RETURN
         return compound([])
 
 
@@ -705,74 +688,73 @@ def parse_cone(prog, props):
     pass
 
 # ! ROTATING THE MATRIX
-def rotateX(mat, deg):
+# def rotateX(mat, deg):
 
-    # Type Checking
-    if not isinstance(mat, (list, np.ndarray)):
-        raise TypeError("Argument 'mat' is of invalid type: {t}".format(t=type(mat)))
+#     # Type Checking
+#     if not isinstance(mat, (list, np.ndarray)):
+#         raise TypeError("Argument 'mat' is of invalid type: {t}".format(t=type(mat)))
 
-    elif not np.shape(mat) == (3,3):
-        raise ValueError("Argument 'mat' must have dimensions '(3,3)', not {d}".format(d=np.shape(mat)))
+#     elif not np.shape(mat) == (3,3):
+#         raise ValueError("Argument 'mat' must have dimensions '(3,3)', not {d}".format(d=np.shape(mat)))
 
-    elif not isinstance(deg, (int,float)):
-        raise TypeError("Argument 'deg' must be of types 'int' or 'float', not {t}".format(t=type(deg)))
+#     elif not isinstance(deg, (int,float)):
+#         raise TypeError("Argument 'deg' must be of types 'int' or 'float', not {t}".format(t=type(deg)))
 
-    theta = deg* math.pi / 180
+#     theta = deg* math.pi / 180
 
-    rotation = np.array(
-        [1.0,0.0,0.0,
-        0.0, math.cos(theta), -math.sin(theta),
-        0.0, math.sin(theta), math.cos(theta)]
-    ).reshape(3,3)
+#     rotation = np.array(
+#         [1.0,0.0,0.0,
+#         0.0, math.cos(theta), -math.sin(theta),
+#         0.0, math.sin(theta), math.cos(theta)]
+#     ).reshape(3,3)
 
-    return np.matmul(mat, rotation)
-
-
-def rotateY(mat, deg):
-
-    # Type Checking
-    if not isinstance(mat, (list, np.ndarray)):
-        raise TypeError("Argument 'mat' is of invalid type: {t}".format(t=type(mat)))
-
-    elif not np.shape(mat) == (3,3):
-        raise ValueError("Argument 'mat' must have dimensions '(3,3)', not {d}".format(d=np.shape(mat)))
-
-    elif not isinstance(deg, (int,float)):
-        raise TypeError("Argument 'deg' must be of types 'int' or 'float', not {t}".format(t=type(deg)))
-
-    theta = deg* math.pi / 180
-
-    rotation = np.array(
-        [math.cos(theta), 0.0, math.sin(theta),
-        0.0, 1.0, 0.0,
-        -math.sin(theta), 0, math.cos(theta)]
-    ).reshape(3,3)
-
-    return np.matmul(mat, rotation)
+#     return np.matmul(mat, rotation)
 
 
-def rotateZ(mat, deg):
+# def rotateY(mat, deg):
 
-    # Type Checking
-    if not isinstance(mat, (list, np.ndarray)):
-        raise TypeError("Argument 'mat' is of invalid type: {t}".format(t=type(mat)))
+#     # Type Checking
+#     if not isinstance(mat, (list, np.ndarray)):
+#         raise TypeError("Argument 'mat' is of invalid type: {t}".format(t=type(mat)))
 
-    elif not np.shape(mat) == (3,3):
-        raise ValueError("Argument 'mat' must have dimensions '(3,3)', not {d}".format(d=np.shape(mat)))
+#     elif not np.shape(mat) == (3,3):
+#         raise ValueError("Argument 'mat' must have dimensions '(3,3)', not {d}".format(d=np.shape(mat)))
 
-    elif not isinstance(deg, (int,float)):
-        raise TypeError("Argument 'deg' must be of types 'int' or 'float', not {t}".format(t=type(deg)))
+#     elif not isinstance(deg, (int,float)):
+#         raise TypeError("Argument 'deg' must be of types 'int' or 'float', not {t}".format(t=type(deg)))
 
-    theta = deg* math.pi / 180
+#     theta = deg* math.pi / 180
 
-    rotation = np.array(
-        [math.cos(theta), -math.sin(theta), 0.0,
-        math.sin(theta), math.cos(theta), 0.0,
-        0.0, 0.0, 1.0]
-    ).reshape(3,3)
+#     rotation = np.array(
+#         [math.cos(theta), 0.0, math.sin(theta),
+#         0.0, 1.0, 0.0,
+#         -math.sin(theta), 0, math.cos(theta)]
+#     ).reshape(3,3)
 
-    return np.matmul(mat, rotation)
+#     return np.matmul(mat, rotation)
 
+
+# def rotateZ(mat, deg):
+
+#     # Type Checking
+#     if not isinstance(mat, (list, np.ndarray)):
+#         raise TypeError("Argument 'mat' is of invalid type: {t}".format(t=type(mat)))
+
+#     elif not np.shape(mat) == (3,3):
+#         raise ValueError("Argument 'mat' must have dimensions '(3,3)', not {d}".format(d=np.shape(mat)))
+
+#     elif not isinstance(deg, (int,float)):
+#         raise TypeError("Argument 'deg' must be of types 'int' or 'float', not {t}".format(t=type(deg)))
+
+#     theta = deg* math.pi / 180
+
+#     rotation = np.array(
+#         [math.cos(theta), -math.sin(theta), 0.0,
+#         math.sin(theta), math.cos(theta), 0.0,
+#         0.0, 0.0, 1.0]
+#     ).reshape(3,3)
+
+#     return np.matmul(mat, rotation)
 
 # !BUILT IN FUNCTIONS
 def getHeight(x, z):
