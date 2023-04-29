@@ -148,7 +148,7 @@ def parse_operator(prog, op, props):
         return parse_rotation(prog[op], props)
 
     
-    # 
+    # Prepositional Operators
     elif op == "On":
         return parse_preposition_operator(prog[op], props, compound.onTopOf)
 
@@ -168,22 +168,13 @@ def parse_operator(prog, op, props):
         raise ValueError("Invalid Operator: {}".format(prog))
 
 
+# TODO: REPLACE EACH INSTANCE OF THIS FUNCTION WITH PARSING INDIVIDUALLY THE PROPERTIES
 def parse_properties(prog, props):
     new_props = props.copy()
 
     for key in prog:
         if key in operators or key in primitiveNames or key in customShapes:
             continue
-
-        # elif key == "Relative":
-        #     abs_pos = new_props["Position"]
-        #     orientation = new_props["Orientation"]
-
-        #     rel_pos = parse_property(prog["Relative"], new_props)
-
-        #     new_pos = abs_pos + np.dot(orientation,rel_pos)
-        #     new_props["Position"] = new_pos
-        #     continue
 
         else:
             new_props[key] = parse_property(prog[key], new_props)
@@ -237,8 +228,6 @@ def function_call(fn_call, props):
 
     args = parse_arguments(args_raw,props)
 
-    # print("Fun: {f}, Args:{a}".format(f=funName, a=args))
-
     if funName == "getHeight":
         return getHeight(args[0], args[1])
 
@@ -279,15 +268,6 @@ def function_call(fn_call, props):
     elif funName == "getBlock":
         return getBlock(args[0])
 
-    # elif funName == "rotateX":
-    #     return rotateX(args[0], args[1])
-
-    # elif funName == "rotateY":
-    #     return rotateY(args[0], args[1])
-
-    # elif funName == "rotateZ":
-    #     return rotateZ(args[0], args[1])
-
     elif funName == "perlin":
         return perlin(args[0], args[1], args[2])
 
@@ -299,8 +279,6 @@ def function_call(fn_call, props):
 def parse_arguments(arguments, props):
 
     words = re.findall(punct, arguments)
-
-    # print("Raw:{}".format(words))
 
     # Check that scopes are correct
     if text.count('(') > text.count(')'):
@@ -315,13 +293,11 @@ def parse_arguments(arguments, props):
 
     i = 0
     while i < len(words):
-        # print("Word:{}".format(words[i]))
         if words[i] == ",":
             finalArgs.append(current_arg)
             current_arg = ""
 
         elif words[i] == "(":
-            # print("Forwarding to ')'")
             # Forward to close bracket
 
             openBracket = 0
@@ -349,14 +325,11 @@ def parse_arguments(arguments, props):
 
     finalArgs.append(current_arg)
 
-    # print("Split:{}".format(finalArgs))
                 
     args = []
     for token in finalArgs:
         value = parse_property(token, props)
         args.append(value)
-
-    # print("Evaluated:", args)
 
     return args
 
@@ -405,39 +378,12 @@ def expectAttribute(attr_name, prog, props, attr_types=None):
 
 
 def parse_loop(prog, parent_props):
+    print("Parsing Loop: '{}'".format(prog))
 
-    # Checking that variables exist
-    if not "Var" in prog:
-        raise ValueError("No 'Var' variable in loop construct")
-
-    elif not "Start" in prog:
-        raise ValueError("No 'Start' variable in loop construct")
-
-    elif not "End" in prog:
-        raise ValueError("No 'End' variable in loop construct")
-
-    elif not "Body" in prog:
-        raise ValueError("No 'Body' variable in loop construct")
-
-    var = prog["Var"]
-    start = int(parse_property(prog["Start"], parent_props))
-    end = int(parse_property(prog["End"], parent_props))
-
-    body = prog["Body"]
-
-    # Type checking
-    if not isinstance(var, str):
-        raise TypeError("Loop variable {varname} is of invalid type {type}".format(varname="Var", type = type(var)))
-    
-    elif not isinstance(start, int):
-        raise TypeError("Loop variable {varname} is of invalid type {type}".format(varname="Start", type = type(start)))
-
-    elif not isinstance(end, int):
-        raise TypeError("Loop variable {varname} is of invalid type {type}".format(varname="End", type = type(end)))
-
-    elif not isinstance(body, dict):
-        raise TypeError("Loop variable {varname} is of invalid type {type}".format(varname="Body",type = type(body)))
-
+    var = expectAttribute("Var", prog, parent_props, str)
+    start = int(expectAttribute("Start", prog, parent_props, (int, float)))
+    end = int(expectAttribute("End", prog, parent_props, (int, float)))
+    body = expectAttribute("Body", prog, parent_props, dict)
 
     childrenProgs =[]
 
@@ -452,6 +398,7 @@ def parse_loop(prog, parent_props):
 
 
 def parse_if(prog, props):
+    print("Parsing If: '{}'".format(prog))
 
     condition = expectAttribute("Condition", prog, props, bool)
     body = expectAttribute("Body", prog, props, dict)
@@ -465,7 +412,7 @@ def parse_if(prog, props):
 
 # !Positional Operators
 def parse_on_ground(prog, props):
-    print("Parsing on ground")
+    print("Parsing on ground:'{}'".format(prog))
 
     child_prog = parse_expression(prog, props)
 
@@ -473,7 +420,7 @@ def parse_on_ground(prog, props):
 
 
 def parse_preposition_operator(prog, props, f):
-    print("Parsing prepostion Operator")
+    print("Parsing prepostion Operator: {}".format(prog))
     if not len(prog) == 2:
         raise ValueError("Prepositional operator requires exactly {n} operands.".format(n=2))
 
@@ -485,156 +432,88 @@ def parse_preposition_operator(prog, props, f):
     return f(operands[0], operands[1])
 
 
-# def parse_north(prog, props):
-#     print("Parsing North")
-#     if not len(prog) == 2:
-#         raise ValueError("Prepositional operator requires exactly {n} operands.".format(n=2))
-
-#     operands = []
-#     for item in prog:
-#         child_node = parse_expression(item, props)
-#         operands.append(child_node)
-
-#     return northNode(operands)
-
-# def parse_on(prog, props):
-#     if not len(prog) == 2:
-#         raise ValueError("Prepositional operator '{o}' requires exactly {n} operands.".format(o="On", n=2))
-
-#     operands = []
-#     for item in prog:
-#         child_node = parse_expression(item, props)
-#         operands.append(child_node)
-
-#     return operands[0].onTopOf(operands[1])
-
 
 def parse_shift(prog, props):
-    print("Parsing offset: {}".format(prog))
+    print("Parsing Shift: {}".format(prog))
 
-    if not "Offset" in prog:
-        raise ValueError("No '{}' variable in loop construct".format("Offset"))
+    offset = expectAttribute("Offset", prog, props, list)
+    body = expectAttribute("Body", prog, props, dict)
 
-    if not "Body" in prog:
-        raise ValueError("No '{}' variable in loop construct".format("Body"))
-
-    vec = parse_property(prog["Offset"], props)
-    child_prog = parse_expression(prog["Body"], props)
-
-    if not isinstance(vec, list) or not len(vec) == 3:
+    if not len(offset) == 3:
         raise TypeError("{p} must be of length {l}.".format(p="Vector",l=3))
 
+    body_prog = parse_expression(body, props)
 
-    return shiftNode(vec, [child_prog])
-
-
-# def parse_north(prog, props):
-#     if not len(prog) == 2:
-#         raise ValueError("Prepositional operator '{o}' requires exactly {n} operands.".format(o="On", n=2))
-
-#     operands = []
-#     for item in prog:
-#         child_node = parse_expression(item, props)
-#         operands.append(child_node)
-
-#     return operands[0].northOf(operands[1])
-    
-
-# def parse_north(prog, props):
-#     pass
+    return shiftNode(offset, [body_prog])
 
 
 def parse_rotation(prog, props):
-    if not "Axis" in prog:
-        raise ValueError("{p} property expected in {o} operation".format(p="Axis", o="Rotation"))
+    print("Parsing Rotation: '{}'".format(prog))
 
-    elif not isinstance(prog["Axis"], str):
-        raise TypeError("Type {t} expected for {p} property.".format(t="String", p="Axis"))
+    axis_raw = expectAttribute("Axis", prog, props, str)
+    deg = expectAttribute("Degrees", prog, props, (float, int))
+    body = expectAttribute("Body", prog, props, dict)
     
     axes = ["x", "y", "z"]
 
-    axis = axes.index(prog["Axis"].lower())
+    axis = axes.index(axis_raw.lower())
 
     if axis == None:
         raise ValueError("{p} property must be one of {a}".format(p="Axis", a=axes))
 
+    body_prog = parse_expression(body, props)
 
-    if not "Degrees" in prog:
-        raise ValueError("{p} property expected in {o} operation".format(p="Degrees", o="Rotation"))
-
-    deg = parse_property(prog["Degrees"], props)
-
-    if not isinstance(deg, (float, int)):
-        raise TypeError("Type {t} expected for {p} property.".format(t="Float or Int", p="Degrees"))
-
-
-    child_prog = parse_expression(prog["Body"], props)
-
-    return rotationNode(axis, deg, [child_prog])
+    return rotationNode(axis, deg, [body_prog])
 
 # !Materials
-def parse_material(mat,props):
-    # print("Material:",mat)
+def parse_material(prog,props):
+    print("Parsing Material:",prog)
 
-    # 'Selector' type checking
-    if not "Selector" in mat:
-        raise ValueError("Expected property '{p}'.".format(p="Selector"))
-    
-    selector = mat["Selector"]
+    selector = expectAttribute("Selector", prog, props, str)
+    ids = expectAttribute("Ids", prog, props, list)
 
     if not selector in materialSelectorTypes:
         raise ValueError("'{s}' is not a valid material selector".format(s=selector))
-
-
-    # 'Ids' type checking
-    if not "Ids" in mat:
-        raise ValueError("Expected property '{p}'.".format(p="Ids"))
-    
-    ids = parse_property(mat["Ids"],props)
 
 
     # Random selector
     if selector == "Random":
 
         weights = None
-        if "Weights" in mat:
-            weights = parse_property(mat["Weights"],props)
+        if "Weights" in prog:
+            weights = parse_property(prog["Weights"],props)
 
         return random_material(ids, weights)
 
 
     # Perlin Noise selector
     elif selector == "Perlin":
-        if "Thresholds" not in mat:
-            raise ValueError("Expected property '{p}' in material with selector '{s}'.".format(p="Thresholds",s=selector))
+        thresholds = expectAttribute("Thresholds", prog, props, list)
 
         octaves = None
         seed = None
 
-        if "Octaves" in mat:
-            octaves = parse_property(mat["Octaves"], props)
+        if "Octaves" in prog:
+            octaves = parse_property(prog["Octaves"], props)
         else:
             octaves = math.pow(2,random.randint(1,6))
 
-        if "Seed" in mat:
-            seed = parse_property(mat["Seed"], props)
+        if "Seed" in prog:
+            seed = parse_property(prog["Seed"], props)
         else:
             seed = random.randint(0,10000)
         
-
-        thresholds = parse_property(mat["Thresholds"],props)
-
         return perlin_material(ids, thresholds, seed, octaves)
 
 # !PRIMITIVE SHAPES
-# TODO: CHECKING ARGUMENTS FOR ALL PRIMITIVES
+# TODO: USE expectAttribute to get properties instead of querying props
 
 def parse_cube(prog,props):
 
     size = props["Size"]
     material = parse_material(props["Material"], props)
 
-    print("Cube(mat:{m}, size:{s}".format(m=material,s=size))
+    print("Cube(mat:{m}, size:{s})".format(m=material,s=size))
 
     return cube(material, size)
 
@@ -687,75 +566,6 @@ def parse_prism(prog, props):
 def parse_cone(prog, props):
     pass
 
-# ! ROTATING THE MATRIX
-# def rotateX(mat, deg):
-
-#     # Type Checking
-#     if not isinstance(mat, (list, np.ndarray)):
-#         raise TypeError("Argument 'mat' is of invalid type: {t}".format(t=type(mat)))
-
-#     elif not np.shape(mat) == (3,3):
-#         raise ValueError("Argument 'mat' must have dimensions '(3,3)', not {d}".format(d=np.shape(mat)))
-
-#     elif not isinstance(deg, (int,float)):
-#         raise TypeError("Argument 'deg' must be of types 'int' or 'float', not {t}".format(t=type(deg)))
-
-#     theta = deg* math.pi / 180
-
-#     rotation = np.array(
-#         [1.0,0.0,0.0,
-#         0.0, math.cos(theta), -math.sin(theta),
-#         0.0, math.sin(theta), math.cos(theta)]
-#     ).reshape(3,3)
-
-#     return np.matmul(mat, rotation)
-
-
-# def rotateY(mat, deg):
-
-#     # Type Checking
-#     if not isinstance(mat, (list, np.ndarray)):
-#         raise TypeError("Argument 'mat' is of invalid type: {t}".format(t=type(mat)))
-
-#     elif not np.shape(mat) == (3,3):
-#         raise ValueError("Argument 'mat' must have dimensions '(3,3)', not {d}".format(d=np.shape(mat)))
-
-#     elif not isinstance(deg, (int,float)):
-#         raise TypeError("Argument 'deg' must be of types 'int' or 'float', not {t}".format(t=type(deg)))
-
-#     theta = deg* math.pi / 180
-
-#     rotation = np.array(
-#         [math.cos(theta), 0.0, math.sin(theta),
-#         0.0, 1.0, 0.0,
-#         -math.sin(theta), 0, math.cos(theta)]
-#     ).reshape(3,3)
-
-#     return np.matmul(mat, rotation)
-
-
-# def rotateZ(mat, deg):
-
-#     # Type Checking
-#     if not isinstance(mat, (list, np.ndarray)):
-#         raise TypeError("Argument 'mat' is of invalid type: {t}".format(t=type(mat)))
-
-#     elif not np.shape(mat) == (3,3):
-#         raise ValueError("Argument 'mat' must have dimensions '(3,3)', not {d}".format(d=np.shape(mat)))
-
-#     elif not isinstance(deg, (int,float)):
-#         raise TypeError("Argument 'deg' must be of types 'int' or 'float', not {t}".format(t=type(deg)))
-
-#     theta = deg* math.pi / 180
-
-#     rotation = np.array(
-#         [math.cos(theta), -math.sin(theta), 0.0,
-#         math.sin(theta), math.cos(theta), 0.0,
-#         0.0, 0.0, 1.0]
-#     ).reshape(3,3)
-
-#     return np.matmul(mat, rotation)
-
 # !BUILT IN FUNCTIONS
 def getHeight(x, z):
     return game.getHeight(float(x),float(z))
@@ -775,6 +585,7 @@ def perlin(pos, seed=random.randint(0,10000), oct=1):
     noise_val = (noise.noise(pos_scaled)+1.0)/2
     print("Pos: {p},Noise Value:{v}".format(p=pos_scaled, v=noise_val))
     return noise_val
+
 
 # !PARSING PROGRAM
 # CHECKING FILES

@@ -26,7 +26,7 @@ class compound():
         return ret
 
     def __repr__(self):
-        return 'Generic Node'
+        return 'End'
 
 
     # !Bounding Box
@@ -166,7 +166,7 @@ class unionNode(compound):
         return min, max
 
     def __repr__(self):
-        return 'Union Node'
+        return 'Union'
 
 
 class differenceNode(compound):
@@ -201,7 +201,7 @@ class differenceNode(compound):
         return self.children[0].getBounds()
 
     def __repr__(self):
-        return 'Difference Node'
+        return 'Difference'
 
 class intersectionNode(compound):
     def set(self,pos,rot):
@@ -238,7 +238,7 @@ class intersectionNode(compound):
         return min, max
 
     def __repr__(self):
-        return 'Intersection Node'
+        return 'Intersection'
 
 
 class prepositionNode(compound):
@@ -300,7 +300,7 @@ class prepositionNode(compound):
         return min, max
 
     def __repr__(self):
-        return 'Preposition Node'
+        return 'Preposition'
 
 
 class onGroundNode(compound):
@@ -331,7 +331,7 @@ class onGroundNode(compound):
         return self.children[0].getBounds() 
 
     def __repr__(self):
-        return 'On Ground Node'
+        return 'On Ground'
 
 
 class shiftNode(compound):
@@ -364,7 +364,8 @@ class shiftNode(compound):
         return min, max
 
     def __repr__(self):
-        return 'Shift Node'
+        return 'Shift'
+
 
 class rotationNode(compound):
     def __init__(self,axis, deg, children=[]):
@@ -446,7 +447,7 @@ class rotationNode(compound):
         return min, max
 
     def __repr__(self):
-        return 'Rotation Node'
+        return 'Rotation'
 
 def rotateX(mat, deg):
 

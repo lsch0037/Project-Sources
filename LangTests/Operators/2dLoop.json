@@ -1,12 +1,14 @@
 {
     "Loop":{
-        "loop_var":"x_iter",
-        "loop_range":10,
-        "loop_body":{
+        "Var":"x_iter",
+        "Start":0,
+        "End":10,
+        "Body":{
             "Loop":{
-                "loop_var":"z_iter",
-                "loop_range":10,
-                "loop_body":{
+                "Var":"z_iter",
+                "Start":0,
+                "End":10,
+                "Body":{
                     "Shift":{
                         "Offset":["$x_iter",1,"$z_iter"],
                         "Body":{
