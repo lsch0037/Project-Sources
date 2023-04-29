@@ -1,0 +1,9 @@
+{
+"Cuboid":{
+    "Material":{
+        "Selector":"Random",
+        "Ids":["Stone"]
+    },
+    "Dimensions":[5,7,13]
+}
+}

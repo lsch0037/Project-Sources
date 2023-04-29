@@ -1,0 +1,11 @@
+{
+    "Comment":"NOT IMPLEMENTED YET",
+    "Prism":{
+        "Material":{
+            "Selector":"Random",
+            "Ids":["Stone"]
+        },
+        "Length":12,
+        "Radius":3
+    }
+}

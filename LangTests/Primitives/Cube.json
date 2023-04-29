@@ -1,0 +1,9 @@
+{
+"Cube":{
+    "Material":{
+        "Selector":"Random",
+        "Ids":["Stone"]
+    },
+    "Size":10
+}
+}

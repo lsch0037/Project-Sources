@@ -1,0 +1,10 @@
+{
+    "Cone":{
+        "Material":{
+            "Selector":"Random",
+            "Ids":["Stone"]
+        },
+        "Length":12,
+        "Radius":3
+    }
+}

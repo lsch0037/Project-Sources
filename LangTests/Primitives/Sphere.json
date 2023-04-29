@@ -1,0 +1,14 @@
+{
+    "Shift":{
+        "Offset":[0, 12, 0],
+        "Body":{
+            "Sphere":{
+                "Material":{
+                    "Selector":"Random",
+                    "Ids":["Stone"]
+                },
+                "Radius":12
+            }
+        }
+    }
+}

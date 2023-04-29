@@ -65,8 +65,8 @@ def parse_primitive(prog, shapeName, parent_props):
 
     props = parse_properties(prog,parent_props)
 
-    if not "Material" in prog:
-        raise ValueError("Property '{p}' expected in '{s}' shape".format(p="Material",s="Primitive"))
+    material_raw = expectAttribute("Material", prog, props, dict)
+    material = parse_material(material_raw, props)
 
     f = None
 
@@ -94,7 +94,7 @@ def parse_primitive(prog, shapeName, parent_props):
     else:
         raise ValueError("Primitive '{}' does not exist".format(shapeName))
 
-    return f(prog, props)    
+    return f(prog, props, material)    
 
 
 def parse_custom_shape(prog,shapeName, parent_props):
@@ -508,62 +508,79 @@ def parse_material(prog,props):
 # !PRIMITIVE SHAPES
 # TODO: USE expectAttribute to get properties instead of querying props
 
-def parse_cube(prog,props):
+def parse_cube(prog, props, material):
 
-    size = props["Size"]
-    material = parse_material(props["Material"], props)
+    # size = props["Size"]
+    # material = parse_material(props["Material"], props)
+
+    size = expectAttribute("Size", prog, props, (int, float))
+    # m = expectAttribute("Material", prog, props, material)
 
     print("Cube(mat:{m}, size:{s})".format(m=material,s=size))
 
     return cube(material, size)
 
 
-def parse_sphere(prog,props):
+def parse_sphere(prog, props, material):
 
-    rad = props["Radius"]
-    material = parse_material(props["Material"],props)
+    # rad = props["Radius"]
+    # material = parse_material(props["Material"],props)
+
+    rad = expectAttribute("Radius", prog, props, (int, float))
 
     print("Sphere(Material:", material, ",Radius:", rad,")")
 
     return sphere(material, rad)
 
 
-def parse_cylinder(prog, props):
+def parse_cylinder(prog, props, material):
 
-    rad = props["Radius"]
-    len = props["Length"]
-    material = parse_material(props["Material"],props)
+    # rad = props["Radius"]
+    # len = props["Length"]
+    # material = parse_material(props["Material"],props)
 
-    print("Cylinder(mat:{material}, rad:{rad}, len{len})".format(material=material, rad=rad, len=len))
+    rad = expectAttribute("Radius", prog, props, (int, float))
+    length = expectAttribute("Length", prog, props, (int, float))
 
-    return cylinder(material, rad, len)
+    print("Cylinder(mat:{material}, rad:{rad}, len:{len})".format(material=material, rad=rad, len=length))
+
+    return cylinder(material, rad, length)
 
 
-def parse_cuboid(prog,props):
+def parse_cuboid(prog,props, material):
 
-    material = parse_material(props["Material"],props)
-    dim = props["Dimensions"]
+    # material = parse_material(props["Material"],props)
+    # dim = props["Dimensions"]
+
+    dim = expectAttribute("Dimensions", prog, props, list)
+
+    if not len(dim) == 3:
+        raise ValueError("'Dimensions' attribute must be of length 3: {}".format(dim))
 
     print("Cuboid(material:{material}, dim:{dim})".format(material=material, dim=dim))
 
     return cuboid(material, dim)
 
 
-def parse_pyramid(prog, props):
+def parse_pyramid(prog, props, material):
 
-    material = parse_material(props["Material"], props)
-    height = props["Height"]
-    breadth = props["Breadth"]
-    width = props["Width"]
+    # material = parse_material(props["Material"], props)
+    # height = props["Height"]
+    # breadth = props["Breadth"]
+    # width = props["Width"]
+
+    height = expectAttribute("Height", prog, props, (int, float))
+    breadth = expectAttribute("Breadth", prog, props, (int, float))
+    width = expectAttribute("Width", prog, props, (int, float))
 
     print("Pyramid(Material:{}, Height:{}, Breadth:{}, Width:{})".format(material, height, breadth, width))
     return pyramid(material, height, breadth, width)
 
 
-def parse_prism(prog, props):
+def parse_prism(prog, props, material):
     pass
 
-def parse_cone(prog, props):
+def parse_cone(prog, props, material):
     pass
 
 # !BUILT IN FUNCTIONS
