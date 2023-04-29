@@ -1,47 +1,49 @@
 {
-    "num":"!randInt(0,3)",
-    "Union":[
-        {
-            "If":{
-                "Condition":"!equals($Num, 0)",
-                "Body":{
-                    "Sphere":{
-                        "Radius":10,
-                        "Material":{
-                            "Selector":"Random",
-                            "Ids":["Diamond Block"]
+    "Num":"!randInt(0,2)",
+    "On Ground":{
+        "Union":[
+            {
+                "If":{
+                    "Condition":"!isEqual($Num, 0)",
+                    "Body":{
+                        "Sphere":{
+                            "Radius":10,
+                            "Material":{
+                                "Selector":"Random",
+                                "Ids":["Diamond Block"]
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "If":{
+                    "Condition":"!isEqual($Num, 1)",
+                    "Body":{
+                        "Sphere":{
+                            "Radius":10,
+                            "Material":{
+                                "Selector":"Random",
+                                "Ids":["Emerald Block"]
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "If":{
+                    "Condition":"!isEqual($Num, 2)",
+                    "Body":{
+                        "Sphere":{
+                            "Radius":10,
+                            "Material":{
+                                "Selector":"Random",
+                                "Ids":["Coal Block"]
+                            }
                         }
                     }
                 }
             }
-        },
-        {
-            "If":{
-                "Condition":"!equals($Num, 1)",
-                "Body":{
-                    "Sphere":{
-                        "Radius":10,
-                        "Material":{
-                            "Selector":"Random",
-                            "Ids":["Emerald Block"]
-                        }
-                    }
-                }
-            }
-        },
-        {
-            "If":{
-                "Condition":"!equals($Num, 2)",
-                "Body":{
-                    "Sphere":{
-                        "Radius":10,
-                        "Material":{
-                            "Selector":"Random",
-                            "Ids":["Coal Block"]
-                        }
-                    }
-                }
-            }
-        }
-    ]
+        ]
+    }
 }

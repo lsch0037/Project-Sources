@@ -349,7 +349,7 @@ def parse_arguments(arguments, props):
         value = parse_property(token, props)
         args.append(value)
 
-    print("Evaluated:", args)
+    # print("Evaluated:", args)
 
     return args
 
@@ -434,31 +434,31 @@ def parse_loop(prog, parent_props):
 
 def parse_if(prog, parent_props):
 
-    if not "if_condition" in prog:
-        raise ValueError("No 'if_condition' variable in 'if' construct")
+    if not "Condition" in prog:
+        raise ValueError("No 'Condition' attribute in 'if' construct")
 
-    elif not "if_block" in prog:
-        raise ValueError("No 'if_block' variable in 'if' construct")
+    elif not "Body" in prog:
+        raise ValueError("No 'Body' attribute in 'if' construct")
     
 
-    condition = prog["if_condition"]
-    if_block = prog["if_block"]
+    condition = prog["Condition"]
+    if_block = prog["Body"]
 
     else_block = None
 
-    if "else_block" in prog:
-        else_block = prog["else_block"]
+    if "Else" in prog:
+        else_block = prog["Else"]
 
 
     # Type checking
     if not isinstance(condition, (str, bool)):
-        raise TypeError("If variable {varname} is of invalid type {type}".format(varname="if_condition", type = type(condition)))
+        raise TypeError("If variable {varname} is of invalid type {type}".format(varname="Condition", type = type(condition)))
     
     elif not isinstance(if_block, dict):
-        raise TypeError("If variable {varname} is of invalid type {type}".format(varname="if_block", type = type(if_block)))
+        raise TypeError("If variable {varname} is of invalid type {type}".format(varname="Body", type = type(if_block)))
 
     if not else_block == None and not isinstance(else_block, dict):
-        raise TypeError("If variable {varname} is of invalid type {type}".format(varname="else_block", type = type(else_block)))
+        raise TypeError("If variable {varname} is of invalid type {type}".format(varname="Else", type = type(else_block)))
 
 
     # Evaluating condition
@@ -474,6 +474,10 @@ def parse_if(prog, parent_props):
 
     elif not else_block == None and not result:
         return parse_expression(else_block, parent_props)
+
+    else:
+        # TODO: FIND OUT WHAT KIND OF NODE TO RETURN
+        return compound([])
 
 
 # !Positional Operators

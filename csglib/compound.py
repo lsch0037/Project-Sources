@@ -31,7 +31,11 @@ class compound():
 
     # !Bounding Box
     def getBounds(self):
-        raise ValueError("Cannot call 'getBounds()' on generic Node")
+        # raise ValueError("Cannot call 'getBounds()' on generic Node")
+        min = np.array([0,0,0])
+        max = np.array([0,0,0])
+
+        return min, max
 
     def getTop(self):
         min,max = self.getBounds()
@@ -113,11 +117,14 @@ class compound():
     def shiftBy(self,other, offset):
         return shiftNode(offset, [self,other])
 
-    def set(self,pos,rot, buf):
-        raise ValueError("Cannot call 'set' on generic node")
+    def set(self,pos,rot):
+        # raise ValueError("Cannot call 'set' on generic node")
+        return buffer()
 
-    def unset(self,pos,rot,buf):
-        raise ValueError("Cannot call 'unset' on generic node")
+
+    def unset(self,pos,rot):
+        # raise ValueError("Cannot call 'unset' on generic node")
+        return buffer()
 
 
 class unionNode(compound):
