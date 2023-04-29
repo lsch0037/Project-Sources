@@ -506,51 +506,33 @@ def parse_material(prog,props):
         return perlin_material(ids, thresholds, seed, octaves)
 
 # !PRIMITIVE SHAPES
-# TODO: USE expectAttribute to get properties instead of querying props
 
 def parse_cube(prog, props, material):
 
-    # size = props["Size"]
-    # material = parse_material(props["Material"], props)
-
     size = expectAttribute("Size", prog, props, (int, float))
-    # m = expectAttribute("Material", prog, props, material)
 
     print("Cube(mat:{m}, size:{s})".format(m=material,s=size))
-
     return cube(material, size)
 
 
 def parse_sphere(prog, props, material):
 
-    # rad = props["Radius"]
-    # material = parse_material(props["Material"],props)
-
     rad = expectAttribute("Radius", prog, props, (int, float))
 
     print("Sphere(Material:", material, ",Radius:", rad,")")
-
     return sphere(material, rad)
 
 
 def parse_cylinder(prog, props, material):
 
-    # rad = props["Radius"]
-    # len = props["Length"]
-    # material = parse_material(props["Material"],props)
-
     rad = expectAttribute("Radius", prog, props, (int, float))
     length = expectAttribute("Length", prog, props, (int, float))
 
     print("Cylinder(mat:{material}, rad:{rad}, len:{len})".format(material=material, rad=rad, len=length))
-
     return cylinder(material, rad, length)
 
 
 def parse_cuboid(prog,props, material):
-
-    # material = parse_material(props["Material"],props)
-    # dim = props["Dimensions"]
 
     dim = expectAttribute("Dimensions", prog, props, list)
 
@@ -558,16 +540,10 @@ def parse_cuboid(prog,props, material):
         raise ValueError("'Dimensions' attribute must be of length 3: {}".format(dim))
 
     print("Cuboid(material:{material}, dim:{dim})".format(material=material, dim=dim))
-
     return cuboid(material, dim)
 
 
 def parse_pyramid(prog, props, material):
-
-    # material = parse_material(props["Material"], props)
-    # height = props["Height"]
-    # breadth = props["Breadth"]
-    # width = props["Width"]
 
     height = expectAttribute("Height", prog, props, (int, float))
     breadth = expectAttribute("Breadth", prog, props, (int, float))
