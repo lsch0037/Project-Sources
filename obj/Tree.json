@@ -1,24 +1,22 @@
 {
-    "On Ground":{
-        "Union":[
-            {
-                "Cylinder":{
-                    "Radius":"$TrunkThickness",
-                    "Length":"$TreeHeight",
-                    "Material":"$WoodType"
-                }
-            },
-            {
-                "Shift":{
-                    "Offset":[0, "$TreeHeight", 0],
-                    "Body":{
-                        "Sphere":{
-                            "Radius":"$CrownSize",
-                            "Material":"$LeavesType"
-                        }
+    "Union":[
+        {
+            "Cylinder":{
+                "Radius":"$TrunkThickness",
+                "Length":"$TreeHeight",
+                "Material":"$WoodType"
+            }
+        },
+        {
+            "Shift":{
+                "Offset":[0, "$TreeHeight", 0],
+                "Body":{
+                    "Sphere":{
+                        "Radius":"$CrownSize",
+                        "Material":"$LeavesType"
                     }
                 }
             }
-        ]
-    }
+        }
+    ]
 }

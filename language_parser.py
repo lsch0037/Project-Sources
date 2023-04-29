@@ -20,7 +20,7 @@ punct = r'\w+|[^\s\w]'
 operators = ["Union", "Intersection", "Difference",
              "Loop","If",
              "On Ground","Shift","Rotation", "On", "North", "South", "East", "West"]
-primitiveNames = ["Cube", "Sphere", "Cuboid", "Cylinder"]
+primitiveNames = ["Cube", "Sphere", "Cuboid", "Cylinder", "Pyramid", "Prism", "Cone"]
 materialSelectorTypes = ["Random", "Perlin"]
 reservedProperties = ["Relative"]
 customShapes = []
@@ -71,23 +71,37 @@ def parse_primitive(prog, shapeName, parent_props):
     if not "Material" in prog:
         raise ValueError("Property '{p}' expected in '{s}' shape".format(p="Material",s="Primitive"))
 
+    f = None
 
     if shapeName == "Cube":
-        return parse_cube(prog, props)
+        # return parse_cube(prog, props)
+        f = parse_cube
 
     elif shapeName == "Sphere":
-        return parse_sphere(prog, props)
+        # return parse_sphere(prog, props)
+        f = parse_sphere
 
     elif shapeName == "Cylinder":
-        return parse_cylinder(prog, props)
+        # return parse_cylinder(prog, props)
+        f = parse_cylinder
 
     elif shapeName == "Cuboid":
-        return parse_cuboid(prog, props)
+        # return parse_cuboid(prog, props)
+        f = parse_cuboid
 
-    # TODO FOR OTHER SHAPES
+    elif shapeName == "Pyramid":
+        f = parse_pyramid
+
+    elif shapeName == "Prism":
+        f = parse_prism
+
+    elif shapeName == "Cone":
+        f = parse_cone
 
     else:
         raise ValueError("Primitive '{}' does not exist".format(shapeName))
+
+    return f(prog, props)    
 
 
 def parse_custom_shape(prog,shapeName, parent_props):
@@ -166,21 +180,19 @@ def parse_properties(prog, props):
         if key in operators or key in primitiveNames or key in customShapes:
             continue
 
-        elif key == "Relative":
-            abs_pos = new_props["Position"]
-            orientation = new_props["Orientation"]
+        # elif key == "Relative":
+        #     abs_pos = new_props["Position"]
+        #     orientation = new_props["Orientation"]
 
-            rel_pos = parse_property(prog["Relative"], new_props)
+        #     rel_pos = parse_property(prog["Relative"], new_props)
 
-            new_pos = abs_pos + np.dot(orientation,rel_pos)
-            new_props["Position"] = new_pos
-            continue
+        #     new_pos = abs_pos + np.dot(orientation,rel_pos)
+        #     new_props["Position"] = new_pos
+        #     continue
 
         else:
             new_props[key] = parse_property(prog[key], new_props)
             print("{key} -> {val}".format(key=key, val= new_props[key]))
-
-    # print("New Props:", new_props)
 
     return new_props
 
@@ -429,46 +441,6 @@ def parse_loop(prog, parent_props):
     return unionNode(childrenProgs)
 
 
-# * Old function
-# def parse_loop_old(prog, parent_props):
-
-#     # Checking that variables exist
-#     if not "loop_var" in prog:
-#         raise ValueError("No 'loop_var' variable in loop construct")
-
-#     elif not "loop_range" in prog:
-#         raise ValueError("No 'loop_range' variable in loop construct")
-
-#     elif not "loop_body" in prog:
-#         raise ValueError("No 'loop_body' variable in loop construct")
-
-#     loop_var = prog["loop_var"]
-#     loop_range = int(parse_property(prog["loop_range"],parent_props))
-#     body = prog["loop_body"]
-
-
-#     # Type checking
-#     if not isinstance(loop_var, str):
-#         raise TypeError("Loop variable {varname} is of invalid type {type}".format(varname="loop_var", type = type(loop_var)))
-    
-#     elif not isinstance(loop_range, int):
-#         raise TypeError("Loop variable {varname} is of invalid type {type}".format(varname="loop_range", type = type(loop_range)))
-
-#     elif not isinstance(body, dict):
-#         raise TypeError("Loop variable {varname} is of invalid type {type}".format(varname="loop_body",type = type(body)))
-
-
-#     childrenProgs =[]
-
-#     for i in range(0, loop_range):
-#         props = copy.copy(parent_props)
-#         props[loop_var] = i
-
-#         node = parse_expression(body, props)
-#         childrenProgs.append(node)
-
-#     return unionNode(childrenProgs)
-
 def parse_if(prog, parent_props):
 
     if not "if_condition" in prog:
@@ -535,17 +507,17 @@ def parse_preposition_operator(prog, props, f):
     return f(operands[0], operands[1])
 
 
-def parse_north(prog, props):
-    print("Parsing North")
-    if not len(prog) == 2:
-        raise ValueError("Prepositional operator requires exactly {n} operands.".format(n=2))
+# def parse_north(prog, props):
+#     print("Parsing North")
+#     if not len(prog) == 2:
+#         raise ValueError("Prepositional operator requires exactly {n} operands.".format(n=2))
 
-    operands = []
-    for item in prog:
-        child_node = parse_expression(item, props)
-        operands.append(child_node)
+#     operands = []
+#     for item in prog:
+#         child_node = parse_expression(item, props)
+#         operands.append(child_node)
 
-    return northNode(operands)
+#     return northNode(operands)
 
 # def parse_on(prog, props):
 #     if not len(prog) == 2:
@@ -677,6 +649,8 @@ def parse_material(mat,props):
         return perlin_material(ids, thresholds, seed, octaves)
 
 # !PRIMITIVE SHAPES
+# TODO: CHECKING ARGUMENTS FOR ALL PRIMITIVES
+
 def parse_cube(prog,props):
 
     size = props["Size"]
@@ -688,7 +662,6 @@ def parse_cube(prog,props):
 
 
 def parse_sphere(prog,props):
-    # print("Props:",props)
 
     rad = props["Radius"]
     material = parse_material(props["Material"],props)
@@ -718,6 +691,23 @@ def parse_cuboid(prog,props):
 
     return cuboid(material, dim)
 
+
+def parse_pyramid(prog, props):
+
+    material = parse_material(props["Material"], props)
+    height = props["Height"]
+    breadth = props["Breadth"]
+    width = props["Width"]
+
+    print("Pyramid(Material:{}, Height:{}, Breadth:{}, Width:{})".format(material, height, breadth, width))
+    return pyramid(material, height, breadth, width)
+
+
+def parse_prism(prog, props):
+    pass
+
+def parse_cone(prog, props):
+    pass
 
 # ! ROTATING THE MATRIX
 def rotateX(mat, deg):

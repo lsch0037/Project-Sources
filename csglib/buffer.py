@@ -175,14 +175,14 @@ class buffer():
 
     #     return np.array([mid[0],mid[1],min[2]])
 
-    def shift(self, offset):
-        newBuf = buffer()
+    # def shift(self, offset):
+    #     newBuf = buffer()
 
-        for i in self.d:
-            for j in self.d[i]:
-                for k in self.d[i][j]:
-                    pos = np.array([i,j,k])
+    #     for i in self.d:
+    #         for j in self.d[i]:
+    #             for k in self.d[i][j]:
+    #                 pos = np.array([i,j,k])
 
-                    newBuf.set(pos + offset, self.get(pos))
+    #                 newBuf.set(pos + offset, self.get(pos))
 
-        self.d = newBuf.d
+    #     self.d = newBuf.d

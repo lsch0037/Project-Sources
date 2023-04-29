@@ -1,0 +1,11 @@
+{
+    "Pyramid":{
+        "Material":{
+            "Selector":"Random",
+            "Ids":["Stone"]
+        },
+        "Height":10,
+        "Width":20,
+        "Breadth":30
+    }
+}

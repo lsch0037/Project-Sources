@@ -164,7 +164,51 @@ class cylinder(primitive):
         
 
 class pyramid(primitive):
-    pass
+    def __init__(self, material, height, breadth, width):
+        super().__init__(material)
+        self.height = height
+        self.breadth = breadth
+        self.width = width
+
+    def _set_internal(self, pos, rot, op):
+        buf = buffer()
+
+        x_d = np.dot(rot, np.array([1,0,0]))
+        y_d = np.dot(rot, np.array([0,1,0]))
+        z_d = np.dot(rot, np.array([0,0,1]))
+
+        for i in range(self.height):
+            y = i*y_d
+
+            current_breadth = int(-(self.breadth/2 * i) / self.height + self.breadth/2)
+            current_width = int(-(self.width/2 * i) / self.height + self.width/2)
+
+            for j in range(-current_breadth, current_breadth):
+                x = j*x_d
+
+                for k in range(-current_width, current_width):
+                    z = k*z_d
+
+                    current_pos = pos + x + y + z
+
+                    if op == "set":
+                        id = self.material.get(current_pos)
+                        buf.set(current_pos, id)
+
+                    elif op == "unset":
+                        buf.unset(current_pos)
+
+        return buf
+
+    def getBounds(self):
+        min = np.array([-self.breadth/2, 0, -self.width/2])
+        max = np.array([self.breadth/2, self.height, self.width/2])
+
+        return min, max
+
+    def __repr__(self):
+        return 'Pyramid'
+
 
 class prism(primitive):
     pass
