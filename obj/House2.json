@@ -1,0 +1,92 @@
+{
+    "HouseHeight":7,
+    "HouseLength":7,
+    "HouseWidth":7,
+    "WallThickness":1,
+    "WallMaterial":{
+        "Selector":"Random",
+        "Ids":["Oak Planks"]
+    },
+    "FloorMaterial":{
+        "Selector":"Random",
+        "Ids":["Stone"]
+    },
+    "RoofMaterial":{
+        "Selector":"Random",
+        "Ids":["Bricks"]
+    },
+
+
+    "HalfHouseLength":"!div($HouseLength,2)",
+    "HalfHouseWidth":"!div($HouseWidth,2)",
+    "HalfHouseHeight":"!div($HouseHeight,2)",
+
+    "2SideSquared":"!add(!pow($HouseHeight,2),!pow($HalfHouseHeight,2))",
+    "Hypotenuse":"!sqrt($2SideSquared)",
+
+    "Union":[
+        {
+            "Label":"Ground Floor",
+            "Shift":{
+                "Offset":["!sub(0,$HalfHouseLength)",0, "!sub(0,$HalfHouseWidth)"],
+                "Body":{
+                    "Difference":[
+                        {
+                            "Cuboid":{
+                                "Dimensions":["$HouseLength","$HouseHeight","$HouseWidth"],
+                                "Material":"$WallMaterial"
+                            }
+                        },
+                        {
+                            "InnerLength":"!sub($HouseLength,!mul($WallThickness,2))",
+                            "InnerWidth":"!sub($HouseWidth,!mul($WallThickness,2))",
+
+                            "Shift":{
+                                "Offset":["$WallThickness",1, "$WallThickness"],
+                                "Body":{
+                                    "Cuboid":{
+                                        "Dimensions":["$InnerLength","!sub($HouseHeight,2)","$InnerWidth"],
+                                        "Material":"$WallMaterial"
+                                    }
+                                }
+                            }
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "Label":"Roof",
+            "Difference":[
+                {
+                    "Shift":{
+                        "Offset":["!sub(0,$HalfHouseLength)","$HouseHeight","!sub(0,!add($HalfHouseWidth,1))"],
+                        "Body":{
+                            "Rotation":{
+                                "Axis":"x",
+                                "Degrees":45.0,
+                                "Body":{
+                                    "Cuboid":{
+                                        "Dimensions":["$HouseLength","$Hypotenuse","$Hypotenuse"],
+                                        "Material":"$RoofMaterial"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                {
+                    "Shift":{
+                        "Offset":["!sub(0,$HalfHouseLength)",0, "!sub(0,$HalfHouseWidth)"],
+                        "Body":{
+                            "Cuboid":{
+                                "Dimensions":["$HouseLength","$HouseHeight","$HouseWidth"],
+                                "Material":"$RoofMaterial"
+                            }
+                        }
+                    }
+                }
+            ]
+        }
+    ]
+}

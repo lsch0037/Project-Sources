@@ -172,28 +172,40 @@ class unionNode(compound):
 class differenceNode(compound):
     def set(self,pos,rot):
         print("Evaluating {}".format("difference"))
-        newBuf = buffer()
 
-        buf1 = self.children[0].set(pos,rot)
-        buf1.write(newBuf)
+        buf = self.children[0].set(pos,rot)
 
         for i in range(1,len(self.children)):
-            buf2 = self.children[i].set(pos,rot)
-            buf2.unwrite(newBuf)
+            other_buf = self.children[i].set(pos, rot)
+            other_buf.unwrite(buf)
+        
+        return buf
 
-        return newBuf
+
+    # def set_old(self,pos,rot):
+    #     print("Evaluating {}".format("difference"))
+    #     newBuf = buffer()
+
+    #     buf1 = self.children[0].set(pos,rot)
+    #     buf1.write(newBuf)
+
+    #     for i in range(1,len(self.children)):
+    #         buf2 = self.children[i].set(pos,rot)
+    #         buf2.unwrite(newBuf)
+        
+    #     return newBuf
 
     
     def unset(self,pos,rot):
         print("Evaluating {}".format("difference"))
         newBuf = buffer()
 
-        buf1 = self.children[0].set(pos,rot)
-        buf1.unwrite(newBuf)
-
         for i in range(1,len(self.children)):
-            buf2 = self.children[i].set(pos,rot)
-            buf2.write(newBuf)
+            buf1 = self.children[i].set(pos,rot)
+            buf1.write(newBuf)
+
+        buf2 = self.children[0].set(pos,rot)
+        buf2.unwrite(newBuf)
 
         return newBuf
 

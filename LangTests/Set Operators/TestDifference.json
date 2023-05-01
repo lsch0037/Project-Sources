@@ -3,18 +3,28 @@
         "Selector":"Random",
         "Ids":["Stone"]
     },
-    "Difference":[
-        {
-            "Sphere":{
-                "Radius":5,
-                "Material":"$Mat1"
-            }
-        },
-        {
-            "Cube":{
-                "Size":10,
-                "Material":"$Mat1"
-            }
+    "Shift":{
+        "Offset":[0, 20,0],
+        "Body":{
+            "Difference":[
+                {
+                    "Sphere":{
+                        "Radius":5,
+                        "Material":"$Mat1"
+                    }
+                },
+                {
+                    "Shift":{
+                        "Offset":[-5, -5, 0],
+                        "Body":{
+                            "Cube":{
+                                "Size":10,
+                                "Material":"$Mat1"
+                            }
+                        }
+                    }
+                }
+            ]
         }
-    ]
+    }
 }

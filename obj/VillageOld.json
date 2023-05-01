@@ -1,0 +1,52 @@
+{
+    "Loop":{
+        "Var":"x_iter",
+        "Start":0,
+        "End":"$VlgSize",
+        "Body":{
+            "Loop":{
+                "Var":"z_iter",
+                "Start":0,
+                "End":"$VlgSize",
+                "Body":{
+                    "x_pos": "!mul($x_iter, 20)",
+                    "z_pos": "!mul($z_iter, 20)",
+                    "x_rand_off":"!randInt(!sub(0,5), 5)",
+                    "z_rand_off":"!randInt(!sub(0,5), 5)",
+                    "Offset":[
+                        ["!add($x_pos,$x_rand_off)", 0, "!add($z_pos, $z_rand_off)"],
+                        {
+                            "On Ground":{
+                                "tilt": "!randInt(0, 5)",
+                                "Rotation":{
+                                    "Axis":"y",
+                                    "Degrees":"!mul(90.0, $tilt)",
+                                    "Body":{
+                                        "House":{
+                                            "HouseHeight":"!randInt(5,10)",
+                                            "HouseLength":"!randInt(5,10)",
+                                            "HouseWidth":"!randInt(5,10)",
+                                            "WallThickness":1,
+                                            "WallMaterial":{
+                                                "Selector":"Random",
+                                                "Ids":["Stone Bricks"]
+                                            },
+                                            "FloorMaterial":{
+                                                "Selector":"Random",
+                                                "Ids":["Stone"]
+                                            },
+                                            "RoofMaterial":{
+                                                "Selector":"Random",
+                                                "Ids":["Bricks"]
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    ]
+                }
+            }
+        }
+    }
+}

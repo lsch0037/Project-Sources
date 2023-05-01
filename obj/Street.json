@@ -1,0 +1,94 @@
+{
+    "StreetLength":20,
+    "StreetWidth":5,
+    "Union":[
+        {
+            "Label":"Street",
+            "Shift":{
+                "Offset":["!sub(0, !div($StreetWidth, 2))",-1,0],
+                "Body":{
+                    "Cuboid":{
+                        "Dimensions":["$StreetWidth", 1, "$StreetLength"],
+                        "Material":{
+                            "Selector":"Random",
+                            "Ids":["Gravel"]
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "Label":"Houses Left",
+            "Loop":{
+                "Var":"iter",
+                "Start":0,
+                "End":"!div($StreetLength, 10)",
+                "Body":{
+                    "Shift":{
+                        "Offset":["!sub(0,!add(!div($StreetWidth,2), 5))", 0, "!add(!mul($iter, 10),5)"],
+                        "Body":{
+                            "House":{
+                                "HouseHeight":"!randInt(4,8)",
+                                "HouseLength":8,
+                                "HouseWidth":8,
+                                "WallThickness":1,
+                                "WallMaterial":{
+                                    "Selector":"Random",
+                                    "Ids":["Oak Planks"]
+                                },
+                                "FloorMaterial":{
+                                    "Selector":"Random",
+                                    "Ids":["Stone"]
+                                },
+                                "RoofMaterial":{
+                                    "Selector":"Random",
+                                    "Ids":["Bricks"]
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "Label":"Houses Rigth",
+            "Loop":{
+                "Var":"iter",
+                "Start":0,
+                "End":"!div($StreetLength, 10)",
+                "Body":{
+                    "Shift":{
+                        "Offset":["!add(!div($StreetWidth,2), 5)", 0, "!add(!mul($iter, 10),5)"],
+                        "Body":{
+                            "Rotation":{
+                                "Axis":"Y",
+                                "Degrees":180.0,
+                                "Body":{
+                                    "House2":{
+                                        "HouseHeight":"!randInt(4,8)",
+                                        "HouseLength":8,
+                                        "HouseWidth":8,
+                                        "WallThickness":1,
+                                        "WallMaterial":{
+                                            "Selector":"Random",
+                                            "Ids":["Oak Planks"]
+                                        },
+                                        "FloorMaterial":{
+                                            "Selector":"Random",
+                                            "Ids":["Stone"]
+                                        },
+                                        "RoofMaterial":{
+                                            "Selector":"Random",
+                                            "Ids":["Bricks"]
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+        }
+    ]
+}

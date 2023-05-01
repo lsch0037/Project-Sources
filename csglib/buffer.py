@@ -1,5 +1,6 @@
 import numpy as np
 import math
+import copy
 
 class buffer():
     def __init__(self):
@@ -84,18 +85,18 @@ class buffer():
 
 
     def difference(self,other, offset=np.array([0,0,0])):
-        buf = buffer()
+        buf = copy.copy(self)
 
-        for i in self.d:
-            for j in self.d[i]:
-                for k in self.d[i][j]:
+        for i in other.d:
+            for j in other.d[i]:
+                for k in other.d[i][j]:
                     pos = np.array([i,j,k])
 
                     id1 = self.get(pos)
                     id2 = other.get(pos)
 
-                    if not id1 == id2:
-                        other.set(pos)
+                    if id1 == id2:
+                        buf.unset(pos)
 
         return buf
 
