@@ -209,9 +209,53 @@ class pyramid(primitive):
     def __repr__(self):
         return 'Pyramid'
 
-
 class prism(primitive):
+
     pass
 
 class cone(primitive):
-    pass
+    def __init__(self, material, height, radius):
+        super().__init__(material)
+        self.height = height
+        self.radius = radius
+
+    def _set_internal(self, pos, rot, op):
+        buf = buffer()
+
+        x_d = np.dot(rot, np.array([1,0,0]))
+        y_d = np.dot(rot, np.array([0,1,0]))
+        z_d = np.dot(rot, np.array([0,0,1]))
+
+        for i in range(self.height):
+            y = i*y_d
+
+            current_radius = int(-(self.radius * i) / self.height + self.radius)
+
+            for j in range(-self.radius, self.radius):
+                x = j*x_d
+
+                for k in range(-self.radius, self.radius):
+                    z = k*z_d
+
+                    current_pos = pos + x + y + z
+
+                    dist = np.linalg.norm(abs(x + z))
+
+                    if dist <= current_radius:
+                        if op == "set":
+                            id = self.material.get(current_pos)
+                            buf.set(current_pos, id)
+
+                        elif op == "unset":
+                            buf.unset(current_pos)
+
+        return buf
+
+    def getBounds(self):
+        min = np.array([-self.radius, 0, -self.radius])
+        max = np.array([self.radius, self.height, self.radius])
+
+        return min, max
+
+    def __repr__(self):
+        return 'Cone'

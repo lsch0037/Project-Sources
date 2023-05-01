@@ -557,7 +557,13 @@ def parse_prism(prog, props, material):
     pass
 
 def parse_cone(prog, props, material):
-    pass
+
+    height = expectAttribute("Height", prog, props, (int, float))
+    radius = expectAttribute("Radius", prog, props, (int, float))
+
+    print("Cone(Material:{}, Height:{}, Radius:{})".format(material, height, radius))
+    return cone(material, height, radius)
+
 
 # !BUILT IN FUNCTIONS
 def getHeight(x, z):
