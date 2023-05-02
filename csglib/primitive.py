@@ -47,7 +47,6 @@ class cuboid(primitive):
         super().__init__(material)
         self.dim = dim
 
-    # def _set_internal(self, op):
     def set(self, pos, rot):
         buf = buffer()
 
@@ -183,9 +182,6 @@ class pyramid(primitive):
     def __repr__(self):
         return 'Pyramid'
 
-class prism(primitive):
-
-    pass
 
 class cone(primitive):
     def __init__(self, material, height, radius):
@@ -193,7 +189,7 @@ class cone(primitive):
         self.height = height
         self.radius = radius
 
-    def _set_internal(self, pos, rot):
+    def set(self, pos, rot):
         buf = buffer()
 
         x_d = np.dot(rot, np.array([1,0,0]))
@@ -229,3 +225,6 @@ class cone(primitive):
 
     def __repr__(self):
         return 'Cone'
+
+class prism(primitive):
+    pass
