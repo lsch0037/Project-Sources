@@ -69,11 +69,11 @@ class buffer():
                 for k in self.d[i][j]:
                     pos = np.array([i,j,k])
 
-                    id1 = self.get(pos)
-                    id2 = other.get(pos)
+                    # id1 = self.get(pos)
+                    # id2 = other.get(pos)
 
-                    if id1 == id2:
-                        other.unset(pos)
+                    # if id1 == id2:
+                    other.unset(pos)
 
     def union(self, other, offset=np.array([0,0,0])):
         buf = buffer()

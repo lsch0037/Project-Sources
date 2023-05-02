@@ -356,13 +356,13 @@ def parse_difference(prog, props):
 
 
 def parse_intersection(prog, props):
-    inter_node = intersectionNode()
 
+    child_progs = []
     for item in prog:
         child_node = parse_expression(item, props)
-        inter_node.addChild(child_node)
+        child_progs.append(child_node)
     
-    return inter_node
+    return intersectionNode(child_progs)
 
 # !Language Operations
 def expectAttribute(attr_name, prog, props, attr_types=None):

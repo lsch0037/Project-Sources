@@ -14,8 +14,8 @@ class primitive(compound):
     def set(self, pos, rot):
         return self._set_internal(pos,rot,"set")
 
-    def unset(self, pos, rot):
-        return self._set_internal(pos,rot,"unset")
+    # def unset(self, pos, rot):
+    #     return self._set_internal(pos,rot,"unset")
 
 
 class cube(primitive):
@@ -23,7 +23,7 @@ class cube(primitive):
         super().__init__(material)
         self.size = size
 
-    def _set_internal(self, pos, rot, op):
+    def set(self, pos, rot):
         buf = buffer()
 
         x_d = np.dot(rot, np.array([1,0,0]))
@@ -35,11 +35,11 @@ class cube(primitive):
                 for k in range(self.size*2):
                     current_pos = pos + x_d*(i/2) + y_d*(j/2) + z_d*(k/2)
 
-                    if op == "set":
-                        buf.set(current_pos, self.material.get(current_pos))
+                    # if op == "set":
+                    buf.set(current_pos, self.material.get(current_pos))
 
-                    elif op == "unset":
-                        buf.unset(current_pos)
+                    # elif op == "unset":
+                    #     buf.unset(current_pos)
         
         return buf
 
@@ -61,7 +61,7 @@ class cuboid(primitive):
         self.dim = dim
 
     # def _set_internal(self, op):
-    def _set_internal(self, pos, rot, op):
+    def set(self, pos, rot):
         buf = buffer()
 
         x_d = np.dot(rot, np.array([1,0,0]))
@@ -73,10 +73,10 @@ class cuboid(primitive):
                 for k in range(int(self.dim[2])*2):
                     current_pos = pos + x_d*(i/2) + y_d*(j/2) + z_d*(k/2)
 
-                    if op == "set":
-                        buf.set(current_pos, self.material.get(current_pos))
-                    elif op == "unset":
-                        buf.unset(current_pos)
+                    # if op == "set":
+                    buf.set(current_pos, self.material.get(current_pos))
+                    # elif op == "unset":
+                    #     buf.unset(current_pos)
 
         return buf
 
@@ -97,7 +97,7 @@ class sphere(primitive):
         super().__init__(material)
         self.rad = rad
 
-    def _set_internal(self,pos,rot, op):
+    def set(self,pos,rot):
         buf = buffer()
 
         pos0 = pos - np.array([self.rad, self.rad, self.rad])
@@ -109,10 +109,10 @@ class sphere(primitive):
                     dist = np.linalg.norm(pos - current_pos)  
 
                     if dist <= self.rad:
-                        if op == "set":
-                            buf.set(current_pos, self.material.get(current_pos))
-                        elif op == "unset":
-                            buf.unset(current_pos)
+                        # if op == "set":
+                        buf.set(current_pos, self.material.get(current_pos))
+                        # elif op == "unset":
+                        #     buf.unset(current_pos)
         
         return buf
 
@@ -131,7 +131,7 @@ class cylinder(primitive):
         self.rad = rad
         self.len = len
 
-    def _set_internal(self, pos, rot, op):
+    def set(self, pos, rot):
         buf = buffer()
 
         x_d = np.dot(rot, np.array([1,0,0]))
@@ -146,10 +146,10 @@ class cylinder(primitive):
                     dist = np.linalg.norm(current_pos - center_pos)  
 
                     if dist <= self.rad:
-                        if op == "set":
-                            buf.set(current_pos, self.material.get(current_pos))
-                        elif op == "unset":
-                            buf.unset(current_pos)
+                        # if op == "set":
+                        buf.set(current_pos, self.material.get(current_pos))
+                        # elif op == "unset":
+                        #     buf.unset(current_pos)
         
         return buf
 
@@ -170,7 +170,7 @@ class pyramid(primitive):
         self.breadth = breadth
         self.width = width
 
-    def _set_internal(self, pos, rot, op):
+    def set(self, pos, rot):
         buf = buffer()
 
         x_d = np.dot(rot, np.array([1,0,0]))
@@ -191,12 +191,12 @@ class pyramid(primitive):
 
                     current_pos = pos + x + y + z
 
-                    if op == "set":
-                        id = self.material.get(current_pos)
-                        buf.set(current_pos, id)
+                    # if op == "set":
+                    id = self.material.get(current_pos)
+                    buf.set(current_pos, id)
 
-                    elif op == "unset":
-                        buf.unset(current_pos)
+                    # elif op == "unset":
+                    #     buf.unset(current_pos)
 
         return buf
 
@@ -219,7 +219,7 @@ class cone(primitive):
         self.height = height
         self.radius = radius
 
-    def _set_internal(self, pos, rot, op):
+    def _set_internal(self, pos, rot):
         buf = buffer()
 
         x_d = np.dot(rot, np.array([1,0,0]))
@@ -242,12 +242,12 @@ class cone(primitive):
                     dist = np.linalg.norm(abs(x + z))
 
                     if dist <= current_radius:
-                        if op == "set":
-                            id = self.material.get(current_pos)
-                            buf.set(current_pos, id)
+                        # if op == "set":
+                        id = self.material.get(current_pos)
+                        buf.set(current_pos, id)
 
-                        elif op == "unset":
-                            buf.unset(current_pos)
+                        # elif op == "unset":
+                        #     buf.unset(current_pos)
 
         return buf
 

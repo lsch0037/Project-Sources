@@ -122,9 +122,9 @@ class compound():
         return buffer()
 
 
-    def unset(self,pos,rot):
-        # raise ValueError("Cannot call 'unset' on generic node")
-        return buffer()
+    # def unset(self,pos,rot):
+    #     # raise ValueError("Cannot call 'unset' on generic node")
+    #     return buffer()
 
 
 class unionNode(compound):
@@ -138,15 +138,15 @@ class unionNode(compound):
 
         return newBuf
 
-    def unset(self,pos,rot):
-        print("Evaluating {}".format("union"))
-        newBuf = buffer()
+    # def unset(self,pos,rot):
+    #     print("Evaluating {}".format("union"))
+    #     newBuf = buffer()
 
-        for child in self.children:
-            buf = child.unset(pos, rot)
-            buf.write(newBuf)
+    #     for child in self.children:
+    #         buf = child.unset(pos, rot)
+    #         buf.write(newBuf)
 
-        return newBuf
+    #     return newBuf
 
     def getBounds(self):
         min = np.array([np.inf, np.inf, np.inf])
@@ -174,6 +174,7 @@ class differenceNode(compound):
         print("Evaluating {}".format("difference"))
 
         buf = self.children[0].set(pos,rot)
+        # print("First buffer:")
 
         for i in range(1,len(self.children)):
             other_buf = self.children[i].set(pos, rot)
@@ -196,18 +197,18 @@ class differenceNode(compound):
     #     return newBuf
 
     
-    def unset(self,pos,rot):
-        print("Evaluating {}".format("difference"))
-        newBuf = buffer()
+    # def unset(self,pos,rot):
+    #     print("Evaluating {}".format("difference"))
+    #     newBuf = buffer()
 
-        for i in range(1,len(self.children)):
-            buf1 = self.children[i].set(pos,rot)
-            buf1.write(newBuf)
+    #     for i in range(1,len(self.children)):
+    #         buf1 = self.children[i].set(pos,rot)
+    #         buf1.write(newBuf)
 
-        buf2 = self.children[0].set(pos,rot)
-        buf2.unwrite(newBuf)
+    #     buf2 = self.children[0].set(pos,rot)
+    #     buf2.unwrite(newBuf)
 
-        return newBuf
+    #     return newBuf
 
     def getBounds(self):
         return self.children[0].getBounds()
@@ -223,16 +224,15 @@ class intersectionNode(compound):
         interBuf = self.children[0].set(pos, rot) 
 
         for i in range(1, len(self.children)):
-            child = self.children[i]
 
-            buf = child.set(pos,rot)
+            buf = self.children[i].set(pos,rot)
             interBuf = buf.intersection(interBuf)
 
         return interBuf
 
-    def unset(self,pos, rot):
-        # TODO: IMPLEMENT
-        pass
+    # def unset(self,pos, rot):
+    #     # TODO: IMPLEMENT
+    #     pass
 
     def getBounds(self):
         min, max = self.children[0].getBounds()
@@ -275,8 +275,8 @@ class prepositionNode(compound):
 
         return buf
 
-    def unset(self,pos,rot):
-        pass
+    # def unset(self,pos,rot):
+    #     pass
 
     def getBounds(self):
 
@@ -360,11 +360,11 @@ class shiftNode(compound):
 
         return self.children[0].set(new_pos, rot)
 
-    def unset(self,pos,rot):
-        print("Evaluating {}".format("Shift Node"))
-        new_pos = np.add(pos , np.dot(rot, self.offset))
+    # def unset(self,pos,rot):
+    #     print("Evaluating {}".format("Shift Node"))
+    #     new_pos = np.add(pos , np.dot(rot, self.offset))
 
-        return self.children[0].unset(new_pos, rot)
+    #     return self.children[0].unset(new_pos, rot)
 
     def getBounds(self):
         _min, _max = self.children[0].getBounds()
@@ -403,17 +403,17 @@ class rotationNode(compound):
         return newBuf
 
 
-    def unset(self,pos, prev_rot):
-        print("Evaluating {}".format("Rotation"))
-        newBuf = buffer()
+    # def unset(self,pos, prev_rot):
+    #     print("Evaluating {}".format("Rotation"))
+    #     newBuf = buffer()
 
-        new_rot = self.f(prev_rot, self.deg)
+    #     new_rot = self.f(prev_rot, self.deg)
 
-        for child in self.children:
-            buf = child.set(pos, new_rot)
-            buf.unwrite(newBuf)
+    #     for child in self.children:
+    #         buf = child.set(pos, new_rot)
+    #         buf.unwrite(newBuf)
 
-        return newBuf
+    #     return newBuf
 
     # Returns the bounds relative to the implicit origin position of the algorithm (at neutral rotation)
     def getBounds(self):

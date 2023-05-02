@@ -3,24 +3,29 @@
         "Selector":"Random",
         "Ids":["Stone"]
     },
-    "Intersection":[
-        {
-            "Sphere":{
-                "Radius":7,
-                "Material":"$Mat1"
-            }
-        },
-        {
-            "Shift":{
-                "Offset":[0, 0, 10],
-                "Body":{
+    "Shift":{
+        "Offset":[0, 20, 0],
+        "Body":{
+            "Intersection":[
+                {
                     "Sphere":{
                         "Radius":7,
                         "Material":"$Mat1"
                     }
-                }
-            }
+                },
+                {
+                    "Shift":{
+                        "Offset":[0, 0, 10],
+                        "Body":{
+                            "Sphere":{
+                                "Radius":7,
+                                "Material":"$Mat1"
+                            }
+                        }
+                    }
 
+                }
+            ]
         }
-    ]
+    }
 }
