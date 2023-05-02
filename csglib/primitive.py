@@ -8,15 +8,6 @@ class primitive(compound):
         self.children = []
         self.material = material
 
-    def _set_internal(self, operator):
-        raise ValueError("Cannot call _set_internal on generic primitive")
-
-    def set(self, pos, rot):
-        return self._set_internal(pos,rot,"set")
-
-    # def unset(self, pos, rot):
-    #     return self._set_internal(pos,rot,"unset")
-
 
 class cube(primitive):
     def __init__(self, material, size):
@@ -35,11 +26,7 @@ class cube(primitive):
                 for k in range(self.size*2):
                     current_pos = pos + x_d*(i/2) + y_d*(j/2) + z_d*(k/2)
 
-                    # if op == "set":
                     buf.set(current_pos, self.material.get(current_pos))
-
-                    # elif op == "unset":
-                    #     buf.unset(current_pos)
         
         return buf
 
@@ -73,10 +60,7 @@ class cuboid(primitive):
                 for k in range(int(self.dim[2])*2):
                     current_pos = pos + x_d*(i/2) + y_d*(j/2) + z_d*(k/2)
 
-                    # if op == "set":
                     buf.set(current_pos, self.material.get(current_pos))
-                    # elif op == "unset":
-                    #     buf.unset(current_pos)
 
         return buf
 
@@ -109,10 +93,7 @@ class sphere(primitive):
                     dist = np.linalg.norm(pos - current_pos)  
 
                     if dist <= self.rad:
-                        # if op == "set":
                         buf.set(current_pos, self.material.get(current_pos))
-                        # elif op == "unset":
-                        #     buf.unset(current_pos)
         
         return buf
 
@@ -146,10 +127,7 @@ class cylinder(primitive):
                     dist = np.linalg.norm(current_pos - center_pos)  
 
                     if dist <= self.rad:
-                        # if op == "set":
                         buf.set(current_pos, self.material.get(current_pos))
-                        # elif op == "unset":
-                        #     buf.unset(current_pos)
         
         return buf
 
@@ -191,12 +169,8 @@ class pyramid(primitive):
 
                     current_pos = pos + x + y + z
 
-                    # if op == "set":
                     id = self.material.get(current_pos)
                     buf.set(current_pos, id)
-
-                    # elif op == "unset":
-                    #     buf.unset(current_pos)
 
         return buf
 
@@ -242,12 +216,8 @@ class cone(primitive):
                     dist = np.linalg.norm(abs(x + z))
 
                     if dist <= current_radius:
-                        # if op == "set":
                         id = self.material.get(current_pos)
                         buf.set(current_pos, id)
-
-                        # elif op == "unset":
-                        #     buf.unset(current_pos)
 
         return buf
 

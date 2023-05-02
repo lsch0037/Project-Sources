@@ -26,7 +26,7 @@
     },
     {
         "Shift":{
-            "Offset":["!sub(0,$HalfHouseLength)",0, "!sub(0,$HalfHouseWidth)"],
+            "Offset":["!sub(0,$HalfHouseLength)", 0, "!sub(0,$HalfHouseWidth)"],
             "Body":{
                 "Cuboid":{
                     "Dimensions":["$HouseLength","$HouseHeight","$HouseWidth"],

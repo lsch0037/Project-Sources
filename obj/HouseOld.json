@@ -1,22 +1,4 @@
 {
-    "HouseHeight":7,
-    "HouseLength":7,
-    "HouseWidth":7,
-    "WallThickness":1,
-    "WallMaterial":{
-        "Selector":"Random",
-        "Ids":["Oak Planks"]
-    },
-    "FloorMaterial":{
-        "Selector":"Random",
-        "Ids":["Stone"]
-    },
-    "RoofMaterial":{
-        "Selector":"Random",
-        "Ids":["Bricks"]
-    },
-
-
 "HalfHouseLength":"!div($HouseLength,2)",
 "HalfHouseWidth":"!div($HouseWidth,2)",
 "HalfHouseHeight":"!div($HouseHeight,2)",
@@ -24,7 +6,7 @@
 "2SideSquared":"!add(!pow($HouseHeight,2),!pow($HalfHouseHeight,2))",
 "Hypotenuse":"!sqrt($2SideSquared)",
 
-"Intersection":[
+"Union":[
     {
         "Shift":{
             "Offset":["!sub(0,$HalfHouseLength)","$HouseHeight","!sub(0,!add($HalfHouseWidth,1))"],
@@ -44,11 +26,11 @@
     },
     {
         "Shift":{
-            "Offset":["!sub(0,$HalfHouseLength)",100, "!sub(0,$HalfHouseWidth)"],
+            "Offset":["!sub(0,$HalfHouseLength)",0, "!sub(0,$HalfHouseWidth)"],
             "Body":{
                 "Cuboid":{
                     "Dimensions":["$HouseLength","$HouseHeight","$HouseWidth"],
-                    "Material":"$RoofMaterial"
+                    "Material":"$WallMaterial"
                 }
             }
         }

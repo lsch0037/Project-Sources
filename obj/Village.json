@@ -1,0 +1,25 @@
+{
+    "Loop":{
+        "Var":"x_iter",
+        "Start":0,
+        "End":2,
+        "Body":{
+            "Loop":{
+                "Var":"z_iter",
+                "Start":0,
+                "End":2,
+                "Body":{
+                    "Shift":{
+                        "Offset":["!mul($x_iter, 20)", 0, "!mul($z_iter, 20)"],
+                        "Body":{
+                            "Street":{
+                                "StreetLength":20,
+                                "StreetWidth":5
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

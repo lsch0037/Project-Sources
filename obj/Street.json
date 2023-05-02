@@ -1,6 +1,6 @@
 {
-    "StreetLength":20,
-    "StreetWidth":5,
+    "StreetLength":10,
+    "StreetWidth":10,
     "Union":[
         {
             "Label":"Street",
@@ -51,7 +51,7 @@
             }
         },
         {
-            "Label":"Houses Rigth",
+            "Label":"Houses Right",
             "Loop":{
                 "Var":"iter",
                 "Start":0,
@@ -64,7 +64,7 @@
                                 "Axis":"Y",
                                 "Degrees":180.0,
                                 "Body":{
-                                    "House2":{
+                                    "House":{
                                         "HouseHeight":"!randInt(4,8)",
                                         "HouseLength":8,
                                         "HouseWidth":8,

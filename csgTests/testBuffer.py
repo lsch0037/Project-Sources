@@ -4,22 +4,46 @@ import random
 from csglib.buffer import buffer
 
 class testBuffer(unittest.TestCase):
-    def testGetEmpty(self):
+    def testGet(self):
         buf = buffer()
 
-        pos = [random.randint(-100,100), random.randint(-100, 100), random.randint(-100,100)]
+        positions = []
+        ids = []
 
-        self.assertEqual(buf.get(pos), -1)
+        # Add random entries in the buffer
+        for i in range(100):
+            pos = [random.randint(-100,100), random.randint(-100, 100), random.randint(-100,100)]
+            id = random.randint(0,100)
+            buf.set(pos, id)
+
+            positions.append(pos)
+            ids.append(id)
 
 
-    def testGetSet(self):
-        buf = buffer()
+        # Repeat 100 times
+        for i in range(100):
+            # Position in the buffer
+            if random.randint(0,1) == 0:
+                # Select random position from positions added
+                index = random.randint(0, len(positions))
+                pos = positions[index]
+                id = ids[index]
 
-        pos = [random.randint(-100,100), random.randint(-100, 100), random.randint(-100,100)]
-        id = random.randint(0,100)
-        buf.set(pos, id)
+                # Assert the id is the one added
+                self.assertEqual(buf.get(pos), id)
+            
+            # Position not in buffer
+            else:
 
-        self.assertEqual(buf.get(pos), id)
+                # Generate random position not added
+                while True:
+                    pos = [random.randint(-100,100), random.randint(-100, 100), random.randint(-100,100)]
+                    
+                    if not pos in positions:
+                        break
+
+                # Assert position is not in buffer
+                self.assertEqual(buf.get(pos), None)
 
 
     def testUnsetSet(self):
@@ -30,7 +54,7 @@ class testBuffer(unittest.TestCase):
         buf.set(pos, id)
         buf.unset(pos)
 
-        self.assertEqual(buf.get(pos), -1)
+        self.assertEqual(buf.get(pos), None)
 
 
     def testUnsetEmpty(self):
@@ -39,53 +63,82 @@ class testBuffer(unittest.TestCase):
         pos = [random.randint(-100,100), random.randint(-100, 100), random.randint(-100,100)]
         buf.unset(pos)
 
-        self.assertEqual(buf.get(pos), -1)
+        self.assertEqual(buf.get(pos), None)
 
-    def testWriteTo(self):
+    def testWrite(self):
         buf1 = buffer()
         buf2 = buffer()
 
-        poss = []
 
-        # Add random entries
-        for i in range(10):
-            pos = [random.randint(0,10), random.randint(0,10), random.randint(0,10)]
+        positions = []
+        ids = []
 
-            id = random.randint(0, 10)
-            poss.append(pos)
-
+        # Add random entries to buffer 1
+        for i in range(100):
+            pos = [random.randint(-100,100), random.randint(-100, 100), random.randint(-100,100)]
+            id = random.randint(0,100)
             buf1.set(pos, id)
 
-        # Write buffer
-        buf1.write(buf2)
+            positions.append(pos)
+            ids.append(id)
 
-        # Test entries are correct
-        for j in range(len(poss)):
-            pos = poss[j]
+        # Add random entries to buffer 2
+        for i in range(100):
+            pos = [random.randint(-100,100), random.randint(-100, 100), random.randint(-100,100)]
+            id = random.randint(0,100)
+            buf2.set(pos, id)
+
+            positions.append(pos)
+            ids.append(id)
+
+
+        # Write buffer 2 to buffer 1
+        buf2.write(buf1)
+
+
+        # Test that all entries exist in buffer 1
+        for index in range(len(positions)-1):
+            pos = positions[index]
+            id = ids[index]
             
-            self.assertEqual(buf1.get(pos), buf2.get(pos))
+            self.assertEqual(buf1.get(pos), id)
 
     def testUnwrite(self):
         buf1 = buffer()
         buf2 = buffer()
 
-        poss = [[random.randint(0,10), random.randint(0,10), random.randint(0,10)] for i in range(10)]
+        positions_set = []
+        positions_unset = []
+        ids = []
 
-        # Add random entries
-        for pos in poss:
-            buf1.set(pos, 1)
-        
-        w = 1 / len(poss)
-        weights = [w for i in range(len(poss))]
-        poss2 = random.choices(poss, weights=weights, k=4)
+        # Add random entries to buffer 1
+        for i in range(100):
+            pos = [random.randint(-100,100), random.randint(-100, 100), random.randint(-100,100)]
+            id = random.randint(0,100)
+            buf1.set(pos, id)
 
-        for pos in poss2:
-            buf2.set(pos, 1)
+            positions_set.append(pos)
+            ids.append(id)
 
+        # Add a subset of those entries in buffer 2
+        for i in range(50):
+            index = random.randint(0, len(positions_set))
+            pos = positions_set[index]
+            id = positions_set[index]
+
+            buf2.set(pos, id)
+
+            positions_unset.append(pos)
+
+        # Write buffer 2 to buffer 1
         buf2.unwrite(buf1)
 
-        for pos in poss:
-            if pos in poss2:
-                self.assertEqual(buf1.get(pos), -1)
+        # Test that all entries exist in buffer 1
+        for index in range(len(positions_set)-1):
+            pos = positions_set[index]
+            id = ids[index]
+
+            if pos in positions_unset:
+                self.assertEqual(buf1.get(pos), None)
             else:
-                self.assertEqual(buf1.get(pos), 1)
+                self.assertEqual(buf1.get(pos), id)
