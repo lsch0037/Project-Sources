@@ -1,7 +1,5 @@
 {
-    "StreetLength":25,
-    "StreetWidth":10,
-    "HouseSize":8,
+    "HouseSpacing":"!add($HouseHeight, 2)",
     "Union":[
         {
             "Label":"Street",
@@ -23,12 +21,13 @@
             "Loop":{
                 "Var":"iter",
                 "Start":0,
-                "End":"!div($StreetLength, 10)",
+                "End":"!div($StreetLength, $HouseSpacing)",
                 "Body":{
                     "Shift":{
-                        "Offset":["!sub(0,!add(!div($StreetWidth,2), 5))", 0, "!add(!mul($iter, $HouseSize),2)"],
+                        "Offset":["!sub(0,!add(!div($StreetWidth,2), 5))", 0, "!mul($iter, $HouseSpacing)"],
                         "Body":{
                             "If":{
+                                "Comment":"PLACE HOUSE HALF THE TIME",
                                 "Condition":"!isEqual(!randInt(0,1), 1)",
                                 "Body":{
                                     "House":{

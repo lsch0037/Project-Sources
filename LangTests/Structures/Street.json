@@ -1,0 +1,7 @@
+{
+    "Street":{
+        "StreetLength":25,
+        "StreetWidth":10,
+        "HouseSize":8
+    }
+}
