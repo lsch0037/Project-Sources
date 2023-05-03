@@ -122,7 +122,7 @@ class testBuffer(unittest.TestCase):
 
         # Add a subset of those entries in buffer 2
         for i in range(50):
-            index = random.randint(0, len(positions_set))
+            index = random.randint(0, len(positions_set)-1)
             pos = positions_set[index]
             id = positions_set[index]
 

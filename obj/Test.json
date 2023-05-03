@@ -1,5 +1,5 @@
 {
-    "StreetLength":25,
+    "StreetLength":10,
     "StreetWidth":10,
     "Union":[
         {
@@ -48,6 +48,46 @@
                     }
                 }
             }
+        },
+        {
+            "Label":"Houses Right",
+            "Loop":{
+                "Var":"iter",
+                "Start":0,
+                "End":"!div($StreetLength, 10)",
+                "Body":{
+                    "Shift":{
+                        "Offset":["!add(!div($StreetWidth,2), 5)", 0, "!add(!mul($iter, 10),5)"],
+                        "Body":{
+                            "Rotation":{
+                                "Axis":"Y",
+                                "Degrees":180.0,
+                                "Body":{
+                                    "House":{
+                                        "HouseHeight":"!randInt(4,8)",
+                                        "HouseLength":8,
+                                        "HouseWidth":8,
+                                        "WallThickness":1,
+                                        "WallMaterial":{
+                                            "Selector":"Random",
+                                            "Ids":["Oak Planks"]
+                                        },
+                                        "FloorMaterial":{
+                                            "Selector":"Random",
+                                            "Ids":["Stone"]
+                                        },
+                                        "RoofMaterial":{
+                                            "Selector":"Random",
+                                            "Ids":["Bricks"]
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
         }
     ]
 }
