@@ -1,0 +1,20 @@
+{
+    "HouseOld":{
+        "HouseHeight":7,
+        "HouseLength":7,
+        "HouseWidth":7,
+        "WallThickness":1,
+        "WallMaterial":{
+            "Selector":"Random",
+            "Ids":["Oak Planks"]
+        },
+        "FloorMaterial":{
+            "Selector":"Random",
+            "Ids":["Stone"]
+        },
+        "RoofMaterial":{
+            "Selector":"Random",
+            "Ids":["Bricks"]
+        }
+    }
+}

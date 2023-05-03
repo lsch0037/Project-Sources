@@ -173,6 +173,7 @@ class differenceNode(compound):
     def __repr__(self):
         return 'Difference'
 
+
 class intersectionNode(compound):
     def set(self,pos,rot):
         print("Evaluating {}".format("intersection"))
@@ -304,10 +305,15 @@ class shiftNode(compound):
         print("Evaluating {}".format("Shift Node"))
 
         offset_rot = np.dot(rot, self.offset)
-
         new_pos = np.add(pos , offset_rot)
 
-        return self.children[0].set(new_pos, rot)
+        buf = buffer()
+
+        for child in self.children:
+            other_buf = child.set(new_pos, rot)
+            other_buf.write(buf)
+
+        return buf
 
     def getBounds(self):
         _min, _max = self.children[0].getBounds()
@@ -326,9 +332,6 @@ class rotationNode(compound):
     def __init__(self,axis, deg, children=[]):
         super().__init__(children)
 
-        # functions = [rotateX, rotateY, rotateZ]
-
-        # self.f = functions[axis]
         self.axis = axis
         self.deg = deg
 
@@ -336,18 +339,17 @@ class rotationNode(compound):
     def set(self,pos,prev_rot):
         print("Evaluating {}".format("Rotation"))
 
-        newBuf = buffer()
+        buf = buffer()
 
-        # new_rot = self.f(prev_rot, self.deg)
         new_rot = rotate(prev_rot, self.axis, self.deg)
 
         print("New Rotation:{}".format(new_rot))
 
         for child in self.children:
-            buf = child.set(pos, new_rot)
-            buf.write(newBuf)
+            other_buf = child.set(pos, new_rot)
+            other_buf.write(buf)
 
-        return newBuf
+        return buf
 
     # Returns the bounds relative to the implicit origin position of the algorithm (at neutral rotation)
     def getBounds(self):
@@ -367,15 +369,12 @@ class rotationNode(compound):
         id = np.identity(3)
         rot = self.f(id, self.deg)
 
-        # print("Vertices: {}".format(vertices))
 
         rot_vertices = []
 
         # Rotate all vertices
         for vert in vertices:
             rot_vertices.append(np.matmul(rot, vert))
-
-        # print("Rotated Vertices: {}".format(rot_vertices))
 
         # Find new min and max in each direction
         max = np.array([-np.inf, -np.inf, -np.inf])
@@ -389,7 +388,6 @@ class rotationNode(compound):
                 elif vert[dim] > max[dim]:
                     max[dim] = vert[dim]
 
-        # print("Min:{}, Max:{}".format(min, max))
         return min, max
 
     def __repr__(self):
@@ -435,72 +433,3 @@ def rotate(mat, axis, deg):
         raise ValueError("Invalid axis: {}".format(axis))
 
     return np.matmul(mat, rotation)
-
-
-# def rotateX(mat, deg):
-
-#     # Type Checking
-#     if not isinstance(mat, (list, np.ndarray)):
-#         raise TypeError("Argument 'mat' is of invalid type: {t}".format(t=type(mat)))
-
-#     elif not np.shape(mat) == (3,3):
-#         raise ValueError("Argument 'mat' must have dimensions '(3,3)', not {d}".format(d=np.shape(mat)))
-
-#     elif not isinstance(deg, (int,float)):
-#         raise TypeError("Argument 'deg' must be of types 'int' or 'float', not {t}".format(t=type(deg)))
-
-#     theta = deg* math.pi / 180
-
-#     rotation = np.array(
-#         [1.0,0.0,0.0,
-#         0.0, math.cos(theta), -math.sin(theta),
-#         0.0, math.sin(theta), math.cos(theta)]
-#     ).reshape(3,3)
-
-#     return np.matmul(mat, rotation)
-
-
-# def rotateY(mat, deg):
-
-#     # Type Checking
-#     if not isinstance(mat, (list, np.ndarray)):
-#         raise TypeError("Argument 'mat' is of invalid type: {t}".format(t=type(mat)))
-
-#     elif not np.shape(mat) == (3,3):
-#         raise ValueError("Argument 'mat' must have dimensions '(3,3)', not {d}".format(d=np.shape(mat)))
-
-#     elif not isinstance(deg, (int,float)):
-#         raise TypeError("Argument 'deg' must be of types 'int' or 'float', not {t}".format(t=type(deg)))
-
-#     theta = deg* math.pi / 180
-
-#     rotation = np.array(
-#         [math.cos(theta), 0.0, math.sin(theta),
-#         0.0, 1.0, 0.0,
-#         -math.sin(theta), 0, math.cos(theta)]
-#     ).reshape(3,3)
-
-#     return np.matmul(mat, rotation)
-
-
-# def rotateZ(mat, deg):
-
-#     # Type Checking
-#     if not isinstance(mat, (list, np.ndarray)):
-#         raise TypeError("Argument 'mat' is of invalid type: {t}".format(t=type(mat)))
-
-#     elif not np.shape(mat) == (3,3):
-#         raise ValueError("Argument 'mat' must have dimensions '(3,3)', not {d}".format(d=np.shape(mat)))
-
-#     elif not isinstance(deg, (int,float)):
-#         raise TypeError("Argument 'deg' must be of types 'int' or 'float', not {t}".format(t=type(deg)))
-
-#     theta = deg* math.pi / 180
-
-#     rotation = np.array(
-#         [math.cos(theta), -math.sin(theta), 0.0,
-#         math.sin(theta), math.cos(theta), 0.0,
-#         0.0, 0.0, 1.0]
-#     ).reshape(3,3)
-
-#     return np.matmul(mat, rotation)
