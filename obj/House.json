@@ -1,19 +1,20 @@
 {
     "HalfHouseLength":"!div($HouseLength,2)",
     "HalfHouseWidth":"!div($HouseWidth,2)",
-    "HalfHouseHeight":"!div($HouseHeight,2)",
 
-    "2SideSquared":"!add(!pow($HouseHeight,2),!pow($HalfHouseHeight,2))",
-    "Hypotenuse":"!sqrt($2SideSquared)",
+    "Hypotenuse":"!add(!sqrt(!mul(!pow($HalfHouseWidth, 2), 2)),1)",
+
+    "GroundFloorHeight":"!sub($HouseHeight, $HalfHouseWidth)",
 
     "Union":[
         {
+            "Label":"ROOF",
             "Shift":{
-                "Offset":["!sub(0,$HalfHouseLength)","$HouseHeight","!sub(0,!add($HalfHouseWidth,1))"],
+                "Offset":["!sub(0,$HalfHouseLength)","$HouseHeight",0],
                 "Body":{
                     "Rotation":{
                         "Axis":"x",
-                        "Degrees":45.0,
+                        "Degrees":135.0,
                         "Body":{
                             "Cuboid":{
                                 "Dimensions":["$HouseLength","$Hypotenuse","$Hypotenuse"],
@@ -25,11 +26,12 @@
             }
         },
         {
+            "Label":"FLOOR",
             "Shift":{
                 "Offset":["!sub(0,$HalfHouseLength)", 0, "!sub(0,$HalfHouseWidth)"],
                 "Body":{
                     "Cuboid":{
-                        "Dimensions":["$HouseLength","$HouseHeight","$HouseWidth"],
+                        "Dimensions":["$HouseLength","$GroundFloorHeight","$HouseWidth"],
                         "Material":"$WallMaterial"
                     }
                 }

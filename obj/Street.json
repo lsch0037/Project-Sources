@@ -1,11 +1,12 @@
 {
     "StreetLength":25,
     "StreetWidth":10,
+    "HouseSize":8,
     "Union":[
         {
             "Label":"Street",
             "Shift":{
-                "Offset":["!sub(0, !div($StreetWidth, 2))",-1,0],
+                "Offset":["!sub(0, !div($StreetWidth, 2))", -1, 0],
                 "Body":{
                     "Cuboid":{
                         "Dimensions":["$StreetWidth", 1, "$StreetLength"],
@@ -25,23 +26,28 @@
                 "End":"!div($StreetLength, 10)",
                 "Body":{
                     "Shift":{
-                        "Offset":["!sub(0,!add(!div($StreetWidth,2), 5))", 0, "!add(!mul($iter, 10),5)"],
+                        "Offset":["!sub(0,!add(!div($StreetWidth,2), 5))", 0, "!add(!mul($iter, $HouseSize),2)"],
                         "Body":{
-                            "House":{
-                                "HouseHeight":"!randInt(4,8)",
-                                "HouseLength":8,
-                                "HouseWidth":8,
-                                "WallMaterial":{
-                                    "Selector":"Random",
-                                    "Ids":["Oak Planks"]
-                                },
-                                "FloorMaterial":{
-                                    "Selector":"Random",
-                                    "Ids":["Stone"]
-                                },
-                                "RoofMaterial":{
-                                    "Selector":"Random",
-                                    "Ids":["Bricks"]
+                            "If":{
+                                "Condition":"!isEqual(!randInt(0,1), 1)",
+                                "Body":{
+                                    "House":{
+                                        "HouseHeight":"!randInt(4,8)",
+                                        "HouseLength":"$HouseSize",
+                                        "HouseWidth":"$HouseSize",
+                                        "WallMaterial":{
+                                            "Selector":"Random",
+                                            "Ids":["Oak Planks"]
+                                        },
+                                        "FloorMaterial":{
+                                            "Selector":"Random",
+                                            "Ids":["Stone"]
+                                        },
+                                        "RoofMaterial":{
+                                            "Selector":"Random",
+                                            "Ids":["Bricks"]
+                                        }
+                                    }
                                 }
                             }
                         }
