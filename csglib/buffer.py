@@ -54,16 +54,16 @@ class buffer():
         
         return -1
 
-    def write(self, other, offset=np.array([0,0,0])):
+    def write(self, other):
         for i in self.d:
             for j in self.d[i]:
                 for k in self.d[i][j]:
                     pos = np.array([i,j,k])
 
-                    other.set(pos + offset, self.get(pos))
+                    other.set(pos, self.get(pos))
 
 
-    def unwrite(self, other, offset=np.array([0,0,0])):
+    def unwrite(self, other):
         for i in self.d:
             for j in self.d[i]:
                 for k in self.d[i][j]:
@@ -75,7 +75,8 @@ class buffer():
                     # if id1 == id2:
                     other.unset(pos)
 
-    def union(self, other, offset=np.array([0,0,0])):
+
+    def union(self, other):
         buf = buffer()
 
         self.write(buf)
@@ -84,7 +85,7 @@ class buffer():
         return buf
 
 
-    def difference(self,other, offset=np.array([0,0,0])):
+    def difference(self,other):
         buf = copy.copy(self)
 
         for i in other.d:
@@ -100,7 +101,7 @@ class buffer():
 
         return buf
 
-    def intersection(self,other, offset=np.array([0,0,0])):
+    def intersection(self,other):
         newBuf = buffer()
 
         for i in self.d:
