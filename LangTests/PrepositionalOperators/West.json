@@ -10,7 +10,7 @@
     "Shift":{
         "Offset":[0,20,0],
         "Body":{
-            "On":[
+            "West":[
                 {
                     "Cube":{
                         "Size":4,

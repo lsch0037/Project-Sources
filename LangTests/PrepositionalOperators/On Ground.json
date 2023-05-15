@@ -1,0 +1,17 @@
+{
+    "Mat2":{
+        "Selector":"Random",
+        "Ids":["Bricks"]
+    },
+    "Shift":{
+        "Offset":[0,20,0],
+        "Body":{
+            "On Ground":{
+                "Sphere":{
+                    "Radius":5,
+                    "Material":"$Mat2"
+                }
+            }
+        }
+    }
+}

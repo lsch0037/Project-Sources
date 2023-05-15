@@ -19,7 +19,7 @@ punct = r'\w+|[^\s\w]'
 # !GLOBAL CONSTANTS
 operators = ["Union", "Intersection", "Difference",
              "Loop","If",
-             "On Ground","Shift","Rotation", "On", "North", "South", "East", "West"]
+             "On Ground","Shift","Rotation", "On", "Under", "North", "South", "East", "West"]
 primitiveNames = ["Cube", "Sphere", "Cuboid", "Cylinder", "Pyramid", "Prism", "Cone"]
 materialSelectorTypes = ["Random", "Perlin"]
 reservedProperties = ["Relative"]
@@ -151,6 +151,9 @@ def parse_operator(prog, op, props):
     # Prepositional Operators
     elif op == "On":
         return parse_preposition_operator(prog[op], props, compound.onTopOf)
+
+    elif op == "Under":
+        return parse_preposition_operator(prog[op], props, compound.under)
 
     elif op == "North":
         return parse_preposition_operator(prog[op], props, compound.northOf)
