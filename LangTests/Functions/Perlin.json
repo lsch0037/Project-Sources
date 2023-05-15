@@ -1,0 +1,32 @@
+{
+    "Loop":{
+        "Var":"x_iter",
+        "Start":0,
+        "End":20,
+        "Body":{
+            "Loop":{
+                "Var":"z_iter",
+                "Start":0,
+                "End":20,
+                "Body":{
+                    "Position":["$x_iter",1,"$z_iter"],
+
+                    "Shift":{
+                        "Offset":"$Position",
+                        "Body":{
+                            "Height":"!mul(!perlin($Position, 2, !randInt(0,10000)),10)",
+
+                            "Cuboid":{
+                                "Dimensions":["!add(1, $x_iter)", "$Height", "!add(1, $z_iter)"],
+                                "Material":{
+                                    "Selector":"Random",
+                                    "Ids":["Emerald Block"]
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,27 @@
+{
+    "Shift":{
+        "Offset":[-50, 0,-50],
+        "Body":{
+            "Loop":{
+                "Var": "iter",
+                "Start": 0,
+                "End": 10,
+                "Body":{
+                    "Shift":{
+                        "Offset":["!mul($iter,10)", 10, 0],
+                        "Body":{
+                            "Cone":{
+                                "Height": "!add(5, $iter)",
+                                "Radius": 5,
+                                "Material": {
+                                    "Selector":"Random",
+                                    "Ids":["Gold Block"]
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

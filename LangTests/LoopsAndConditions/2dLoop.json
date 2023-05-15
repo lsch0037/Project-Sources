@@ -1,22 +1,27 @@
 {
-    "Loop":{
-        "Var":"x_iter",
-        "Start":0,
-        "End":10,
+    "Shift":{
+        "Offset":[-50, 0, -50],
         "Body":{
             "Loop":{
-                "Var":"z_iter",
+                "Var":"x_iter",
                 "Start":0,
                 "End":10,
                 "Body":{
-                    "Shift":{
-                        "Offset":["$x_iter",1,"$z_iter"],
+                    "Loop":{
+                        "Var":"z_iter",
+                        "Start":0,
+                        "End":10,
                         "Body":{
-                            "Cube":{
-                                "Size":1,
-                                "Material":{
-                                    "Selector":"Random",
-                                    "Ids":["Grass Block"]
+                            "Shift":{
+                                "Offset":["!mul($x_iter,10)",1,"!mul($z_iter,10)"],
+                                "Body":{
+                                    "Cuboid":{
+                                        "Dimensions":["!add(1, $x_iter)", 10, "!add(1, $z_iter)"],
+                                        "Material":{
+                                            "Selector":"Random",
+                                            "Ids":["Emerald Block"]
+                                        }
+                                    }
                                 }
                             }
                         }

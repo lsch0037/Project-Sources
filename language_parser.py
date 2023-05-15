@@ -262,11 +262,11 @@ def function_call(fn_call, props):
     elif funName == "isEqual":
         return (args[0] == args[1])
 
-    elif funName == "less":
-        pass
+    elif funName == "isLess":
+        return (args[0] < args[1])
 
-    elif funName == "greater":
-        pass
+    elif funName == "isGreater":
+        return (args[0] > args[1])
 
     elif funName == "getBlock":
         return getBlock(args[0])
@@ -384,13 +384,13 @@ def parse_loop(prog, parent_props):
     print("Parsing Loop: '{}'".format(prog))
 
     var = expectAttribute("Var", prog, parent_props, str)
-    start = int(expectAttribute("Start", prog, parent_props, (int, float)))
-    end = int(expectAttribute("End", prog, parent_props, (int, float)))
+    start = expectAttribute("Start", prog, parent_props, (int, float))
+    end = expectAttribute("End", prog, parent_props, (int, float))
     body = expectAttribute("Body", prog, parent_props, dict)
 
     childrenProgs =[]
 
-    for i in range(start, end):
+    for i in range(int(start), int(end)):
         props = copy.copy(parent_props)
         props[var] = i
 
@@ -572,8 +572,8 @@ def parse_cone(prog, props, material):
 def getHeight(x, z):
     return game.getHeight(float(x),float(z))
 
-def matchSquare(x,z,max_offset, size):
-    return game.matchSquare(x,z,max_offset, size)
+# def matchSquare(x,z,max_offset, size):
+#     return game.matchSquare(x,z,max_offset, size)
 
 def randomInt(min, max):
     return random.randint(min, max)

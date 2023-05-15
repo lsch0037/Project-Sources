@@ -1,0 +1,82 @@
+{
+    "Shift":{
+        "Offset":[-50, 0,-50],
+        "Body":{
+            "Loop":{
+                "Var": "iter",
+                "Start": 0,
+                "End": 10,
+                "Body":{
+                    "Shift":{
+                        "Offset":["!mul($iter,10)", 10, 0],
+                        "Body":{
+                            "Rng":"!randInt(0,3)",
+                            "Union":[
+                                {
+                                    "If":{
+                                        "Condition":"!isEqual($Rng, 0)",
+                                        "Body":{
+                                            "Pyramid":{
+                                                "Height":10,
+                                                "Breadth":5,
+                                                "Width":5,
+                                                "Material":{
+                                                    "Selector":"Random",
+                                                    "Ids":["Redstone Block"]
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                {
+                                    "If":{
+                                        "Condition":"!isEqual($Rng, 1)",
+                                        "Body":{
+                                            "Sphere":{
+                                                "Radius":5,
+                                                "Material":{
+                                                    "Selector":"Random",
+                                                    "Ids":["Diamond Block"]
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                {
+                                    "If":{
+                                        "Condition":"!isEqual($Rng, 2)",
+                                        "Body":{
+                                            "Cone":{
+                                                "Height": 10,
+                                                "Radius": 5,
+                                                "Material": {
+                                                    "Selector":"Random",
+                                                    "Ids":["Gold Block"]
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                {
+                                    "If":{
+                                        "Condition":"!isEqual($Rng, 3)",
+                                        "Body":{
+                                            "Cylinder":{
+                                                "Length": 10,
+                                                "Radius": 5,
+                                                "Material": {
+                                                    "Selector":"Random",
+                                                    "Ids":["Block of Coal"]
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

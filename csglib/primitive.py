@@ -196,7 +196,7 @@ class cone(primitive):
         y_d = np.dot(rot, np.array([0,1,0]))
         z_d = np.dot(rot, np.array([0,0,1]))
 
-        for i in range(self.height):
+        for i in range(int(self.height)):
             y = i*y_d
 
             current_radius = int(-(self.radius * i) / self.height + self.radius)
