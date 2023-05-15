@@ -1,0 +1,15 @@
+{
+    "Shift":{
+        "Offset":[0, 20, 0],
+        "Body":{
+            "Sphere":{
+                "Radius":10,
+                "Material":{
+                    "Selector":"Random",
+                    "Ids": ["Diamond Block", "Emerald Block", "Gold Block"],
+                    "Weights": [0.05, 0.15, 0.8]
+                }
+            }
+        }
+    }
+}
