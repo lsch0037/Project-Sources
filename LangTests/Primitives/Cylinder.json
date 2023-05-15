@@ -1,10 +1,15 @@
 {
-    "Cylinder":{
-        "Material":{
-            "Selector":"Random",
-            "Ids":["Stone"]
-        },
-        "Length":12,
-        "Radius":3
+    "Shift":{
+        "Offset":[0,5,0],
+        "Body":{
+            "Cylinder":{
+                "Material":{
+                    "Selector":"Random",
+                    "Ids":["Diamond Block"]
+                },
+                "Length":12,
+                "Radius":6
+            }
+        }
     }
 }

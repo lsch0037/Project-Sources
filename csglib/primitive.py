@@ -154,17 +154,17 @@ class pyramid(primitive):
         y_d = np.dot(rot, np.array([0,1,0]))
         z_d = np.dot(rot, np.array([0,0,1]))
 
-        for i in range(self.height):
+        for i in range(self.height*2):
             y = i*y_d
 
             current_breadth = int(-(self.breadth/2 * i) / self.height + self.breadth/2)
             current_width = int(-(self.width/2 * i) / self.height + self.width/2)
 
-            for j in range(-current_breadth, current_breadth):
-                x = j*x_d
+            for j in range(-current_breadth*2, current_breadth*2):
+                x = j*x_d*0.5
 
-                for k in range(-current_width, current_width):
-                    z = k*z_d
+                for k in range(-current_width*2, current_width*2):
+                    z = k*z_d*0.5
 
                     current_pos = pos + x + y + z
 

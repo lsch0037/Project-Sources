@@ -1,9 +1,14 @@
 {
-"Cube":{
-    "Material":{
-        "Selector":"Random",
-        "Ids":["Stone"]
-    },
-    "Size":10
-}
+    "Shift":{
+        "Offset":[0, 10, 0],
+        "Body":{
+            "Cube":{
+                "Material":{
+                    "Selector":"Random",
+                    "Ids":["Block of Coal"]
+                },
+                "Size":10
+            }
+        }
+    }
 }

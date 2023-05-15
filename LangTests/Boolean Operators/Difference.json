@@ -1,0 +1,31 @@
+{
+    "Mat1":{
+        "Selector":"Random",
+        "Ids":["Redstone Block"]
+    },
+    "Difference":[
+        {
+            "Shift":{
+                "Offset":[0, 20,0],
+                "Body":{
+                    "Sphere":{
+                        "Radius":10,
+                        "Material":"$Mat1"
+                    }
+                }
+            }
+        },
+        {
+            "Shift":{
+                "Offset":[0, 10, 0],
+                "Body":{
+                    "Cylinder":{
+                        "Length":30,
+                        "Radius":7,
+                        "Material":"$Mat1"
+                    }
+                }
+            }
+        }
+    ]
+}

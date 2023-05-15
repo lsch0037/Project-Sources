@@ -1,11 +1,16 @@
 {
-    "Pyramid":{
-        "Material":{
-            "Selector":"Random",
-            "Ids":["Stone"]
-        },
-        "Height":10,
-        "Width":20,
-        "Breadth":30
+    "Shift":{
+        "Offset":[0,7,0],
+        "Body":{
+            "Pyramid":{
+                "Material":{
+                    "Selector":"Random",
+                    "Ids":["Gold Block"]
+                },
+                "Height":10,
+                "Width":20,
+                "Breadth":30
+            }
+        }
     }
 }

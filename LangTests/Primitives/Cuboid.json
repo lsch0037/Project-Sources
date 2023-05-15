@@ -1,9 +1,14 @@
 {
-"Cuboid":{
-    "Material":{
-        "Selector":"Random",
-        "Ids":["Stone"]
-    },
-    "Dimensions":[5,7,13]
-}
+    "Shift":{
+        "Offset":[0,10,0],
+        "Body":{
+            "Cuboid":{
+                "Material":{
+                    "Selector":"Random",
+                    "Ids":["Emerald Block"]
+                },
+                "Dimensions":[5,7,13]
+            }
+        }
+    }
 }

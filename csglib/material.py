@@ -25,6 +25,7 @@ id_map = {
     "Diamond Block": 57,
     "Stone Bricks":98,
     "Emerald Block":133,
+    "Redstone Block":152,
     "Block of Coal":173
 }
 

@@ -5,7 +5,7 @@
             "Sphere":{
                 "Material":{
                     "Selector":"Random",
-                    "Ids":["Stone"]
+                    "Ids":["Bricks"]
                 },
                 "Radius":12
             }

@@ -1,7 +1,7 @@
 {
     "Mat1":{
         "Selector":"Random",
-        "Ids":["Stone"]
+        "Ids":["Stone Bricks"]
     },
     "Shift":{
         "Offset":[0, 20, 0],
@@ -9,7 +9,7 @@
             "Intersection":[
                 {
                     "Sphere":{
-                        "Radius":7,
+                        "Radius":10,
                         "Material":"$Mat1"
                     }
                 },
@@ -18,7 +18,7 @@
                         "Offset":[0, 0, 10],
                         "Body":{
                             "Sphere":{
-                                "Radius":7,
+                                "Radius":10,
                                 "Material":"$Mat1"
                             }
                         }
