@@ -1,0 +1,7 @@
+{
+    "lessInt":"!isLess(!add(16,16),64)",
+    "notlessInt":"!isLess(32,!sub(16,8))",
+
+    "lessFloat":"!isLess(4.3, !mul(4.3, 2.0))",
+    "notlessFloat":"!isLess(16.8,3.4)"
+}

@@ -1,0 +1,9 @@
+{
+    "Var":false,
+    "If":{
+        "Condition":true,
+        "Body":{
+            "Read":"$Var"
+        }
+    }
+}

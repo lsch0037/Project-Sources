@@ -1,49 +1,5 @@
 {
-    "Mat1":{
-        "Selector":"Random",
-        "Ids":["Emerald Block"]
-    },
-    "Mat2":{
-        "Selector":"Random",
-        "Ids":["Diamond Block"]
-    },
-
-    "num1": "!randInt(1, 10)",
-    "num2": "!randInt(1, $num1)",
-    "ans": "!sub($num1, $num2)",
-    "Union":[
-        {
-            "Shift":{
-                "Offset":[0, 10, 0],
-                "Body":{
-                    "Cuboid":{
-                        "Dimensions":[1, "$num1", 1],
-                        "Material":"$Mat1"
-                    }
-                }
-            }
-        },
-        {
-            "Shift":{
-                "Offset":[2, 10, 0],
-                "Body":{
-                    "Cuboid":{
-                        "Dimensions":[1, "$num2", 1],
-                        "Material":"$Mat1"
-                    }
-                }
-            }
-        },
-        {
-            "Shift":{
-                "Offset":[4, 10, 0],
-                "Body":{
-                    "Cuboid":{
-                        "Dimensions":[1, "$ans", 1],
-                        "Material":"$Mat2"
-                    }
-                }
-            }
-        }
-    ]
+    "Num1": "!randInt(!sub(0,100),100)",
+    "Num2": "!randInt(!sub(0,100),100)",
+    "Ans":"!sub($Num1, $Num2)"
 }

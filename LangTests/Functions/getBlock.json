@@ -1,0 +1,10 @@
+{
+    "Pos1":[50, 70, 50],
+    "Block1":"!getBlock($Pos1)",
+    
+    "Pos2":[10, 100, 4],
+    "Block2":"!getBlock($Pos2)",
+
+    "Pos3":[50, 60, 50],
+    "Block3":"!getBlock($Pos3)"
+}

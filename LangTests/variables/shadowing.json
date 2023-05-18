@@ -1,0 +1,12 @@
+{
+    "Var":"Hello",
+    "OuterReadBefore":"$Var",
+    "If":{
+        "Condition":true,
+        "Body":{
+            "Var":"Goodbye",
+            "InnerRead":"$Var"
+        }
+    },
+    "OuterReadAfter":"$Var"
+}

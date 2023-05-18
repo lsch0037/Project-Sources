@@ -1,0 +1,7 @@
+{
+    "grtrInt":"!isGreater(5,3)",
+    "notgrtrInt":"!isGreater(!add(3,3), 7)",
+
+    "grtrFloat":"!isGreater(!mul(4.2,2.0), 2.5)",
+    "notgrtrFloat":"!isGreater(8.7, !div(23.5, 2))"
+}

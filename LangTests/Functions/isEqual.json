@@ -1,0 +1,10 @@
+{
+    "eqInt":"!isEqual(4,!add(2,2))",
+    "notEqInt":"!isEqual(!sub(12,2),12)",
+
+    "eqFloat":"!isEqual(6.2,!div(12.4,2))",
+    "notEqFloat":"!isEqual(3.4, 16.8)",
+
+    "eqStr":"!isEqual(hello, hello)",
+    "notEqStr":"!isEqual(hello, goodbye)"
+}

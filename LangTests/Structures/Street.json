@@ -2,6 +2,7 @@
     "Street":{
         "StreetLength":25,
         "StreetWidth":10,
+        "HouseHeight":20,
         "HouseSize":8
     }
 }

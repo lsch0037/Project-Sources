@@ -1,0 +1,4 @@
+{
+    "Num1": "!randInt(4,100)",
+    "Ans":"!sqrt($Num1)"
+}

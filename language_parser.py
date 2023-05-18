@@ -624,6 +624,6 @@ print("Evaluating Tree:")
 pos = [50, 63, 50]
 rot = np.identity(3)
 
-buf = tree.set(pos, rot)
-
-buf.write(game)
+if not tree == None:
+    buf = tree.set(pos, rot)
+    buf.write(game)
