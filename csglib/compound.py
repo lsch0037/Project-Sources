@@ -13,8 +13,8 @@ class compound():
     def getChild(self, index):
         return self.children[index]
 
-    # !Printing Tree
-    # https://stackoverflow.com/questions/20242479/printing-a-tree-data-structure-in-python
+    # Function to recursively print the tree structure
+    # code inspired by: https://stackoverflow.com/questions/20242479/printing-a-tree-data-structure-in-python
     def __str__(self, level=0):
         ret = "\t"*level+repr(self)+"\n"
         for child in self.children:
@@ -31,7 +31,6 @@ class compound():
 
     # !Bounding Box
     def getBounds(self):
-        # raise ValueError("Cannot call 'getBounds()' on generic Node")
         min = np.array([0,0,0])
         max = np.array([0,0,0])
 
@@ -93,26 +92,26 @@ class compound():
 
 
     # !Preposition Operations
-    def onTopOf(self,other):
-        return prepositionNode(compound.getBottom,compound.getTop, [self,other])
+    # def onTopOf(self,other):
+    #     return prepositionNode(compound.getBottom,compound.getTop, [self,other])
 
-    def under(self,other):
-        return prepositionNode(compound.getTop, compound.getBottom, [self,other])
+    # def under(self,other):
+    #     return prepositionNode(compound.getTop, compound.getBottom, [self,other])
 
-    def insideOf(self,other):
-        return prepositionNode(compound.getCenter, compound.getCenter, [self,other])
+    # def insideOf(self,other):
+    #     return prepositionNode(compound.getCenter, compound.getCenter, [self,other])
 
-    def eastOf(self,other):
-        return prepositionNode(compound.getWest, compound.getEast, [self,other])
+    # def eastOf(self,other):
+    #     return prepositionNode(compound.getWest, compound.getEast, [self,other])
 
-    def southOf(self,other):
-        return prepositionNode(compound.getNorth,compound.getSouth, [self,other])
+    # def southOf(self,other):
+    #     return prepositionNode(compound.getNorth,compound.getSouth, [self,other])
 
-    def westOf(self,other):
-        return prepositionNode(compound.getEast, compound.getWest, [self,other])
+    # def westOf(self,other):
+    #     return prepositionNode(compound.getEast, compound.getWest, [self,other])
 
-    def northOf(self,other):
-        return prepositionNode(compound.getSouth, compound.getNorth, [self,other])
+    # def northOf(self,other):
+    #     return prepositionNode(compound.getSouth, compound.getNorth, [self,other])
 
     def shiftBy(self,other, offset):
         return shiftNode(offset, [self,other])
@@ -215,43 +214,45 @@ class prepositionNode(compound):
             anchor1 = self.children[0].getSouth()
             anchor2 = self.children[1].getNorth()
 
-            return [0, 0, anchor2[2] - anchor1[2]]
+            return np.array([0, 0, anchor2[2] - anchor1[2]])
 
         elif self.prep == "South":
             anchor1 = self.children[0].getNorth()
             anchor2 = self.children[1].getSouth()
 
-            return [0, 0, anchor2[2] - anchor1[2]]
+            return np.array([0, 0, anchor2[2] - anchor1[2]])
 
         elif self.prep == "East":
             anchor1 = self.children[0].getWest()
             anchor2 = self.children[1].getEast()
 
-            return [anchor2[0] - anchor1[0], 0, 0]
+            return np.array([anchor2[0] - anchor1[0], 0, 0])
 
         elif self.prep == "West":
             anchor1 = self.children[0].getEast()
             anchor2 = self.children[1].getWest()
 
-            return [anchor2[0] - anchor1[0], 0, 0]
+            return np.array([anchor2[0] - anchor1[0], 0, 0])
 
         elif self.prep == "On":
             anchor1 = self.children[0].getBottom()
             anchor2 = self.children[1].getTop()
 
-            return [0, anchor2[1] - anchor1[1], 0]
+            return np.array([0, anchor2[1] - anchor1[1], 0])
 
         elif self.prep == "Under":
             anchor1 = self.children[0].getTop()
             anchor2 = self.children[1].getBottom()
 
-            return [0, anchor2[1] - anchor1[1], 0]
+            return np.array([0, anchor2[1] - anchor1[1], 0])
 
 
     def set(self,pos,rot):
         buf = buffer()
 
         diff = self.getDifference()
+
+        print(pos+diff)
 
         buf1 = self.children[0].set(pos + diff, rot)
         buf2 = self.children[1].set(pos, rot)
@@ -302,13 +303,9 @@ class onGroundNode(compound):
         print("Evaluating {}".format("On Ground"))
         groundHeight = self.game.getHeight(pos[0],pos[2])
 
-        print("Bounds of structure:{}".format(self.children[0].getBounds()))
-
         bottom = self.children[0].getBottom()
-        print("Bottom of structure:{}".format(bottom))
 
         diff = groundHeight - (pos[1] + bottom[1]) + 1
-        print("Height Difference:{}".format(diff))
 
         newPos = pos
         newPos[1] += diff
@@ -331,7 +328,10 @@ class shiftNode(compound):
     def set(self,pos,rot):
         print("Evaluating {}".format("Shift Node"))
 
+
         offset_rot = np.dot(rot, self.offset)
+
+        print("Pos:{}, Offset:{}".format(pos, offset_rot))
         new_pos = np.add(pos , offset_rot)
 
         buf = buffer()
@@ -369,8 +369,6 @@ class rotationNode(compound):
         buf = buffer()
 
         new_rot = rotate(prev_rot, self.axis, self.deg)
-
-        print("New Rotation:{}".format(new_rot))
 
         for child in self.children:
             other_buf = child.set(pos, new_rot)

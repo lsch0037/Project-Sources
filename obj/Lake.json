@@ -1,40 +1,26 @@
 {
-    "BaseRadius":10,
-    "MaxDepth":2,
-    "Oct":8,
-    "Seed":"!randInt(1,100)",
-    "RandomNess":20,
-
-    "Gradient":"!div($MaxDepth, !pow($BaseRadius, 2))",
-    "Loop":{
-        "Var":"x_iter",
-        "Start":"!sub(0, $BaseRadius)",
-        "End":"$BaseRadius",
-        "Body":{
-            "Loop":{
-                "Var":"z_iter",
-                "Start":"!sub(0, $BaseRadius)",
-                "End":"$BaseRadius",
+    "Mat1":{
+        "Selector":"Random",
+        "Ids":["Water"]
+    },
+    "Diameter":"!mul($Radius, 2)",
+    "Difference":[
+        {
+            "Sphere":{
+                "Radius":"$Radius",
+                "Material":"$Mat1"
+            }
+        },
+        {
+            "Shift":{
+                "Offset":["!sub(0,$Radius)", 0, "!sub(0, $Radius)"],
                 "Body":{
-                    "Pos":["$x_iter", 0, "$z_iter"],
-                    "GroundHeight":"getHeight($Pos)",
-                    "BaseDepth":"!sub($MaxDepth, !mul($Gradient,!add(!pow($x_iter, 2), !pow($z_iter, 2))))",
-                    "PerlinDepth":"!perlin($Pos, $Oct, $Seed)",
-                    "TotalDepth":"!mul($RandomNess,!add($BaseDepth, $PerlinDepth))",
-                    "Shift":{
-                        "Offset":["$x_iter","!sub(0, $TotalDepth)","$z_iter"],
-                        "Body":{
-                            "Cuboid":{
-                                "Dimensions":[1, "$TotalDepth", 1],
-                                "Material":{
-                                    "Selector":"Random",
-                                    "Ids":["Water"]
-                                }
-                            }
-                        }
+                    "Cuboid":{
+                        "Dimensions":["$Diameter", "$Radius", "$Diameter"],
+                        "Material":"$Mat1"
                     }
                 }
             }
         }
-    }
+    ]
 }

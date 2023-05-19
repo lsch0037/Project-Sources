@@ -27,14 +27,8 @@
             }
         },
         {
-            "On Ground":{
-                "Lake": {
-                    "BaseRadius": 20,
-                    "MaxDepth": 5,
-                    "Oct": 8,
-                    "Seed": "!randInt(1,100)",
-                    "RandomNess": 5
-                }
+            "SimpleLake": {
+
             }
         }
     ]

@@ -1,0 +1,20 @@
+{
+    "Descriptors":{
+        "Default":{
+            "BaseRadius":10,
+            "MaxDepth":5,
+            "Oct":8,
+            "Seed":"!randInt(1,100)",
+            "RandomNess":5
+        },
+        "Wide":{
+            "BaseRadius":20
+        },
+        "Tall":{
+            "MaxDepth":10
+        }
+    },
+    "Modifiers":{
+        "On":"On"
+    }
+}

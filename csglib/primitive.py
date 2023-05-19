@@ -65,11 +65,9 @@ class cuboid(primitive):
 
     # Get bounds of Cube Primitive
     def getBounds(self):
-        print("Returning Bounds of cuboid")
         min = np.array([0,0,0])
         max = self.dim
         
-        print("min:{}, max:{}".format(min, max))
         return min, max
 
     def __repr__(self):
