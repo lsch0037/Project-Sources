@@ -1,12 +1,19 @@
 {
     "Descriptors":{
         "Default":{
-            "Radius":5
+            "Radius":10,
+            "Depth":5
+        },
+        "Deep":{
+            "Depth":10
+        },
+        "Wide":{
+            "Radius":15
         }
     },
     "Modifiers":{
         "Overlooking":"South",
         "Next":"North",
-        "Swimming":"On"
+        "Swimming":"Union"
     }
 }

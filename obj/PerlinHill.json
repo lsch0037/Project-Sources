@@ -1,0 +1,32 @@
+{
+    "Gradient":"!div($MaxHeight, !pow($BaseRadius, 2))",
+    "Loop":{
+        "Var":"x_iter",
+        "Start":"!sub(0, $BaseRadius)",
+        "End":"$BaseRadius",
+        "Body":{
+            "Loop":{
+                "Var":"z_iter",
+                "Start":"!sub(0, $BaseRadius)",
+                "End":"$BaseRadius",
+                "Body":{
+                    "Shift":{
+                        "Offset":["$x_iter",0,"$z_iter"],
+                        "Body":{
+                            "Pos":["$x_iter", 0, "$z_iter"],
+                            "BaseHeight":"!sub($MaxHeight, !mul($Gradient,!add(!pow($x_iter, 2), !pow($z_iter, 2))))",
+                            "PerlinHeight":"!perlin($Pos, $Oct, $Seed)",
+                            "Cuboid":{
+                                "Dimensions":[1, "!add($BaseHeight, !mul($RandomNess, $PerlinHeight))", 1],
+                                "Material":{
+                                    "Selector":"Random",
+                                    "Ids":["Grass Block"]
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

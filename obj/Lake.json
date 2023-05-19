@@ -3,12 +3,18 @@
         "Selector":"Random",
         "Ids":["Water"]
     },
-    "Diameter":"!mul($Radius, 2)",
+    "Radius":"!div(!add(!pow($Depth,2), !pow($Width, 2)), !mul(2, $Depth))",
+    "Diameter":"!mul(2, $Radius)",
     "Difference":[
         {
-            "Sphere":{
-                "Radius":"$Radius",
-                "Material":"$Mat1"
+            "Shift":{
+                "Offset":[0, "!sub($Radius, $Depth)", 0],
+                "Body":{
+                    "Sphere":{
+                        "Radius":"$Radius",
+                        "Material":"$Mat1"
+                    }
+                }
             }
         },
         {
@@ -16,7 +22,7 @@
                 "Offset":["!sub(0,$Radius)", 0, "!sub(0, $Radius)"],
                 "Body":{
                     "Cuboid":{
-                        "Dimensions":["$Diameter", "$Radius", "$Diameter"],
+                        "Dimensions":["$Diameter", "$Diameter", "$Diameter"],
                         "Material":"$Mat1"
                     }
                 }
