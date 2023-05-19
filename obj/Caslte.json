@@ -1,0 +1,107 @@
+{
+    "StructureSize":20,
+    "StructureHeight":7,
+    "TowerRadius":3,
+    "TowerHeight":10,
+
+    "CastleMaterial":{
+        "Selector":"Random",
+        "Ids":["Stone Bricks"]
+    },
+
+    "Union":[
+        {
+            "Comment":"Body",
+            "Difference":[
+                {
+                    "Comment":"Outside Walls",
+                    "Shift":{
+                        "Offset":["!sub(0,!div($StructureSize, 2))",0,"!sub(0,!div($StructureSize, 2))"],
+                        "Body":{
+                            "Cuboid":{
+                                "Dimensions":["$StructureSize", "$StructureHeight","$StructureSize"],
+                                "Material":"$CastleMaterial"
+                            }
+                        }
+                    }
+                },
+                {
+                    "Comment":"Carve Inside",
+                    "Shift":{
+                        "Offset":["!sub(1,!div($StructureSize, 2))",1,"!sub(1,!div($StructureSize, 2))"],
+                        "Body":{
+                            "Cuboid":{
+                                "Dimensions":["!sub($StructureSize,2)", "!sub($StructureHeight,2)","!sub($StructureSize,2)"],
+                                "Material":"$CastleMaterial"
+                            }
+                        }
+                    }
+                },
+                {
+                    "Comment":"Carve Entrance",
+                    "Shift":{
+                        "Offset":["!sub(0,!div($StructureSize, 2))",0,"!sub(0,2)"],
+                        "Body":{
+                            "Cuboid":{
+                                "Dimensions":[1, "!sub($StructureHeight,2)", 4],
+                                "Material":"$CastleMaterial"
+                            }
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "Comment":"Northwest tower",
+            "Shift":{
+                "Offset":["!sub(0,!div($StructureSize, 2))",0,"!sub(0,!div($StructureSize, 2))"],
+                "Body":{
+                    "Cylinder":{
+                        "Length":"$TowerHeight",
+                        "Radius":"$TowerRadius",
+                        "Material":"$CastleMaterial"
+                    }
+                }
+            }
+        },
+        {
+            "Comment":"Southwest tower",
+            "Shift":{
+                "Offset":["!sub(0,!div($StructureSize, 2))",0,"!div($StructureSize, 2)"],
+                "Body":{
+                    "Cylinder":{
+                        "Length":"$TowerHeight",
+                        "Radius":"$TowerRadius",
+                        "Material":"$CastleMaterial"
+                    }
+                }
+            }
+        },
+        {
+            "Comment":"Northeast tower",
+            "Shift":{
+                "Offset":["!div($StructureSize, 2)",0,"!sub(0,!div($StructureSize, 2))"],
+                "Body":{
+                    "Cylinder":{
+                        "Length":"$TowerHeight",
+                        "Radius":"$TowerRadius",
+                        "Material":"$CastleMaterial"
+                    }
+                }
+            }
+        },
+        {
+            "Comment":"Southeast tower",
+            "Shift":{
+                "Offset":["!div($StructureSize, 2)",0,"!div($StructureSize, 2)"],
+                "Body":{
+                    "Cylinder":{
+                        "Length":"$TowerHeight",
+                        "Radius":"$TowerRadius",
+                        "Material":"$CastleMaterial"
+                    }
+                }
+            }
+        }
+    ]
+}

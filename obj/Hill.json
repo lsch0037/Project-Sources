@@ -1,7 +1,4 @@
 {
-    "Height":5,
-    "Width":10,
-
     "Mat1":{
         "Selector":"Random",
         "Ids":["Grass Block"]

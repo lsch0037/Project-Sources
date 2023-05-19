@@ -1,5 +1,5 @@
 {
-    "North": [
+    "South": [
         {
             "On": [
                 {
@@ -30,18 +30,15 @@
                 },
                 {
                     "Hill": {
-                        "BaseRadius": 20,
-                        "MaxHeight": 5,
-                        "Oct": 8,
-                        "Seed": "!randInt(1,100)",
-                        "RandomNess": 5
+                        "Width": 15,
+                        "Height": 5
                     }
                 }
             ]
         },
         {
             "Lake": {
-                "Radius": 15,
+                "Width": 15,
                 "Depth": 10
             }
         }
