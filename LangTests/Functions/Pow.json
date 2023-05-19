@@ -1,0 +1,5 @@
+{
+    "Num1": "!randInt(!sub(0,20),20)",
+    "Num2": "!randInt(!sub(0,20),20)",
+    "Ans":"!pow($Num1, $Num2)"
+}

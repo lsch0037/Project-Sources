@@ -39,43 +39,43 @@ class compound():
 
     def getTop(self):
         min,max = self.getBounds()
-        mid = min + max/2
+        mid = (min + max)/2
 
         return np.array([mid[0], max[1], mid[2]])
 
     def getBottom(self):
         min,max = self.getBounds()
-        mid = min + max/2
+        mid = (min + max)/2
 
         return np.array([mid[0], min[1], mid[2]])
 
     def getCenter(self):
         min,max = self.getBounds()
-        mid = min + max/2
+        mid = (min + max)/2
 
         return mid
 
     def getEast(self):
         min,max = self.getBounds()
-        mid = min + max/2
+        mid = (min + max)/2
 
         return np.array([max[0],mid[1],mid[2]])
 
     def getSouth(self):
         min,max = self.getBounds()
-        mid = min + max/2
+        mid = (min + max)/2
 
         return np.array([mid[0],mid[1],max[2]])
 
     def getWest(self):
         min,max = self.getBounds()
-        mid = min + max/2
+        mid = (min + max)/2
 
         return np.array([min[0],mid[1],mid[2]])
 
     def getNorth(self):
         min,max = self.getBounds()
-        mid = min + max/2
+        mid = (min + max)/2
 
         return np.array([mid[0],mid[1],min[2]])
 
@@ -264,6 +264,125 @@ class prepositionNode(compound):
     def __repr__(self):
         return 'Preposition'
 
+class northNode(compound):
+    def __init__(self, children=[]):
+        super().__init__(children)
+
+    def set(self,pos,rot):
+        buf = buffer()
+
+        anchor1 = self.children[0].getSouth()
+        anchor2 = self.children[1].getNorth()
+
+        z_diff = [0, 0, anchor2[2] - anchor1[2]]
+
+        buf1 = self.children[0].set(pos + z_diff, rot)
+        buf2 = self.children[1].set(pos, rot)
+
+        buf1.write(buf)
+        buf2.write(buf)
+
+        return buf
+
+class southNode(compound):
+    def __init__(self, children=[]):
+        super().__init__(children)
+
+    def set(self,pos,rot):
+        buf = buffer()
+
+        anchor1 = self.children[0].getNorth()
+        anchor2 = self.children[1].getSouth()
+
+        z_diff = [0, 0, anchor2[2] - anchor1[2]]
+
+        buf1 = self.children[0].set(pos + z_diff, rot)
+        buf2 = self.children[1].set(pos, rot)
+
+        buf1.write(buf)
+        buf2.write(buf)
+
+        return buf
+
+class eastNode(compound):
+    def __init__(self, children=[]):
+        super().__init__(children)
+
+    def set(self,pos,rot):
+        buf = buffer()
+
+        anchor1 = self.children[0].getWest()
+        anchor2 = self.children[1].getEast()
+
+        x_diff = [anchor2[0] - anchor1[0], 0, 0]
+
+        buf1 = self.children[0].set(pos + x_diff, rot)
+        buf2 = self.children[1].set(pos, rot)
+
+        buf1.write(buf)
+        buf2.write(buf)
+
+        return buf
+
+class westNode(compound):
+    def __init__(self, children=[]):
+        super().__init__(children)
+
+    def set(self,pos,rot):
+        buf = buffer()
+
+        anchor1 = self.children[0].getEast()
+        anchor2 = self.children[1].getWest()
+
+        x_diff = [anchor2[0] - anchor1[0], 0, 0]
+
+        buf1 = self.children[0].set(pos + x_diff, rot)
+        buf2 = self.children[1].set(pos, rot)
+
+        buf1.write(buf)
+        buf2.write(buf)
+
+        return buf
+
+class onNode(compound):
+    def __init__(self, children=[]):
+        super().__init__(children)
+
+    def set(self,pos,rot):
+        buf = buffer()
+
+        anchor1 = self.children[0].getBottom()
+        anchor2 = self.children[1].getTop()
+
+        y_diff = [0, anchor2[1] - anchor1[1], 0]
+
+        buf1 = self.children[0].set(pos + y_diff, rot)
+        buf2 = self.children[1].set(pos, rot)
+
+        buf1.write(buf)
+        buf2.write(buf)
+
+        return buf
+
+class underNode(compound):
+    def __init__(self, children=[]):
+        super().__init__(children)
+
+    def set(self,pos,rot):
+        buf = buffer()
+
+        anchor1 = self.children[0].getTop()
+        anchor2 = self.children[1].getBottom()
+
+        y_diff = [0, anchor2[1] - anchor1[1], 0]
+
+        buf1 = self.children[0].set(pos + y_diff, rot)
+        buf2 = self.children[1].set(pos, rot)
+
+        buf1.write(buf)
+        buf2.write(buf)
+
+        return buf
 
 class onGroundNode(compound):
     def __init__(self,game, children=[]):
@@ -367,7 +486,7 @@ class rotationNode(compound):
         vertices.append(child_max)
 
         id = np.identity(3)
-        rot = self.f(id, self.deg)
+        rot = rotate(id, self.axis, self.deg)
 
 
         rot_vertices = []
