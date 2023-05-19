@@ -20,6 +20,9 @@ punct = r'\w+|[^\s\w]'
 operators = ["Union", "Intersection", "Difference",
              "Loop","If",
              "On Ground","Shift","Rotation", "On", "Under", "North", "South", "East", "West"]
+
+booleansOps = ["Union", "Intersection", "Difference"]
+prepositionOps = ["On Ground","Shift","Rotation", "On", "Under", "North", "South", "East", "West"]
 primitiveNames = ["Cube", "Sphere", "Cuboid", "Cylinder", "Pyramid", "Prism", "Cone"]
 materialSelectorTypes = ["Random", "Perlin"]
 reservedProperties = ["Relative"]
@@ -147,26 +150,10 @@ def parse_operator(prog, op, props):
     elif op == "Rotation":
         return parse_rotation(prog[op], props)
 
-    
     # Prepositional Operators
-    elif op == "On":
-        return parse_preposition_operator(prog[op], props, compound.onTopOf)
-
-    elif op == "Under":
-        return parse_preposition_operator(prog[op], props, compound.under)
-
-    elif op == "North":
-        return parse_preposition_operator(prog[op], props, compound.northOf)
-
-    elif op == "South":
-        return parse_preposition_operator(prog[op], props, compound.southOf)
-
-    elif op == "East":
-        return parse_preposition_operator(prog[op], props, compound.eastOf)
-
-    elif op == "West":
-        return parse_preposition_operator(prog[op], props, compound.westOf)
-
+    if op in prepositionOps:
+        return parse_preposition_operator(prog[op], props, op)
+    
     else:
         raise ValueError("Invalid Operator: {}".format(prog))
 
@@ -422,7 +409,7 @@ def parse_on_ground(prog, props):
     return onGroundNode(game, [child_prog])
 
 
-def parse_preposition_operator(prog, props, f):
+def parse_preposition_operator(prog, props, prep):
     print("Parsing prepostion Operator: {}".format(prog))
     if not len(prog) == 2:
         raise ValueError("Prepositional operator requires exactly {n} operands.".format(n=2))
@@ -432,9 +419,7 @@ def parse_preposition_operator(prog, props, f):
         child_node = parse_expression(item, props)
         operands.append(child_node)
 
-    return f(operands[0], operands[1])
-
-
+    return prepositionNode(prep, operands)
 
 def parse_shift(prog, props):
     print("Parsing Shift: {}".format(prog))
