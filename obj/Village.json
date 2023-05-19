@@ -12,9 +12,12 @@
                     "Shift":{
                         "Offset":["!mul($x_iter, 20)", 0, "!mul($z_iter, 20)"],
                         "Body":{
-                            "Street":{
-                                "StreetLength":20,
-                                "StreetWidth":5
+                            "streetType":"!randInt(0,2)",
+                            "If":{
+                                "Condition":"!isEqual($streetType,0)",
+                                "Body":{
+
+                                }
                             }
                         }
                     }

@@ -1,9 +1,4 @@
 {
-    "StructureSize":20,
-    "StructureHeight":7,
-    "TowerRadius":3,
-    "TowerHeight":10,
-
     "CastleMaterial":{
         "Selector":"Random",
         "Ids":["Stone Bricks"]

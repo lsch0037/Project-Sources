@@ -1,0 +1,8 @@
+{
+    "Castle": {
+        "StructureSize": 25,
+        "StructureHeight": 10,
+        "TowerRadius": 5,
+        "TowerHeight": 15
+    }
+}

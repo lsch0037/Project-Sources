@@ -1,0 +1,58 @@
+{
+    "HouseSpacing":"!add($HouseHeight, 2)",
+    "Union":[
+        {
+            "Label":"Street",
+            "Shift":{
+                "Offset":["!sub(0, !div($StreetWidth, 2))", -1, 0],
+                "Body":{
+                    "Cuboid":{
+                        "Dimensions":["$StreetWidth", 1, "$StreetLength"],
+                        "Material":{
+                            "Selector":"Random",
+                            "Ids":["Gravel"]
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "Label":"Houses Left",
+            "Loop":{
+                "Var":"iter",
+                "Start":0,
+                "End":"!div($StreetLength, $HouseSpacing)",
+                "Body":{
+                    "Shift":{
+                        "Offset":["!sub(0,!add(!div($StreetWidth,2), 5))", 0, "!mul($iter, $HouseSpacing)"],
+                        "Body":{
+                            "If":{
+                                "Comment":"PLACE HOUSE HALF THE TIME",
+                                "Condition":"!isEqual(!randInt(0,1), 1)",
+                                "Body":{
+                                    "House":{
+                                        "HouseHeight":"!randInt(4,8)",
+                                        "HouseLength":"$HouseSize",
+                                        "HouseWidth":"$HouseSize",
+                                        "WallMaterial":{
+                                            "Selector":"Random",
+                                            "Ids":["Oak Planks"]
+                                        },
+                                        "FloorMaterial":{
+                                            "Selector":"Random",
+                                            "Ids":["Stone"]
+                                        },
+                                        "RoofMaterial":{
+                                            "Selector":"Random",
+                                            "Ids":["Bricks"]
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    ]
+}

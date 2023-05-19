@@ -1,0 +1,25 @@
+{
+    "Descriptors":{
+        "Default":{
+            "StructureSize":20,
+            "StructureHeight":7,
+            "TowerRadius":3,
+            "TowerHeight":10
+        },
+        "Menacing":{
+            "StructureSize":25,
+            "StructureHeight":10,
+            "TowerRadius":5,
+            "TowerHeight":15
+        },
+        "Imposing":{
+            "StructureSize":30,
+            "StructureHeight":15,
+            "TowerRadius":7,
+            "TowerHeight":18
+        }
+    },
+    "Modifiers":{
+
+    }
+}
