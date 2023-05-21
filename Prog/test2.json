@@ -1,15 +1,15 @@
 {
-    "Union": [
+    "On": [
         {
             "House": {
-                "HouseHeight": 7,
+                "HouseHeight": 12,
                 "HouseLength": 7,
                 "HouseWidth": 7,
                 "WallThickness": 1,
                 "WallMaterial": {
                     "Selector": "Random",
                     "Ids": [
-                        "Oak Planks"
+                        "Stone Bricks"
                     ]
                 },
                 "FloorMaterial": {
@@ -27,9 +27,9 @@
             }
         },
         {
-            "Lake": {
-                "Radius": 10,
-                "Depth": 5
+            "Mountain": {
+                "Width": 15,
+                "Height": 10
             }
         }
     ]

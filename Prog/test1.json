@@ -1,45 +1,35 @@
 {
-    "South": [
+    "On": [
         {
-            "On": [
-                {
-                    "House": {
-                        "HouseHeight": 7,
-                        "HouseLength": 7,
-                        "HouseWidth": 7,
-                        "WallThickness": 1,
-                        "WallMaterial": {
-                            "Selector": "Random",
-                            "Ids": [
-                                "Stone Bricks"
-                            ]
-                        },
-                        "FloorMaterial": {
-                            "Selector": "Random",
-                            "Ids": [
-                                "Stone"
-                            ]
-                        },
-                        "RoofMaterial": {
-                            "Selector": "Random",
-                            "Ids": [
-                                "Bricks"
-                            ]
-                        }
-                    }
+            "House": {
+                "HouseHeight": 7,
+                "HouseLength": 7,
+                "HouseWidth": 7,
+                "WallThickness": 1,
+                "WallMaterial": {
+                    "Selector": "Random",
+                    "Ids": [
+                        "Oak Planks"
+                    ]
                 },
-                {
-                    "Hill": {
-                        "Width": 15,
-                        "Height": 5
-                    }
+                "FloorMaterial": {
+                    "Selector": "Random",
+                    "Ids": [
+                        "Stone"
+                    ]
+                },
+                "RoofMaterial": {
+                    "Selector": "Random",
+                    "Ids": [
+                        "Bricks"
+                    ]
                 }
-            ]
+            }
         },
         {
-            "Lake": {
-                "Width": 15,
-                "Depth": 10
+            "Mountain": {
+                "Width": 10,
+                "Height": 10
             }
         }
     ]

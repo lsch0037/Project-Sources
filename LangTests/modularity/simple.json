@@ -1,0 +1,15 @@
+{
+    "House":{
+        "HouseHeight":10,
+        "HouseWidth":5,
+        "HouseLength":7,
+        "RoofMaterial":{
+            "Selector":"Random",
+            "Ids":["Diamond Block"]
+        },
+        "WallMaterial":{
+            "Selector":"Random",
+            "Ids":["GoldBlock"]
+        }
+    }
+}

@@ -1,0 +1,26 @@
+{
+    "Shift":{
+        "Offset":[10, 10, 10],
+        "Body":{
+            "Rotation":{
+                "Axis":"y",
+                "Degrees":60,
+                "Body":{
+                    "House":{
+                        "HouseHeight":10,
+                        "HouseWidth":5,
+                        "HouseLength":7,
+                        "RoofMaterial":{
+                            "Selector":"Random",
+                            "Ids":["Diamond Block"]
+                        },
+                        "WallMaterial":{
+                            "Selector":"Random",
+                            "Ids":["Gold Block"]
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

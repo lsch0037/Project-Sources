@@ -1,0 +1,19 @@
+{
+    "Descriptors":{
+        "Default":{
+            "Width":10,
+            "Height":10
+        },
+        "Tall":{
+            "Height":10
+        },
+        "Wide":{
+            "Width":15
+        }
+    },
+    "Modifiers":{
+        "On":"On",
+        "Overlooking":"South",
+        "Next":"North"
+    }
+}

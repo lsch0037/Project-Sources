@@ -1,0 +1,33 @@
+{
+    "Mat1":{
+        "Selector":"Random",
+        "Ids":["Grass Block"]
+    },
+    "Radius":"!div(!add(!pow($Height,2), !pow($Width, 2)), !mul(2, $Height))",
+    "Diameter":"!mul(2, $Radius)",
+    "Difference":[
+        {
+            "Shift":{
+                "Offset":[0, "!sub($Height, $Radius)", 0],
+                "Body":{
+                    "Sphere":{
+                        "Radius":"$Radius",
+                        "Material":"$Mat1"
+                    }
+                }
+            }
+        },
+        {
+            "HeightInGround":"!add($Radius, !sub($Radius, $Height))",
+            "Shift":{
+                "Offset":["!sub(0,$Radius)", "!sub(0,$HeightInGround)", "!sub(0, $Radius)"],
+                "Body":{
+                    "Cuboid":{
+                        "Dimensions":["$Diameter", "$HeightInGround", "$Diameter"],
+                        "Material":"$Mat1"
+                    }
+                }
+            }
+        }
+    ]
+}

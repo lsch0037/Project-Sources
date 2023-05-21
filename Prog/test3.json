@@ -1,0 +1,69 @@
+{
+    "North": [
+        {
+            "On": [
+                {
+                    "South": [
+                        {
+                            "Tree": {
+                                "TreeHeight": 10,
+                                "TrunkThickness": 3,
+                                "CrownSize": 5,
+                                "WoodType": {
+                                    "Selector": "Random",
+                                    "Ids": [
+                                        "Oak Wood"
+                                    ]
+                                },
+                                "LeavesType": {
+                                    "Selector": "Random",
+                                    "Ids": [
+                                        "Oak Leaves"
+                                    ]
+                                }
+                            }
+                        },
+                        {
+                            "House": {
+                                "HouseHeight": 7,
+                                "HouseLength": 7,
+                                "HouseWidth": 7,
+                                "WallThickness": 1,
+                                "WallMaterial": {
+                                    "Selector": "Random",
+                                    "Ids": [
+                                        "Oak Planks"
+                                    ]
+                                },
+                                "FloorMaterial": {
+                                    "Selector": "Random",
+                                    "Ids": [
+                                        "Stone"
+                                    ]
+                                },
+                                "RoofMaterial": {
+                                    "Selector": "Random",
+                                    "Ids": [
+                                        "Bricks"
+                                    ]
+                                }
+                            }
+                        }
+                    ]
+                },
+                {
+                    "Mountain": {
+                        "Width": 10,
+                        "Height": 10
+                    }
+                }
+            ]
+        },
+        {
+            "Lake": {
+                "Width": 10,
+                "Depth": 5
+            }
+        }
+    ]
+}
