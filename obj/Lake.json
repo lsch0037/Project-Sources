@@ -1,8 +1,4 @@
 {
-    "Mat1":{
-        "Selector":"Random",
-        "Ids":["Water"]
-    },
     "Radius":"!div(!add(!pow($Depth,2), !pow($Width, 2)), !mul(2, $Depth))",
     "Diameter":"!mul(2, $Radius)",
     "Difference":[
@@ -12,7 +8,7 @@
                 "Body":{
                     "Sphere":{
                         "Radius":"$Radius",
-                        "Material":"$Mat1"
+                        "Material":"$Liquid"
                     }
                 }
             }
@@ -23,7 +19,7 @@
                 "Body":{
                     "Cuboid":{
                         "Dimensions":["$Diameter", "$Diameter", "$Diameter"],
-                        "Material":"$Mat1"
+                        "Material":"$Liquid"
                     }
                 }
             }

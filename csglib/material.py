@@ -11,6 +11,7 @@ id_map = {
     "Cobblestone":4,
     "Oak Planks":5,
     "Water":9,
+    "Lava":11,
     "Gravel":13,
     "Gold Ore":14,
     "Iron Ore":15,

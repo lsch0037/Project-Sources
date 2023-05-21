@@ -7,10 +7,10 @@
             "TowerHeight":10
         },
         "Menacing":{
-            "StructureSize":25,
-            "StructureHeight":10,
-            "TowerRadius":5,
-            "TowerHeight":15
+            "StructureSize":10,
+            "StructureHeight":5,
+            "TowerRadius":2,
+            "TowerHeight":7
         },
         "Imposing":{
             "StructureSize":30,

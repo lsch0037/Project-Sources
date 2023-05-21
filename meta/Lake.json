@@ -2,18 +2,33 @@
     "Descriptors":{
         "Default":{
             "Width":10,
-            "Depth":5
+            "Depth":5,
+            "Liquid":{
+                "Selector":"Random",
+                "Ids":["Water"]
+            }
         },
         "Deep":{
             "Depth":10
         },
         "Wide":{
             "Width":15
+        },
+        "Huge":{
+            "Width":30,
+            "Depth":15
+        },
+        "Lava":{
+            "Liquid":{
+                "Selector":"Random",
+                "Ids":["Lava"]
+            }
         }
     },
     "Modifiers":{
         "Overlooking":"South",
         "Next":"North",
-        "Swimming":"Union"
+        "Swimming":"Union",
+        "In":"Union"
     }
 }

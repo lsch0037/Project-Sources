@@ -1,6 +1,11 @@
 {
     "Union": [
         {
+            "Clearing": {
+                "Radius": 20
+            }
+        },
+        {
             "Forest": {
                 "Density": 20,
                 "Radius": 20,
@@ -16,11 +21,6 @@
                         "Oak Leaves"
                     ]
                 }
-            }
-        },
-        {
-            "Clearing": {
-                "Radius": 20
             }
         }
     ]

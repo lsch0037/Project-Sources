@@ -1,0 +1,27 @@
+{
+    "Descriptors":{
+        "Default":{
+            "Width":5,
+            "Height":1,
+            "Material":{
+                "Selector":"Random",
+                "Ids":["Grass Block"]
+            }
+        },
+        "Large":{
+            "Width":15,
+            "Height":5
+        },
+        "Volcanic":{
+            "Material":{
+                "Selector":"Random",
+                "Ids":["Obsidian", "Cobblestone", "Block of Coal"]
+            }
+        }
+    },
+    "Modifiers":{
+        "On":"On",
+        "Overlooking":"South",
+        "Next":"North"
+    }
+}

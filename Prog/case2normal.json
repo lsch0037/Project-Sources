@@ -1,0 +1,40 @@
+{
+    "Union": [
+        {
+            "On": [
+                {
+                    "Castle": {
+                        "StructureSize": 10,
+                        "StructureHeight": 5,
+                        "TowerRadius": 2,
+                        "TowerHeight": 7
+                    }
+                },
+                {
+                    "Island": {
+                        "Width": 15,
+                        "Height": 5,
+                        "Material": {
+                            "Selector": "Random",
+                            "Ids": [
+                                "Grass Block"
+                            ]
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "Lake": {
+                "Width": 30,
+                "Depth": 15,
+                "Liquid": {
+                    "Selector": "Random",
+                    "Ids": [
+                        "Water"
+                    ]
+                }
+            }
+        }
+    ]
+}

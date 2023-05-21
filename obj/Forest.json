@@ -1,0 +1,21 @@
+{
+    "Loop":{
+        "Var":"LpVar",
+        "Start":0,
+        "End":"$Density",
+        "Body":{
+            "Shift":{
+                "Offset":["!randInt(!sub(0,$Radius), $Radius)",0,"!randInt(!sub(0,$Radius), $Radius)"],
+                "Body":{
+                    "Tree":{
+                        "TreeHeight":"!randInt(5,10)",
+                        "TrunkThickness":"!randInt(1,3)",
+                        "CrownSize":"!randInt(!add($TrunkThickness, 1), !add($TrunkThickness, 4))",
+                        "WoodType":"$WoodType",
+                        "LeavesType":"$LeavesType"
+                    }
+                }
+            }
+        }
+    }
+}

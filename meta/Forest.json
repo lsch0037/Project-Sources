@@ -1,9 +1,8 @@
 {
     "Descriptors":{
         "Default":{
-            "TreeHeight":10,
-            "TrunkThickness":3,
-            "CrownSize":5,
+            "Density":20,
+            "Radius":20,
             "WoodType":{
                 "Selector":"Random",
                 "Ids":["Oak Wood"]
@@ -12,19 +11,9 @@
                 "Selector":"Random",
                 "Ids":["Oak Leaves"]
             }
-        },
-        "Tall":{
-            "TreeHeight":20
-        },
-        "Short":{
-            "TreeHeight":5
         }
     },
     "Modifiers":{
-        "on":"On",
-        "next":"south"
-    },
-    "Plural":{
-        "Token":"Trees"
+        "In":"Union"
     }
 }

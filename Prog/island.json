@@ -1,0 +1,16 @@
+{
+    "Union": [
+        {
+            "Island": {
+                "Width": 5,
+                "Height": 10
+            }
+        },
+        {
+            "Lake": {
+                "Width": 20,
+                "Depth": 10
+            }
+        }
+    ]
+}
