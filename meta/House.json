@@ -19,6 +19,7 @@
             }
         },
         "Tall":{
+            "HouseHeight":12
         },
         "Brick":{
             "RoofMaterial":{
@@ -28,6 +29,16 @@
             "WallMaterial":{
                 "Selector":"Random",
                 "Ids":["Stone Bricks"]
+            }
+        },
+        "Wooden":{
+            "RoofMaterial":{
+                "Selector":"Random",
+                "Ids":["Oak Wood"]
+            },
+            "WallMaterial":{
+                "Selector":"Random",
+                "Ids":["Oak Planks"]
             }
         }
     },

@@ -1,0 +1,46 @@
+{
+    "South": [
+        {
+            "On": [
+                {
+                    "House": {
+                        "HouseHeight": 12,
+                        "HouseLength": 7,
+                        "HouseWidth": 7,
+                        "WallThickness": 1,
+                        "WallMaterial": {
+                            "Selector": "Random",
+                            "Ids": [
+                                "Oak Planks"
+                            ]
+                        },
+                        "FloorMaterial": {
+                            "Selector": "Random",
+                            "Ids": [
+                                "Stone"
+                            ]
+                        },
+                        "RoofMaterial": {
+                            "Selector": "Random",
+                            "Ids": [
+                                "Oak Wood"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "Hill": {
+                        "Width": 15,
+                        "Height": 5
+                    }
+                }
+            ]
+        },
+        {
+            "Lake": {
+                "Width": 15,
+                "Depth": 10
+            }
+        }
+    ]
+}
