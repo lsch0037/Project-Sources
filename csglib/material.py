@@ -25,6 +25,7 @@ id_map = {
     "Diamond Ore":56,
     "Diamond Block": 57,
     "Stone Bricks":98,
+    "Nether Bricks":112,
     "Emerald Block":133,
     "Redstone Block":152,
     "Block of Coal":173

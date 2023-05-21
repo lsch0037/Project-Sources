@@ -1,8 +1,4 @@
 {
-    "CastleMaterial":{
-        "Selector":"Random",
-        "Ids":["Stone Bricks"]
-    },
     "Union":[
         {
             "Comment":"Body",
@@ -14,7 +10,7 @@
                         "Body":{
                             "Cuboid":{
                                 "Dimensions":["$StructureSize", "$StructureHeight","$StructureSize"],
-                                "Material":"$CastleMaterial"
+                                "Material":"$WallMaterial"
                             }
                         }
                     }
@@ -26,7 +22,7 @@
                         "Body":{
                             "Cuboid":{
                                 "Dimensions":["!sub($StructureSize,2)", "!sub($StructureHeight,2)","!sub($StructureSize,2)"],
-                                "Material":"$CastleMaterial"
+                                "Material":"$WallMaterial"
                             }
                         }
                     }
@@ -38,7 +34,7 @@
                         "Body":{
                             "Cuboid":{
                                 "Dimensions":[1, "!sub($StructureHeight,2)", 4],
-                                "Material":"$CastleMaterial"
+                                "Material":"$WallMaterial"
                             }
                         }
                     }
@@ -53,7 +49,7 @@
                     "Cylinder":{
                         "Length":"$TowerHeight",
                         "Radius":"$TowerRadius",
-                        "Material":"$CastleMaterial"
+                        "Material":"$WallMaterial"
                     }
                 }
             }
@@ -66,7 +62,7 @@
                     "Cylinder":{
                         "Length":"$TowerHeight",
                         "Radius":"$TowerRadius",
-                        "Material":"$CastleMaterial"
+                        "Material":"$WallMaterial"
                     }
                 }
             }
@@ -79,7 +75,7 @@
                     "Cylinder":{
                         "Length":"$TowerHeight",
                         "Radius":"$TowerRadius",
-                        "Material":"$CastleMaterial"
+                        "Material":"$WallMaterial"
                     }
                 }
             }
@@ -92,7 +88,7 @@
                     "Cylinder":{
                         "Length":"$TowerHeight",
                         "Radius":"$TowerRadius",
-                        "Material":"$CastleMaterial"
+                        "Material":"$WallMaterial"
                     }
                 }
             }
