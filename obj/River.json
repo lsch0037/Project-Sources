@@ -1,0 +1,35 @@
+{
+    "Loop":{
+        "Var":"iter_x",
+        "Start":0,
+        "End":"$Length",
+        "Body":{
+            "PosForZOffset":["$iter_x", 0, 0],
+            "z_offset": "!mul(!perlin($PosForZOffset, $Z_seed, $Z_Octaves),$Curvature)",
+
+            "Shift":{
+                "Offset":["$iter_x", "!sub(0,0)", "$z_offset"],
+                "Body":{
+                    "Radius":"!add(4, !perlin($PosForZOffset,$Z_seed, $Z_Octaves))",
+                    "Diameter":"!mul($Radius,2)",
+                    "Difference":[
+                        {
+                            "Sphere":{
+                                "Radius":"$Radius",
+                                "Material":"$Liquid"
+                            }
+                        },
+                        {
+                            "Cylinder":{
+                                "Radius":"$Radius",
+                                "Length":"$Radius",
+                                "Material":"$Liquid"
+                            }
+                        }
+                    ]
+                }
+            }
+
+        }
+    }
+}

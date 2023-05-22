@@ -116,10 +116,10 @@ class cylinder(primitive):
         y_d = np.dot(rot, np.array([0,1,0]))
         z_d = np.dot(rot, np.array([0,0,1]))
 
-        for h in range(self.len*2):
+        for h in range(int(self.len*2)):
             center_pos = pos + y_d*(h/2)
-            for i in range(-self.rad*2, self.rad*2):
-                for j in range(-self.rad*2, self.rad*2):
+            for i in range(int(-self.rad*2), int(self.rad*2)):
+                for j in range(int(-self.rad*2), int(self.rad*2)):
                     current_pos = pos + x_d*(i/2) + y_d*(h/2) + z_d*(j/2)
                     dist = np.linalg.norm(current_pos - center_pos)  
 

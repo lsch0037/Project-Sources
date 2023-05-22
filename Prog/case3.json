@@ -1,0 +1,47 @@
+{
+    "North": [
+        {
+            "North": [
+                {
+                    "Village": {
+                        "Size": 3
+                    }
+                },
+                {
+                    "River": {
+                        "Z_Octaves": 10,
+                        "Radius_Octaves": 10,
+                        "Z_seed": "!randInt(0, 10000)",
+                        "Radius_seed": "!randInt(0, 10000)",
+                        "Curvature": 20,
+                        "Liquid": {
+                            "Selector": "Random",
+                            "Ids": [
+                                "Water"
+                            ]
+                        },
+                        "Length": 50
+                    }
+                }
+            ]
+        },
+        {
+            "Forest": {
+                "Density": 50,
+                "Radius": 20,
+                "WoodType": {
+                    "Selector": "Random",
+                    "Ids": [
+                        "Oak Wood"
+                    ]
+                },
+                "LeavesType": {
+                    "Selector": "Random",
+                    "Ids": [
+                        "Oak Leaves"
+                    ]
+                }
+            }
+        }
+    ]
+}

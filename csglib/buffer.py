@@ -7,20 +7,28 @@ class buffer():
         self.d = dict()
 
     def set(self, pos, id):
-        if pos[0] not in self.d.keys():
-            self.d[pos[0]] = dict()
+        pos_x = int(pos[0])
+        pos_y = int(pos[1])
+        pos_z = int(pos[2])
 
-        if pos[1] not in (self.d[pos[0]]).keys():
-            self.d[pos[0]][pos[1]] = dict()
+        if pos_x not in self.d.keys():
+            self.d[pos_x] = dict()
 
-        if pos[2] not in ((self.d[pos[0]])[pos[1]]).keys():
-            self.d[pos[0]][pos[1]][pos[2]] = dict()
+        if pos_y not in (self.d[pos_x]).keys():
+            self.d[pos_x][pos_y] = dict()
 
-        self.d[pos[0]][pos[1]][pos[2]] = id
+        if pos_z not in ((self.d[pos_x])[pos_y]).keys():
+            self.d[pos_x][pos_y][pos_z] = dict()
+
+        self.d[pos_x][pos_y][pos_z] = id
 
     def get(self, pos):
+        pos_x = int(pos[0])
+        pos_y = int(pos[1])
+        pos_z = int(pos[2])
+
         try:
-            return self.d[pos[0]][pos[1]][pos[2]]
+            return self.d[pos_x][pos_y][pos_z]
         except KeyError:
             return None
 
@@ -39,8 +47,12 @@ class buffer():
 
     # REMOVES THE THE ENTRY AT THAT POSITION (UNDOES CHANGES)
     def unset(self, pos):
+        pos_x = int(pos[0])
+        pos_y = int(pos[1])
+        pos_z = int(pos[2])
+
         try:
-            self.d[pos[0]][pos[1]].pop(pos[2])
+            self.d[pos_x][pos_y].pop(pos_z)
         except KeyError:
             return
 

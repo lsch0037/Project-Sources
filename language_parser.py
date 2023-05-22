@@ -384,6 +384,8 @@ def parse_loop(prog, parent_props):
         node = parse_expression(body, props)
         childrenProgs.append(node)
 
+    print(childrenProgs)
+
     return unionNode(childrenProgs)
 
 
@@ -606,7 +608,7 @@ print(tree)
 
 print("Evaluating Tree:")
 
-pos = [50, 63, 50]
+pos = [50, 63, 90]
 rot = np.identity(3)
 
 if not tree == None:

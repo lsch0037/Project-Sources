@@ -1,7 +1,10 @@
 {
     "Descriptors":{
         "Default":{
-
+            "Size":2
+        },
+        "Vast":{
+            "Size":3
         }
     },
     "Modifiers":{

@@ -1,0 +1,25 @@
+{
+    "Descriptors":{
+        "Default":{
+            "Z_Octaves":10,
+            "Radius_Octaves":10,
+            "Z_seed":"!randInt(0, 10000)",
+            "Radius_seed":"!randInt(0, 10000)",
+            "Curvature":5,
+            "Liquid":{
+                "Selector":"Random",
+                "Ids":["Water"]
+            },
+            "Length":30
+        },
+        "Curving":{
+            "Curvature":20
+        },
+        "Long":{
+            "Length":50
+        }
+    },
+    "Modifiers":{
+        "Adjacent":"North"
+    }
+}

@@ -1,40 +1,115 @@
 {
-    "StreetWidth":3,
-    "StreetLength":10,
-
-    "Bend":"!randInt(0,2)",
-
     "Union":[
         {
-            "Comment":"No Bend",
+            "label":"Pathway",
+            "Shift":{
+                "Offset":["!sub(0,!div($StreetLength, 2))", "!sub(0,1)", "!sub(0,!div($StreetWidth,2))"],
+                "Body":{
+                    "Cuboid":{
+                        "Dimensions":["$StreetLength", 1,"$StreetWidth"],
+                        "Material":"$RoadMaterial"
+                    }
+                }
+            }
+        },
+        {
+            "Label":"HouseAtBeginnning",
             "If":{
-                "Condition":"!isEqual($Bend, 0)",
-                "Block":{
-                    "Union":[
-                        {
-                            "Comment":""
+                "Condition":"!isEqual(!randInt(0,1), 1)",
+                "Body":{
+                    "HouseLength":"!randInt(5,7)",
+                    "Shift":{
+                        "Offset":["!sub(0,!div(!add($StreetLength,$HouseLength), 2))", 0, 0],
+                        "Body":{
+                            "House":{
+                                "HouseLength":"$HouseLength",
+                                "HouseWidth":"!randInt(5,7)",
+                                "HouseHeight":"!randInt(7,10)",
+                                "WallMaterial":"$HouseMaterial",
+                                "RoofMaterial":"$RoofMaterial"
+                            }
                         }
-                    ]
+                    }
                 }
             }
         },
         {
-            "Label":"Left Bend",
+            "Label":"HouseAtEnd",
             "If":{
-                "Condition":"!isEqual($Bend, 1)",
-                "Block":{
-
+                "Condition":"!isEqual(!randInt(0,1), 1)",
+                "Body":{
+                    "HouseLength":"!randInt(5,7)",
+                    "Shift":{
+                        "Offset":["!div(!add($StreetLength,$HouseLength), 2)", 0, 0],
+                        "Body":{
+                            "House":{
+                                "HouseLength":"$HouseLength",
+                                "HouseWidth":"!randInt(5,7)",
+                                "HouseHeight":"!randInt(7,10)",
+                                "WallMaterial":"$HouseMaterial",
+                                "RoofMaterial":"$RoofMaterial"
+                            }
+                        }
+                    }
                 }
             }
         },
         {
-            "Label":"Right Bend",
+            "Label":"HousesLeftSide",
             "If":{
-                "Condition":"!isEqual($Bend, 2)",
-                "Block":{
+                "Condition":"!isEqual(!randInt(0,1), 1)",
+                "Body":{
+                    "Rotation":{
+                        "Axis":"Y",
+                        "Degrees":-90,
+                        "Body":{
+                            "HouseWidth":"!randInt(5,7)",
+                            "Shift":{
+                                "Offset":["!div(!add($StreetWidth,$HouseWidth), 2)", 0, 0],
+                                "Body":{
+                                    "House":{
+                                        "HouseLength":"!randInt(5,7)",
+                                        "HouseWidth":"$HouseWidth",
+                                        "HouseHeight":"!randInt(7,10)",
+                                        "WallMaterial":"$HouseMaterial",
+                                        "RoofMaterial":"$RoofMaterial"
+                                    }
+                                }
+                            }
 
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "Label":"HousesRightSide",
+            "If":{
+                "Condition":"!isEqual(!randInt(0,1), 1)",
+                "Body":{
+                    "Rotation":{
+                        "Axis":"Y",
+                        "Degrees":90,
+                        "Body":{
+                            "HouseWidth":"!randInt(5,7)",
+                            "Shift":{
+                                "Offset":["!div(!add($StreetWidth,$HouseWidth), 2)", 0, 0],
+                                "Body":{
+                                    "House":{
+                                        "HouseLength":"!randInt(5,7)",
+                                        "HouseWidth":"$HouseWidth",
+                                        "HouseHeight":"!randInt(7,10)",
+                                        "WallMaterial":"$HouseMaterial",
+                                        "RoofMaterial":"$RoofMaterial"
+                                    }
+                                }
+                            }
+
+                        }
+                    }
                 }
             }
         }
+
     ]
 }

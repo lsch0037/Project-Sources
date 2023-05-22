@@ -11,9 +11,13 @@
                 "Selector":"Random",
                 "Ids":["Oak Leaves"]
             }
+        },
+        "Dense":{
+            "Density":50
         }
     },
     "Modifiers":{
-        "In":"Union"
+        "In":"Union",
+        "Next":"North"
     }
 }

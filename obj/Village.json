@@ -2,21 +2,36 @@
     "Loop":{
         "Var":"x_iter",
         "Start":0,
-        "End":2,
+        "End":"$Size",
         "Body":{
             "Loop":{
                 "Var":"z_iter",
                 "Start":0,
-                "End":2,
+                "End":"$Size",
                 "Body":{
                     "Shift":{
-                        "Offset":["!mul($x_iter, 20)", 0, "!mul($z_iter, 20)"],
+                        "Offset":["!mul($x_iter, 15)", 0, "!mul($z_iter, 15)"],
                         "Body":{
-                            "streetType":"!randInt(0,2)",
+                            "streetType":"!randInt(0,1)",
                             "If":{
                                 "Condition":"!isEqual($streetType,0)",
                                 "Body":{
-
+                                    "Street":{
+                                        "StreetWidth":5,
+                                        "StreetLength":10,
+                                        "RoadMaterial":{
+                                            "Selector":"Random",
+                                            "Ids":["Gravel"]
+                                        },
+                                        "HouseMaterial":{
+                                            "Selector":"Random",
+                                            "Ids":["Stone Bricks"]
+                                        },
+                                        "RoofMaterial":{
+                                            "Selector":"Random",
+                                            "Ids":["Bricks"]
+                                        }
+                                    }
                                 }
                             }
                         }
